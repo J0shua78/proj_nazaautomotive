@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sky Lounge Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Dashboard-specific styles */
+        :root {
+            --primary: #3A6351;
+            --secondary: #F2A154;
+            --dark: #2C3E50;
+            --light: #ECF0F1;
+            --danger: #E74C3C;
+            --success: #2ECC71;
+            --warning: #F39C12;
+            --info: #3498DB;
+            --edit: #FFA500; /* Orange for edit */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            padding: 20px;
+        }
+
+        .page-title {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title h1 {
+            font-size: 24px;
+            color: var(--dark);
+        }
+
+        .mock-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .stat-card.primary::before {
+            background: var(--primary);
+        }
+
+        .stat-card.success::before {
+            background: var(--success);
+        }
+
+        .stat-card.warning::before {
+            background: var(--warning);
+        }
+
+        .stat-card.danger::before {
+            background: var(--danger);
+        }
+
+        .stat-card .stat-title {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .stat-change {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-card .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-card .stat-change.negative {
+            color: var(--danger);
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-size: 16px;
+            color: var(--dark);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        table tr:hover td {
+            background: #f8f9fa;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-badge.success {
+            background: #e3f7eb;
+            color: var(--success);
+        }
+
+        .status-badge.warning {
+            background: #fff8e6;
+            color: var(--warning);
+        }
+
+        .status-badge.danger {
+            background: #feeceb;
+            color: var(--danger);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            margin-right: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: white;
+            transition: opacity 0.2s;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        .action-btn.view {
+            background: var(--success);
+        }
+
+        .action-btn.edit {
+            background: var(--edit);
+        }
+
+        .action-btn.delete {
+            background: var(--danger);
+        }
+
+        .action-btn i {
+            font-size: 12px;
+        }
+
+        /* Button Container */
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        /* Loading and Error Styles */
+        .loading-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-container {
+            padding: 1rem;
+            background: #feeceb;
+            color: var(--danger);
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 15px;
+            }
+            
+            table th, table td {
+                padding: 8px 10px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .action-btn {
+                margin-right: 0;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading and error containers -->
+    <div class="loading-container" id="loading-scans" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>Loading data...</p>
+    </div>
+
+    <div class="error-container" id="error-scans" style="display: none;"></div>
+
+    <!-- Modal for view/edit -->
+    <div class="modal" id="details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Details</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+            <div class="modal-footer" id="modal-footer">
+                <!-- Buttons will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <div class="page-title">
+        <h1>Dashboard</h1>
+        <div class="mock-control">
+            <label>
+                <input type="checkbox" id="toggle-mock"> Use Mock Data
+            </label>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-container">
+        <div class="stat-card primary">
+            <div class="stat-title">Total Members</div>
+            <div class="stat-value">-</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> Loading...
+            </div>
+        </div>
+        <div class="stat-card success">
+            <div class="stat-title">Today Visit</div>
+            <div class="stat-value">-</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> Loading...
+            </div>
+        </div>
+        <div class="stat-card warning">
+            <div class="stat-title">Pending Approvals</div>
+            <div class="stat-value">-</div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Recent QR Scans</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="recentScansTable">
+                    <thead>
+                        <tr>
+                            <th>Member ID</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Members -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Recent Members</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="recentMembersTable">
+                    <thead>
+                        <tr>
+                            <th>Member ID</th>
+                            <th>Name</th>
+                            <th>Join Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { DashboardController } from '../js/pages/dashboard.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            new DashboardController();
+        });
+    </script>
+</body>
+</html>

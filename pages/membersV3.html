@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members - Sky Lounge Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary: #2c7be5;
+            --secondary: #6e84a3;
+            --success: #00a65a;
+            --info: #39afd1;
+            --warning: #f39c12;
+            --danger: #e63757;
+            --light: #f9fafd;
+            --dark: #12263f;
+            --gray: #95aac9;
+            --light-gray: #edf2f9;
+            --border-color: #e3ebf6;
+            --success-dark: #008d4c;
+            --warning-dark: #e08e0b;
+            --danger-dark: #d33724;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: white;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.03);
+        }
+
+        table th,
+        table td {
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        table th {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        table th.sortable:hover {
+            background-color: rgba(44, 123, 229, 0.06);
+        }
+
+        table th.sort-asc::after,
+        table th.sort-desc::after {
+            content: "";
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+        }
+
+        table th.sort-asc::after {
+            border-bottom: 4px solid var(--primary);
+            transform: translateY(-30%);
+        }
+
+        table th.sort-desc::after {
+            border-top: 4px solid var(--primary);
+            transform: translateY(30%);
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table tr:hover td {
+            background-color: rgba(44, 123, 229, 0.03);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .status-badge.active {
+            background-color: rgba(0, 166, 90, 0.1);
+            color: var(--success-dark);
+            border: 1px solid rgba(0, 166, 90, 0.2);
+        }
+
+        .status-badge.pending {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning-dark);
+            border: 1px solid rgba(243, 156, 18, 0.2);
+        }
+
+        .status-badge.expired {
+            background-color: rgba(230, 55, 87, 0.1);
+            color: var(--danger-dark);
+            border: 1px solid rgba(230, 55, 87, 0.2);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 4px;
+            color: var(--gray);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            color: var(--dark);
+        }
+
+        .action-btn.view:hover {
+            color: var(--success-dark);
+        }
+
+        .action-btn.edit:hover {
+            color: var(--warning-dark);
+        }
+
+        .action-btn.delete:hover {
+            color: var(--danger-dark);
+        }
+
+        .action-btn.add {
+            background-color: var(--primary);
+            color: white;
+            width: auto;
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+
+        /* Filter Controls */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 12px 8px 32px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13px;
+            background-color: white;
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(44, 123, 229, 0.25);
+            outline: none;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13px;
+            background-color: white;
+            min-width: 120px;
+        }
+
+        /* Page Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        /* Card Layout */
+        .card {
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.03);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .pagination button {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            min-width: 32px;
+        }
+
+        .pagination button.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.15);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            position: sticky;
+            bottom: 0;
+            background-color: white;
+        }
+
+        /* Member Details Layout */
+        .member-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .member-section {
+            margin-bottom: 20px;
+        }
+
+        .member-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .detail-label {
+            width: 120px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .detail-value {
+            flex: 1;
+            color: var(--dark);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(44, 123, 229, 0.25);
+            outline: none;
+        }
+
+        /* Utility Classes */
+        .text-muted {
+            color: var(--gray);
+        }
+
+        /* Loading Indicator */
+        .loading-container {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(44, 123, 229, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error Message */
+        .error-container {
+            display: none;
+            padding: 12px 16px;
+            background-color: rgba(230, 55, 87, 0.1);
+            color: var(--danger);
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+            
+            .member-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 15px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Indicator -->
+    <div class="loading-container" id="loading-members">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-container" id="error-members"></div>
+
+    <!-- Member Modal -->
+    <div class="modal" id="member-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Member Details</h3>
+                <button class="action-btn delete" id="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer" id="modal-footer"></div>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">Members Management</h1>
+        <div>
+            <button class="action-btn add" id="add-member"><i class="fas fa-plus"></i> Add Member</button>
+        </div>
+    </div>
+
+    <!-- Filter Controls -->
+    <div class="filter-container">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-members" placeholder="Search members...">
+        </div>
+        <div class="filter-group">
+            <label for="filter-status">Status:</label>
+            <select id="filter-status">
+                <option value="">All</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+                <option value="expired">Expired</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="items-per-page">Show:</label>
+            <select id="items-per-page">
+                <option value="2">2</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Members Table -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Members List</h2>
+            <div class="text-muted" id="table-summary">Showing 0 of 0 members</div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="membersTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="sortable" data-sort="memberId">Member ID</th>
+                            <th class="sortable" data-sort="name">Name</th>
+                            <th class="sortable" data-sort="email">Email</th>
+                            <th class="sortable" data-sort="joinDate">Join Date</th>
+                            <th class="sortable" data-sort="status">Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <button id="prev-page" disabled><i class="fas fa-chevron-left"></i></button>
+                <span id="page-info">Page 1 of 1</span>
+                <button id="next-page" disabled><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { MembersController } from '../js/pages/membersV3.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            new MembersController();
+        });
+    </script>
+</body>
+</html>

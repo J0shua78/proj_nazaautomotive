@@ -1,0 +1,27 @@
+
+[TABLE.FUNCTIONS]functionID, groupName, orderID, functionName,allowView,allowAdd,allEdit,allowDelete,allowExport,allowImport
+  labelAllow1..5,allow1..5
+
+functionID=orderID? No, cause orderID may change later.
+Sort by orderID, 
+orderID format: first 2 digit group Order, last 2 digit for function order
+
+[]Dashboard []members (view is manatory for others)
+               []add
+               []edit
+               []delete
+               []Approve (labelAllow1)
+
+[TABLE.USERS]userID, roleID,
+[TABLE.ROLES]roleID, roleName 
+  {If roleID as roleName then no need this table to manage name}
+    - Cannot cause need to keep createby, lastupdate & etc
+[TABLE.ROLES_FUNCTIONS]roleID, functionID, allowView..allowImport,allow1..5
+
+
+Role List: [Role_name, Role_description, Total Permission(->Role Setup), Total User(->Username List)]
+
+<-Total Permission
+[MAIN]
+ -> MEMBER [View, Add, Edit, Delete]
+ -> Role [View, Add, Edit, Delete]

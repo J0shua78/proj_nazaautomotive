@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sky Lounge Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <!-- Loading and error containers -->
+    <div class="loading-container" id="loading-scans" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>Loading data...</p>
+    </div>
+
+    <div class="error-container" id="error-scans" style="display: none;"></div>
+
+    <div class="page-title">
+        <h1>Dashboard</h1>
+        <div class="mock-control">
+            <label>
+                <input type="checkbox" id="toggle-mock"> Use Mock Data
+            </label>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-container">
+        <div class="stat-card primary">
+            <div class="stat-title">Total Members</div>
+            <div class="stat-value">-</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> Loading...
+            </div>
+        </div>
+        <div class="stat-card success">
+            <div class="stat-title">Today Visit</div>
+            <div class="stat-value">-</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> Loading...
+            </div>
+        </div>
+        <div class="stat-card warning">
+            <div class="stat-title">Pending Approvals</div>
+            <div class="stat-value">-</div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Recent QR Scans</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="recentScansTable">
+                    <thead>
+                        <tr>
+                            <th>Member ID</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Members -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Recent Members</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="recentMembersTable">
+                    <thead>
+                        <tr>
+                            <th>Member ID</th>
+                            <th>Name</th>
+                            <th>Join Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { DashboardController } from '../js/pages/dashboard.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            new DashboardController();
+        });
+    </script>
+</body>
+</html>

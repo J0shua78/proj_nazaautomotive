@@ -1,0 +1,14 @@
+Main.html
+-left menu show drawer icon to hide the left menu
+-after hide, show the appBar drawer icon.
+
+Members.html
+*no action button, link underline memberid to view then edit/delete
+*SHOW+View All=9999records
+-member delete show like view with delete button.
+-paging when mobile view should same row
+-add button mobile view should same row too.
+
+Member-form.html
+-
+

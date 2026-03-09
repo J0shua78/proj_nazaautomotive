@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inline Editable Table - Ultra-Compact Layout</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary: #2c7be5;
+            --secondary: #6e84a3;
+            --success: #00a65a;
+            --info: #39afd1;
+            --warning: #f39c12;
+            --danger: #e63757;
+            --light: #f9fafd;
+            --dark: #12263f;
+            --gray: #95aac9;
+            --light-gray: #edf2f9;
+            --border-color: #e3ebf6;
+            --success-dark: #008d4c;
+            --warning-dark: #e08e0b;
+            --danger-dark: #d33724;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            padding: 20px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: white;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.03);
+        }
+
+        table th,
+        table td {
+            /* Aggressive reduction of vertical padding */
+            padding: 6px 10px;
+            text-align: left;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        table th {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            position: relative;
+            user-select: none;
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table tr:hover td {
+            background-color: rgba(44, 123, 229, 0.03);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            /* Further reduced size */
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 2px;
+            color: var(--gray);
+            font-size: 11px; /* Reduced icon size */
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            color: var(--dark);
+        }
+
+        .action-btn.edit:hover {
+            color: var(--warning-dark);
+        }
+
+        .action-btn.save,
+        .action-btn.cancel {
+            border-radius: 4px;
+            width: auto;
+            padding: 3px 6px; /* Further reduced padding */
+            font-size: 10px; /* Reduced font size */
+        }
+
+        .action-btn.save {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .action-btn.save:hover {
+            background-color: var(--success-dark);
+        }
+
+        .action-btn.cancel {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .action-btn.cancel:hover {
+            background-color: #5a6d88;
+        }
+
+        .action-btn.delete {
+            background-color: transparent;
+            color: var(--gray);
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            padding: 0;
+        }
+
+        .action-btn.delete:hover {
+            color: var(--danger-dark);
+            background-color: rgba(230, 55, 87, 0.1);
+        }
+
+        /* Add button */
+        .action-btn.add {
+            background-color: var(--primary);
+            color: white;
+            width: auto;
+            padding: 5px 10px; /* Reduced padding */
+            border-radius: 4px;
+            font-size: 11px; /* Reduced font size */
+        }
+
+        .action-btn.add:hover {
+            background-color: #2667c4;
+        }
+
+        /* Card Layout */
+        .card {
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.03);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 6px 10px; /* Reduced header padding */
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 13px; /* Reduced title font size */
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .card-body {
+            padding: 0;
+        }
+
+        /* Inline Edit Input Styles */
+        td input[type="text"] {
+            width: calc(100% - 2px);
+            box-sizing: border-box;
+            /* Reduced vertical padding to fit new row height */
+            padding: 2px 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--dark);
+            background-color: var(--light);
+        }
+
+        td input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(44, 123, 229, 0.25);
+            outline: none;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .action-btn.add {
+                margin-bottom: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Role Management</div>
+            <button id="add-member" class="action-btn add">
+                <i class="fas fa-plus"></i> Add New Row
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="membersTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        const data = [
+            { id: 1, name: "Admin", description: "Full access to all system features." },
+            { id: 2, name: "User", description: "Standard user access with limited permissions." },
+            { id: 3, name: "Editor", description: "Can create and modify content." }
+        ];
+
+        const tableBody = document.getElementById('tableBody');
+        const addNewRowBtn = document.getElementById('add-member');
+        let isAddingNewRow = false;
+
+        function renderRow(rowData, index) {
+            const tr = document.createElement("tr");
+            tr.setAttribute('data-index', index);
+
+            tr.innerHTML = `
+                <td><span>${rowData.name}</span><input type="text" value="${rowData.name}" style="display:none;"></td>
+                <td><span>${rowData.description}</span><input type="text" value="${rowData.description}" style="display:none;"></td>
+                <td>
+                    <button class="action-btn edit" data-index="${index}" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn save" data-index="${index}" style="display:none;" title="Save"><i class="fas fa-check"></i> Save</button>
+                    <button class="action-btn cancel" data-index="${index}" style="display:none;" title="Cancel"><i class="fas fa-times"></i> Cancel</button>
+                    <button class="action-btn delete" data-index="${index}" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            `;
+            return tr;
+        }
+
+        function renderTable() {
+            tableBody.innerHTML = "";
+            data.forEach((row, index) => {
+                tableBody.appendChild(renderRow(row, index));
+            });
+            attachEventListeners();
+        }
+
+        function attachEventListeners() {
+            document.querySelectorAll('.action-btn.edit').forEach(button => {
+                button.onclick = (event) => editRow(parseInt(event.currentTarget.dataset.index));
+            });
+            document.querySelectorAll('.action-btn.save').forEach(button => {
+                button.onclick = (event) => saveRow(parseInt(event.currentTarget.dataset.index));
+            });
+            document.querySelectorAll('.action-btn.cancel').forEach(button => {
+                button.onclick = (event) => cancelEdit(parseInt(event.currentTarget.dataset.index));
+            });
+            document.querySelectorAll('.action-btn.delete').forEach(button => {
+                button.onclick = (event) => deleteRow(parseInt(event.currentTarget.dataset.index));
+            });
+        }
+
+        function editRow(index) {
+            if (isAddingNewRow && index !== 0) {
+                alert("Please save or cancel the new row before editing others.");
+                return;
+            }
+
+            const tr = tableBody.querySelector(`tr[data-index="${index}"]`);
+            if (!tr) return;
+
+            tr.querySelectorAll("span").forEach(el => el.style.display = "none");
+            tr.querySelectorAll("input").forEach(el => el.style.display = "block");
+            tr.querySelector(".action-btn.edit").style.display = "none";
+            tr.querySelector(".action-btn.save").style.display = "inline-flex";
+            tr.querySelector(".action-btn.cancel").style.display = "inline-flex";
+            tr.querySelector(".action-btn.delete").style.display = "none";
+        }
+
+        function saveRow(index) {
+            const tr = tableBody.querySelector(`tr[data-index="${index}"]`);
+            if (!tr) return;
+
+            const inputs = tr.querySelectorAll("input");
+
+            if (isAddingNewRow && index === 0 && inputs[0].value.trim() === "") {
+                alert("Name cannot be empty for the new row.");
+                inputs[0].focus();
+                return;
+            }
+
+            data[index].name = inputs[0].value;
+            data[index].description = inputs[1].value;
+
+            const spans = tr.querySelectorAll("span");
+            spans[0].textContent = inputs[0].value;
+            spans[1].textContent = inputs[1].value;
+
+            spans.forEach(el => el.style.display = "inline");
+            inputs.forEach(el => el.style.display = "none");
+            tr.querySelector(".action-btn.edit").style.display = "inline-flex";
+            tr.querySelector(".action-btn.save").style.display = "none";
+            tr.querySelector(".action-btn.cancel").style.display = "none";
+            tr.querySelector(".action-btn.delete").style.display = "inline-flex";
+
+            if (isAddingNewRow && index === 0) {
+                addNewRowBtn.style.display = "inline-flex";
+                addNewRowBtn.disabled = false;
+                isAddingNewRow = false;
+            }
+        }
+
+        function cancelEdit(index) {
+            const tr = tableBody.querySelector(`tr[data-index="${index}"]`);
+            if (!tr) return;
+
+            if (isAddingNewRow && index === 0) {
+                data.shift();
+                renderTable();
+                addNewRowBtn.style.display = "inline-flex";
+                addNewRowBtn.disabled = false;
+                isAddingNewRow = false;
+                return;
+            }
+
+            const inputs = tr.querySelectorAll("input");
+            inputs[0].value = data[index].name;
+            inputs[1].value = data[index].description;
+
+            tr.querySelectorAll("span").forEach(el => el.style.display = "inline");
+            tr.querySelectorAll("input").forEach(el => el.style.display = "none");
+            tr.querySelector(".action-btn.edit").style.display = "inline-flex";
+            tr.querySelector(".action-btn.save").style.display = "none";
+            tr.querySelector(".action-btn.cancel").style.display = "none";
+            tr.querySelector(".action-btn.delete").style.display = "inline-flex";
+        }
+
+        function deleteRow(index) {
+            const itemName = data[index].name;
+
+            if (confirm(`Are you sure you want to delete "${itemName}"?`)) {
+                if (isAddingNewRow && index === 0) {
+                    isAddingNewRow = false;
+                    addNewRowBtn.style.display = "inline-flex";
+                    addNewRowBtn.disabled = false;
+                }
+
+                data.splice(index, 1);
+                renderTable();
+            }
+        }
+
+        addNewRowBtn.addEventListener('click', () => {
+            if (isAddingNewRow) {
+                console.warn("Already adding a new row.");
+                return;
+            }
+
+            addNewRowBtn.style.display = "none";
+            addNewRowBtn.disabled = true;
+            isAddingNewRow = true;
+
+            const newRowData = {
+                id: data.length > 0 ? Math.max(...data.map(d => d.id)) + 1 : 1,
+                name: "",
+                description: ""
+            };
+            data.unshift(newRowData);
+            renderTable();
+
+            editRow(0);
+
+            const newRowElement = tableBody.querySelector(`tr[data-index="0"]`);
+            if (newRowElement) {
+                newRowElement.querySelector('input').focus();
+            }
+        });
+
+        renderTable();
+    </script>
+
+</body>
+
+</html>

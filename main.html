@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sky Lounge Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="images/logo_black2.png" alt="Logo">
+        </div>
+        <div class="sidebar-menu" style="padding-top: 10px;">
+            <h3>Main</h3>
+            <ul>
+                <li class="active">
+                    <a href="#" class="nav-link" data-page="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-page="members">
+                        <i class="fas fa-users"></i>
+                        <span>Members</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-page="qr-scan">
+                        <i class="fas fa-qrcode"></i>
+                        <span>QR Scan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-page="locations">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Locations</span>
+                    </a>
+                </li>
+            </ul>
+
+            <h3>Management</h3>
+            <ul>
+                <li>
+                    <a href="#" class="nav-link" data-page="login-management">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-page="roles">
+                        <i class="fas fa-user-tag"></i>
+                        <span>Roles</span>
+                    </a>
+                </li>
+            </ul>
+
+            <h3>Reports</h3>
+            <ul>
+                <li>
+                    <a href="#" class="nav-link" data-page="export">
+                        <i class="fas fa-file-excel"></i>
+                        <span>Export (Excel)</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link" data-page="audit-log">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span>Audit Log</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="menu-toggle" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="mock-control">
+                    <label>
+                        <input type="checkbox" id="toggle-mock"> Use Mock Data &nbsp; &nbsp; &nbsp;
+                    </label>
+                </div>
+                <div class="user-id">ADMIN</div>
+                <div class="logout-btn" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Container -->
+        <div class="content">
+            <iframe id="content-frame" src="pages/dashboard.html" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <!-- Core JavaScript -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

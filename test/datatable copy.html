@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Inline Editable Table</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f2f2f2;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      margin-top: 15px; /* Add some space above the table */
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    button {
+      padding: 6px 12px;
+      margin: 2px;
+      cursor: pointer;
+      border-radius: 4px; /* Consistent button styling */
+    }
+    .add-button {
+        background-color: #28a745; /* Green color for add button */
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        font-size: 1em;
+        margin-bottom: 10px;
+    }
+    .add-button:hover {
+        background-color: #218838;
+    }
+    .edit-button { background-color: #007bff; color: white; border: none; }
+    .edit-button:hover { background-color: #0056b3; }
+    .save-button { background-color: #28a745; color: white; border: none; }
+    .save-button:hover { background-color: #218838; }
+    .cancel-button { background-color: #ffc107; color: black; border: none; }
+    .cancel-button:hover { background-color: #e0a800; }
+    .delete-button { background-color: #dc3545; color: white; border: none; }
+    .delete-button:hover { background-color: #c82333; }
+
+    .actions {
+      white-space: nowrap;
+    }
+    input[type="text"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 5px; /* Added padding to inputs */
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Editable Table</h2>
+
+<button id="addNewRowBtn" class="add-button">Add New Row</button>
+
+<table id="dataTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Age</th>
+      <th class="actions">Actions</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody">
+    </tbody>
+</table>
+
+<script>
+  const data = [
+    { name: "Alice", email: "alice@example.com", age: 30 },
+    { name: "Bob", email: "bob@example.com", age: 25 },
+    { name: "Charlie", email: "charlie@example.com", age: 35 }
+  ];
+
+  const tableBody = document.getElementById('tableBody');
+  const addNewRowBtn = document.getElementById('addNewRowBtn');
+  let isAddingNewRow = false; // Flag to track if a new row is being added
+
+  // Function to render a single row
+  function renderRow(rowData, index) {
+    const tr = document.createElement("tr");
+    tr.setAttribute('data-index', index); // Store the index on the row element
+
+    tr.innerHTML = `
+      <td><span>${rowData.name}</span><input type="text" value="${rowData.name}" style="display:none;"></td>
+      <td><span>${rowData.email}</span><input type="text" value="${rowData.email}" style="display:none;"></td>
+      <td><span>${rowData.age}</span><input type="text" value="${rowData.age}" style="display:none;"></td>
+      <td class="actions">
+        <button class="edit-button" onclick="editRow(${index})">Edit</button>
+        <button class="save-button" onclick="saveRow(${index})" style="display:none;">Save</button>
+        <button class="cancel-button" onclick="cancelEdit(${index})" style="display:none;">Cancel</button>
+        <button class="delete-button" onclick="deleteRow(${index})">Delete</button>
+      </td>
+    `;
+    return tr;
+  }
+
+  // Initial render of the entire table
+  function renderTable() {
+    tableBody.innerHTML = ""; // Clear existing rows
+    data.forEach((row, index) => {
+      tableBody.appendChild(renderRow(row, index));
+    });
+  }
+
+  function editRow(index) {
+    // Prevent editing other rows if a new row is being added and not saved/cancelled
+    if (isAddingNewRow && index !== 0) {
+        alert("Please save or cancel the new row before editing others.");
+        return;
+    }
+
+    const tr = tableBody.querySelector(`tr[data-index="${index}"]`); // Find row by data-index
+    if (!tr) return; // Guard against missing row
+
+    tr.querySelectorAll("span").forEach(el => el.style.display = "none");
+    tr.querySelectorAll("input").forEach(el => el.style.display = "block");
+    tr.querySelector(".edit-button").style.display = "none";
+    tr.querySelector(".save-button").style.display = "inline-block";
+    tr.querySelector(".cancel-button").style.display = "inline-block";
+    tr.querySelector(".delete-button").style.display = "none";
+  }
+
+  function saveRow(index) {
+    const tr = tableBody.querySelector(`tr[data-index="${index}"]`); // Find row by data-index
+    if (!tr) return;
+
+    const inputs = tr.querySelectorAll("input");
+
+    // Simple validation: check if Name is empty for new rows
+    if (isAddingNewRow && index === 0 && inputs[0].value.trim() === "") {
+        alert("Name cannot be empty for the new row.");
+        inputs[0].focus();
+        return;
+    }
+
+    data[index] = {
+      name: inputs[0].value,
+      email: inputs[1].value,
+      age: inputs[2].value
+    };
+
+    // Update the specific row's display
+    const spans = tr.querySelectorAll("span");
+    spans[0].textContent = inputs[0].value;
+    spans[1].textContent = inputs[1].value;
+    spans[2].textContent = inputs[2].value;
+
+    // Switch back to display mode for this specific row
+    spans.forEach(el => el.style.display = "inline");
+    inputs.forEach(el => el.style.display = "none");
+    tr.querySelector(".edit-button").style.display = "inline-block";
+    tr.querySelector(".save-button").style.display = "none";
+    tr.querySelector(".cancel-button").style.display = "none";
+    tr.querySelector(".delete-button").style.display = "inline-block";
+
+    // If the saved row was the new one, re-enable the Add button
+    if (isAddingNewRow && index === 0) {
+        addNewRowBtn.style.display = "inline-block";
+        addNewRowBtn.disabled = false;
+        isAddingNewRow = false;
+    }
+  }
+
+  function cancelEdit(index) {
+    const tr = tableBody.querySelector(`tr[data-index="${index}"]`); // Find row by data-index
+    if (!tr) return;
+
+    // If this is the new row being cancelled, remove it from data and re-render
+    if (isAddingNewRow && index === 0) {
+        data.shift(); // Remove the first element (the new row)
+        renderTable(); // Re-render the table
+        addNewRowBtn.style.display = "inline-block"; // Show the Add button
+        addNewRowBtn.disabled = false;
+        isAddingNewRow = false;
+        return; // Exit function as table is re-rendered
+    }
+
+    // Reset input values to original data before switching display
+    const inputs = tr.querySelectorAll("input");
+    inputs[0].value = data[index].name;
+    inputs[1].value = data[index].email;
+    inputs[2].value = data[index].age;
+
+    // Switch back to display mode for this specific row
+    tr.querySelectorAll("span").forEach(el => el.style.display = "inline");
+    tr.querySelectorAll("input").forEach(el => el.style.display = "none");
+    tr.querySelector(".edit-button").style.display = "inline-block";
+    tr.querySelector(".save-button").style.display = "none";
+    tr.querySelector(".cancel-button").style.display = "none";
+    tr.querySelector(".delete-button").style.display = "inline-block";
+  }
+
+  function deleteRow(index) {
+    if (confirm("Are you sure you want to delete this row?")) {
+      // If the row being deleted is the unsaved new row
+      if (isAddingNewRow && index === 0) {
+          isAddingNewRow = false; // Reset flag
+          addNewRowBtn.style.display = "inline-block"; // Show button
+          addNewRowBtn.disabled = false;
+      }
+
+      data.splice(index, 1); // Remove 1 element at the given index
+      renderTable(); // Re-render the table due to index shift
+    }
+  }
+
+  // --- Add Row at First Position ---
+  addNewRowBtn.addEventListener('click', () => {
+    if (isAddingNewRow) {
+        // This case should ideally not happen if button is hidden/disabled
+        console.warn("Already adding a new row.");
+        return;
+    }
+
+    // Hide and disable the Add button
+    addNewRowBtn.style.display = "none";
+    addNewRowBtn.disabled = true;
+    isAddingNewRow = true; // Set flag
+
+    const newRowData = {
+      name: "", // Start with empty name
+      email: "",
+      age: ""
+    };
+    data.unshift(newRowData); // Add to the beginning of the data array
+    renderTable(); // Re-render the entire table
+
+    // Because the table is re-rendered, the new row is now at index 0
+    // and its elements are fresh. We can immediately put it into edit mode.
+    editRow(0);
+
+    // Focus on the first input of the new row
+    const newRowElement = tableBody.querySelector(`tr[data-index="0"]`);
+    if (newRowElement) {
+        newRowElement.querySelector('input').focus();
+    }
+  });
+  // --- End of Add Row Functionality ---
+
+  // Initial render when the page loads
+  renderTable();
+</script>
+
+</body>
+</html>

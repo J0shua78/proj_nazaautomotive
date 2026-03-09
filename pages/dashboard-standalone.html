@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sky Lounge Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+    <!-- Loading and error containers -->
+    <div class="loading-container" id="loading-scans" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>Loading data...</p>
+    </div>
+
+    <div class="error-container" id="error-scans" style="display: none;"></div>
+
+    <div class="page-title">
+        <h1>Dashboard</h1>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-container">
+        <div class="stat-card primary">
+            <div class="stat-title">Total Members</div>
+            <div class="stat-value">1,248</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> 12.5% from last month
+            </div>
+        </div>
+        <div class="stat-card success">
+            <div class="stat-title">Today Visit</div>
+            <div class="stat-value">27</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> 8.3% from yesterday
+            </div>
+        </div>
+        <div class="stat-card warning">
+            <div class="stat-title">Pending Approvals</div>
+            <div class="stat-value">18</div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Recent QR Scans</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="recentScansTable">
+                    <thead>
+                        <tr>
+                            <th>Member ID</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for recent QR scans
+        const recentScans = [
+            {
+                memberId: "SLM-1001",
+                name: "John Smith",
+                location: "Main Lounge",
+                time: "2023-07-25 09:30:45",
+                status: "success"
+            },
+            {
+                memberId: "SLM-1042",
+                name: "Sarah Johnson",
+                location: "Rooftop Bar",
+                time: "2023-07-25 10:15:22",
+                status: "success"
+            },
+            {
+                memberId: "SLM-1085",
+                name: "Michael Chen",
+                location: "VIP Lounge",
+                time: "2023-07-25 11:05:33",
+                status: "warning"
+            },
+            {
+                memberId: "SLM-1123",
+                name: "Emily Wilson",
+                location: "Main Lounge",
+                time: "2023-07-25 12:30:18",
+                status: "success"
+            },
+            {
+                memberId: "SLM-1156",
+                name: "David Kim",
+                location: "Pool Area",
+                time: "2023-07-25 14:20:07",
+                status: "danger"
+            },
+            {
+                memberId: "SLM-1199",
+                name: "Jessica Brown",
+                location: "Rooftop Bar",
+                time: "2023-07-25 15:45:52",
+                status: "success"
+            },
+            {
+                memberId: "SLM-1234",
+                name: "Robert Taylor",
+                location: "VIP Lounge",
+                time: "2023-07-25 17:10:29",
+                status: "warning"
+            }
+        ];
+
+        // Function to populate the table
+        function populateRecentScansTable() {
+            const tableBody = document.querySelector('#recentScansTable tbody');
+            tableBody.innerHTML = '';
+
+            recentScans.forEach(scan => {
+                const row = document.createElement('tr');
+                
+                // Determine status badge class
+                let statusClass = '';
+                let statusText = '';
+                switch(scan.status) {
+                    case 'success':
+                        statusClass = 'success';
+                        statusText = 'Valid';
+                        break;
+                    case 'warning':
+                        statusClass = 'warning';
+                        statusText = 'Expiring';
+                        break;
+                    case 'danger':
+                        statusClass = 'danger';
+                        statusText = 'Expired';
+                        break;
+                }
+
+                row.innerHTML = `
+                    <td>${scan.memberId}</td>
+                    <td>${scan.name}</td>
+                    <td>${scan.location}</td>
+                    <td>${scan.time}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Simulate loading delay
+            document.getElementById('loading-scans').style.display = 'block';
+            
+            setTimeout(() => {
+                populateRecentScansTable();
+                document.getElementById('loading-scans').style.display = 'none';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

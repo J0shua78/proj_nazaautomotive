@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naza Automotive | CRM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-bg: #0F172A;
+            --sidebar-hover: #1E293B;
+            --accent: #3A6351;
+            --text-dim: #94A3B8;
+        }
+
+        body { display: flex; height: 100vh; margin: 0; font-family: 'Inter', sans-serif; background: #F8FAFC; overflow: hidden; }
+
+        /* Sidebar: Drawer Behavior */
+        .sidebar { 
+            width: 260px; background: var(--sidebar-bg); color: #fff; 
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; flex-direction: column; flex-shrink: 0;
+            position: relative; z-index: 1000;
+        }
+        .sidebar.hidden { transform: translateX(-100%); position: absolute; height: 100%; }
+
+        .sidebar-header { padding: 24px; font-weight: 700; font-size: 1.1rem; color: var(--accent); }
+
+        /* Grouped Menu Styling */
+        .menu-group { margin-bottom: 20px; }
+        .group-label { 
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; 
+            color: #475569; padding: 0 24px; margin-bottom: 8px; font-weight: 700; 
+        }
+        .nav-item { 
+            display: flex; align-items: center; padding: 10px 24px; color: var(--text-dim); 
+            text-decoration: none; font-size: 0.85rem; transition: 0.2s; 
+        }
+        .nav-item:hover, .nav-item.active { background: var(--sidebar-hover); color: #fff; border-left: 4px solid var(--accent); }
+        .nav-item i { margin-right: 12px; width: 16px; }
+
+        /* Main Content */
+        .main-content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .top-bar { height: 64px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; border-bottom: 1px solid #E2E8F0; }
+        
+        /* Mobile Breakpoint */
+        @media (max-width: 768px) {
+            .sidebar { position: absolute; height: 100%; }
+            .sidebar.hidden { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">NAZA CRM</div>
+        
+        <div class="menu-group">
+            <div class="group-label">CRM</div>
+            <a href="#" class="nav-item active"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="#" class="nav-item"><i class="fas fa-user-edit"></i> Lead</a>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-label">Reports</div>
+            <a href="#" class="nav-item"><i class="fas fa-comments"></i> Feedback</a>
+            <a href="#" class="nav-item"><i class="fas fa-poll"></i> Survey</a>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-label">Setup</div>
+            <a href="#" class="nav-item"><i class="fas fa-cog"></i> User</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <i class="fas fa-bars" id="toggle-sidebar" style="cursor: pointer; font-size: 1.2rem;"></i>
+            </header>
+        <iframe src="dashboard.html" style="flex:1; border:none;"></iframe>
+    </main>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggle-sidebar');
+
+        // Logic for Toggle
+        toggleBtn.onclick = () => sidebar.classList.toggle('hidden');
+
+        // Smart Auto-Hide for Mobile
+        window.addEventListener('resize', () => {
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('hidden');
+            } else {
+                sidebar.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

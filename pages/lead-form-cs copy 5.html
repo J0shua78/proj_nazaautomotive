@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix CRM - Lead Detail Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-text-main: #232e3e; 
+            --px-text-label: #8da1b9; 
+            --px-text-static: #5e6e82; 
+            --px-placeholder: #a5b0be; 
+            --px-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            --input-height: 2.7rem;
+            --base-font: 0.82rem;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--px-bg);
+            color: var(--px-text-main);
+            margin: 0; padding: 1.5rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* HEADER AREA */
+        .lead-header-card {
+            background: #fff;
+            border: 1px solid var(--px-border);
+            border-radius: 0.4rem;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--px-shadow);
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: center; }
+        .header-bottom { display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.75rem; color: var(--px-text-static); border-top: 1px solid #f1f4f8; padding-top: 0.5rem; }
+        
+        /* TWO COLUMN LAYOUT */
+        .main-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1rem; align-items: start; }
+
+        .card { background: #fff; border: 1px solid var(--px-border); border-radius: 0.4rem; padding: 1.2rem; box-shadow: var(--px-shadow); }
+
+        .section-title {
+            font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+            color: var(--px-primary); letter-spacing: 0.05em;
+            margin-bottom: 1rem; border-bottom: 1.5px solid #f1f4f8; padding-bottom: 4px;
+        }
+
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+        .col-12 { grid-column: span 2; }
+
+        /* FORM STYLING */
+        .form-floating { position: relative; }
+        .form-floating input, .form-floating select {
+            width: 100%; height: var(--input-height);
+            padding: 1rem 0.75rem 0.1rem;
+            font-size: var(--base-font); font-family: inherit;
+            color: var(--px-text-main); font-weight: 600;
+            background-color: #fff; border: 1px solid var(--px-border);
+            border-radius: 0.3rem; box-sizing: border-box; appearance: none;
+        }
+
+        .form-floating input::placeholder { color: var(--px-placeholder); font-style: italic; font-weight: 400; opacity: 0; transition: 0.15s; }
+        .form-floating input:focus::placeholder { opacity: 1; }
+
+        .form-floating label {
+            position: absolute; top: 0; left: 0.75rem; height: 100%;
+            padding: 0.75rem 0; pointer-events: none; transition: 0.2s;
+            color: var(--px-text-static); font-size: var(--base-font); transform-origin: 0 0;
+        }
+
+        .form-floating input:focus ~ label,
+        .form-floating input:not(:placeholder-shown) ~ label,
+        .form-floating select:focus ~ label,
+        .form-floating select:not([value=""]) ~ label {
+            transform: scale(0.78) translateY(-0.65rem);
+            font-weight: 700; color: var(--px-text-label);
+        }
+
+        /* BUTTONS */
+        .btn {
+            font-family: inherit; font-weight: 700; cursor: pointer;
+            padding: 0.5rem 1rem; font-size: 0.75rem; border-radius: 0.25rem; border: 1px solid var(--px-border);
+            background: #fff; transition: 0.2s;
+        }
+        .btn-primary { background: var(--px-primary); color: #fff; border: none; }
+        .btn-outline { color: var(--px-primary); border-color: var(--px-primary); }
+        .btn-sm { padding: 0.3rem 0.6rem; font-size: 0.7rem; }
+        .action-group { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+
+        .badge { background: #e3ebff; color: var(--px-primary); padding: 0.2rem 0.6rem; border-radius: 2rem; font-size: 0.7rem; font-weight: 800; }
+
+        .divider-space { margin-top: 1.5rem; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="lead-header-card">
+        <div class="header-top">
+            <div style="display:flex; align-items: center; gap: 10px;">
+                <h2 style="margin:0; font-size: 1.1rem;">Lead ID: L-10234</h2>
+                <span class="badge">NEW</span>
+            </div>
+            <div style="display:flex; gap: 8px;">
+                <button class="btn">Edit</button>
+                <button class="btn btn-primary">Save Lead</button>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <span>Created: <b>2024-01-15 09:30 AM</b> by <i>Sarah Lee</i></span>
+            <span>Last Updated: <b>2024-01-15 10:45 AM</b></span>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <div class="card">
+            <div class="section-title">Lead Information</div>
+            <div class="row">
+                <div class="form-floating"><input type="text" placeholder="e.g. Mohd" value="Mohd" oninput="cv(this)"><label>First Name</label></div>
+                <div class="form-floating"><input type="text" placeholder="e.g. Hafiz" value="Hafiz" oninput="cv(this)"><label>Last Name</label></div>
+                <div class="form-floating">
+                    <select onchange="cv(this)" value="Individual">
+                        <option value="Individual">Individual</option>
+                        <option value="Company">Company</option>
+                    </select><label>Lead Type</label>
+                </div>
+                <div class="form-floating"><input type="text" value="900101-10-1234" oninput="cv(this)"><label>IC Number</label></div>
+                <div class="form-floating"><input type="text" value="+6012-3456789" oninput="cv(this)"><label>Mobile Number</label></div>
+                <div class="form-floating"><input type="email" value="mohd.hafiz@email.com" oninput="cv(this)"><label>Email Address</label></div>
+                <div class="form-floating">
+                    <select onchange="cv(this)" value="WhatsApp">
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Email">Email</option>
+                        <option value="SMS">SMS</option>
+                    </select><label>Preferred Contact Channel</label>
+                </div>
+                <div class="form-floating"><input type="text" value="Kuala Lumpur" oninput="cv(this)"><label>Lead Location</label></div>
+                <div class="form-floating col-12"><input type="text" value="Individual" oninput="cv(this)"><label>Company Name</label></div>
+            </div>
+
+            <div class="section-title divider-space">Vehicle Interest</div>
+            <div class="row">
+                <div class="form-floating"><input type="text" value="Glenmarie BMW" oninput="cv(this)"><label>Preferred Outlet</label></div>
+                <div class="form-floating"><input type="text" value="BMW" oninput="cv(this)"><label>Interest Brand</label></div>
+                <div class="form-floating"><input type="text" value="X5 xDrive40i" oninput="cv(this)"><label>Interest Model</label></div>
+                <div class="form-floating"><input type="text" value="X5 M Sport 2024" oninput="cv(this)"><label>Model Description</label></div>
+                <div class="form-floating col-12"><input type="text" value="Facebook Campaign - Jan24" oninput="cv(this)"><label>Lead Source & Campaign</label></div>
+                <div class="form-floating">
+                    <select onchange="cv(this)" value="High">
+                        <option value="Normal">Normal</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select><label>Priority</label>
+                </div>
+                <div class="form-floating">
+                    <div style="display:flex; gap: 5px;">
+                        <input type="text" value="Sarah Lee" readonly class="readonly-field" style="background:#f8f9fb">
+                        <button class="btn btn-sm btn-outline">Assign</button>
+                    </div>
+                    <label>Sales Consultant</label>
+                </div>
+            </div>
+
+            <div class="section-title divider-space">Registration Details</div>
+            <div class="row">
+                <div class="form-floating"><input type="text" value="-" readonly><label>Registration Date</label></div>
+                <div class="form-floating"><input type="text" value="-" readonly><label>Car No Plat</label></div>
+                <div class="form-floating col-12"><input type="text" value="-" readonly><label>VSO Number</label></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">PDPA Consent</div>
+            <div style="font-size: 0.8rem; margin-bottom: 0.5rem;">Current Status: <b style="color:var(--px-primary)">CONSENT GIVEN</b></div>
+            <button class="btn btn-outline col-12">Capture Consent</button>
+
+            <div class="section-title divider-space">Lead Qualification</div>
+            <div class="row">
+                <div class="form-floating col-12"><input type="text" value="RM150k - RM200k" oninput="cv(this)"><label>Budget Range</label></div>
+                <div class="form-floating col-12"><input type="date" value="2024-02-15" oninput="cv(this)"><label>Purchase Timeline</label></div>
+                <div class="form-floating">
+                    <select onchange="cv(this)" value="Yes">
+                        <option value="Yes">Yes</option><option value="No">No</option>
+                    </select><label>Trade-in</label>
+                </div>
+                <div class="form-floating">
+                    <select onchange="cv(this)" value="Yes">
+                        <option value="Yes">Yes</option><option value="No">No</option>
+                    </select><label>Financing</label>
+                </div>
+            </div>
+            <button class="btn btn-primary col-12">Update Qualification</button>
+
+            <div class="section-title divider-space">Lead Status Update</div>
+            <div class="action-group">
+                <button class="btn btn-sm btn-outline">Contacted</button>
+                <button class="btn btn-sm btn-outline">Qualified</button>
+                <button class="btn btn-sm btn-outline">In Progress</button>
+            </div>
+            <div class="action-group" style="margin-top: 10px;">
+                <button class="btn btn-sm btn-primary">Converted</button>
+                <button class="btn btn-sm" style="color:red; border-color:red;">Lost</button>
+            </div>
+            <div class="form-floating" style="margin-top: 15px;">
+                <input type="text" placeholder="Reason if lost..."><label>Lost Reason</label>
+            </div>
+
+            <div class="section-title divider-space">Sub-Functions</div>
+            <button class="btn btn-outline col-12" style="margin-bottom: 10px;">+ Create Booking</button>
+            <button class="btn btn-outline col-12">+ Schedule Test Drive</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function cv(el) {
+        if (el.value !== "") { el.setAttribute('value', el.value); } 
+        else { el.removeAttribute('value'); }
+    }
+    // Initialize current values on load
+    document.querySelectorAll('input, select').forEach(cv);
+</script>
+
+</body>
+</html>

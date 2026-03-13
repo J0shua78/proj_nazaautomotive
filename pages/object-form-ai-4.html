@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Form Reference - Sky Lounge Admin</title>
+    
+    <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"-->
+    <!--
+    OSS:20260310: Use local lib and no 3rd party dependency.
+    -->    
+    <link rel="stylesheet" href="../lib/fontawesome-free-7.2.0-web/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c7be5;
+            --secondary: #6e84a3;
+            --success: #00a65a;
+            --info: #39afd1;
+            --warning: #f39c12;
+            --danger: #e63757;
+            --light: #f9fafd;
+            --dark: #12263f;
+            --dark-light: #4a5a72;
+            --gray: #95aac9;
+            --light-gray: #edf2f9;
+            --border-color: #e3ebf6;
+            --success-dark: #008d4c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        
+        body { 
+            background-color: white; 
+            color: var(--dark); 
+            padding: 20px; 
+            font-size: 13px; 
+            line-height: 1.4; 
+        }
+
+        .form-container { max-width: 1000px; margin: 0 auto; }
+
+        /* Header Styles */
+        .form-header { 
+            margin-bottom: 20px; 
+            padding-bottom: 12px; 
+            border-bottom: 1px solid var(--border-color); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .form-title { font-size: 20px; font-weight: 600; color: var(--dark); }
+        .form-actions { display: flex; gap: 8px; }
+
+        /* Section Styles */
+        .form-section { margin-bottom: 30px; }
+        .form-section-title { 
+            font-size: 15px; 
+            font-weight: 600; 
+            color: var(--primary); 
+            margin-bottom: 15px; 
+            padding-bottom: 8px; 
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Grid & Row Layout */
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 15px; 
+        }
+        .form-row { display: flex; margin-bottom: 12px; align-items: flex-start; }
+        .form-label { 
+            width: 130px; 
+            font-weight: 500; 
+            color: var(--dark-light); 
+            font-size: 12.5px; 
+            padding-top: 8px; 
+            flex-shrink: 0; 
+        }
+
+        /* Standard Input & Select (Safari Fixed) */
+        .form-control {
+            flex: 1; width: 100%; padding: 7px 12px; border: 1px solid var(--border-color); 
+            border-radius: 4px; font-size: 13px; min-height: 36px; background-color: #fff;
+            -webkit-appearance: none; -moz-appearance: none; appearance: none; 
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(44, 123, 229, 0.1); }
+        .form-control:disabled { 
+            background-color: var(--light-gray) !important; 
+            opacity: 1; -webkit-text-fill-color: var(--dark); 
+        }
+
+        select.form-control {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234a5a72' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: calc(100% - 12px) center; background-size: 12px; padding-right: 35px;
+        }
+
+        textarea.form-control { min-height: 80px; resize: vertical; }
+
+        /* Advanced Dropdown & Chips */
+        .adv-dropdown { position: relative; flex: 1; width: 100%; }
+        .dropdown-menu {
+            position: absolute; top: 100%; left: 0; right: 0; background: white; 
+            border: 1px solid var(--border-color); border-radius: 4px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 100; 
+            max-height: 200px; overflow-y: auto; display: none; margin-top: 4px;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item { padding: 10px 12px; cursor: pointer; }
+        .dropdown-item:hover { background-color: var(--light-gray); }
+
+        .chips-container {
+            display: flex; flex-wrap: wrap; gap: 6px; padding: 5px; 
+            border: 1px solid var(--border-color); border-radius: 4px; 
+            min-height: 36px; align-items: center; cursor: pointer;
+        }
+        .chip {
+            background: var(--primary); color: white; padding: 2px 10px; 
+            border-radius: 20px; font-size: 11px; display: flex; align-items: center; gap: 6px;
+        }
+        .chip i { cursor: pointer; font-size: 10px; }
+
+        /* Custom Checkbox/Radio */
+        .check-group { display: flex; flex-wrap: wrap; gap: 18px; padding-top: 8px; }
+        .check-item { display: flex; align-items: center; gap: 7px; cursor: pointer; }
+        .check-item input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
+
+        /* Buttons */
+        .btn {
+            padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 13px; 
+            border: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 500;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--secondary); color: white; }
+
+        /* Mobile Stacking Logic */
+        @media (max-width: 640px) {
+            .form-row { flex-direction: column; align-items: flex-start; }
+            .form-label { width: 100%; margin-bottom: 6px; padding-top: 0; }
+            .form-header { flex-direction: row; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <div class="form-header">
+        <h1 class="form-title">Master Form Template</h1>
+        <div class="form-actions">
+            <button class="btn btn-secondary"><i class="fas fa-times"></i> Cancel</button>
+            <button class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+    </div>
+
+    <div class="form-body">
+        
+        <div class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-user"></i> Basic Information</h3>
+            <div class="form-grid">
+                <div class="form-row">
+                    <label class="form-label">Member ID</label>
+                    <input type="text" class="form-control" value="SLM-8842" disabled>
+                </div>
+                <div class="form-row">
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" class="form-control" placeholder="Enter name">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">Status</label>
+                    <select class="form-control">
+                        <option value="active">Active</option>
+                        <option value="pending">Pending</option>
+                        <option value="expired">Expired</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label class="form-label">Join Date</label>
+                    <input type="date" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-layer-group"></i> Advanced Selection</h3>
+            <div class="form-grid">
+                <div class="form-row">
+                    <label class="form-label">Search Model</label>
+                    <div class="adv-dropdown">
+                        <input type="text" class="form-control" id="search-box" placeholder="Type to filter...">
+                        <div class="dropdown-menu" id="search-menu">
+                            <div class="dropdown-item">Maserati Grecale</div>
+                            <div class="dropdown-item">Ferrari F8 Tributo</div>
+                            <div class="dropdown-item">Kia EV6 GT</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Tags</label>
+                    <div class="adv-dropdown">
+                        <div class="chips-container" id="multi-trigger">
+                            <span style="color: #999; font-size: 12px; margin-left: 5px;">Select multiple...</span>
+                        </div>
+                        <div class="dropdown-menu" id="multi-menu">
+                            <div class="dropdown-item" data-val="VIP">VIP</div>
+                            <div class="dropdown-item" data-val="Corp">Corporate</div>
+                            <div class="dropdown-item" data-val="New">New Lead</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-sliders-h"></i> Input Gallery</h3>
+            
+            <div class="form-row">
+                <label class="form-label">Preferences</label>
+                <div class="check-group">
+                    <label class="check-item"><input type="checkbox" checked> Receive Newsletter</label>
+                    <label class="check-item"><input type="checkbox"> SMS Alerts</label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label class="form-label">Profile File</label>
+                <input type="file" class="form-control" style="padding: 5px;">
+            </div>
+
+            <div class="form-row">
+                <label class="form-label">Brand Color</label>
+                <input type="color" class="form-control" style="padding: 2px; width: 60px; flex: initial;">
+            </div>
+
+            <div class="form-row">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" placeholder="Enter additional information..."></textarea>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // --- Logic for Searchable Dropdown ---
+    const sBox = document.getElementById('search-box');
+    const sMenu = document.getElementById('search-menu');
+    sBox.addEventListener('focus', () => sMenu.classList.add('show'));
+    sBox.addEventListener('input', (e) => {
+        const f = e.target.value.toLowerCase();
+        sMenu.querySelectorAll('.dropdown-item').forEach(i => {
+            i.style.display = i.textContent.toLowerCase().includes(f) ? 'block' : 'none';
+        });
+    });
+    sMenu.querySelectorAll('.dropdown-item').forEach(i => {
+        i.addEventListener('click', () => {
+            sBox.value = i.textContent;
+            sMenu.classList.remove('show');
+        });
+    });
+
+    // --- Logic for Multi-Select Chips ---
+    const mTrig = document.getElementById('multi-trigger');
+    const mMenu = document.getElementById('multi-menu');
+    const selected = new Set();
+
+    mTrig.addEventListener('click', () => mMenu.classList.toggle('show'));
+
+    mMenu.querySelectorAll('.dropdown-item').forEach(i => {
+        i.addEventListener('click', (e) => {
+            const val = i.dataset.val;
+            if (!selected.has(val)) {
+                selected.add(val);
+                if (mTrig.querySelector('span')) mTrig.querySelector('span').remove();
+                const chip = document.createElement('div');
+                chip.className = 'chip';
+                chip.innerHTML = `${val} <i class="fas fa-times"></i>`;
+                chip.querySelector('i').onclick = (ev) => {
+                    ev.stopPropagation();
+                    selected.delete(val);
+                    chip.remove();
+                    if (selected.size === 0) mTrig.innerHTML = '<span style="color: #999; font-size: 12px; margin-left: 5px;">Select multiple...</span>';
+                };
+                mTrig.appendChild(chip);
+            }
+            mMenu.classList.remove('show');
+            e.stopPropagation();
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.adv-dropdown')) {
+            document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+        }
+    });
+</script>
+
+</body>
+</html>

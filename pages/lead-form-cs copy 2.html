@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lead Detail - Phoenix CRM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-text-main: #232e3e;
+            --px-text-label: #5e6e82;
+            --px-danger: #f33923;
+            --input-height: 2.7rem;
+            --base-font: 0.82rem;
+        }
+        body { font-family: 'Nunito Sans', sans-serif; background: var(--px-bg); padding: 1rem; color: var(--px-text-main); }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .card { background: #fff; border: 1px solid var(--px-border); border-radius: 0.5rem; padding: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        
+        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        h2 { font-size: 1.2rem; margin: 0; font-weight: 800; }
+
+        .section-divider {
+            font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+            color: var(--px-primary); border-bottom: 1px solid #f1f4f8;
+            margin: 1.2rem 0 0.8rem 0; padding-bottom: 3px; letter-spacing: 0.05em;
+        }
+
+        /* 3-Column Grid for Efficiency */
+        .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 0.5rem; }
+        .col-12 { grid-column: span 3; }
+
+        .form-floating { position: relative; }
+        .form-floating input, .form-floating select, .form-floating textarea {
+            width: 100%; height: var(--input-height); padding: 0.9rem 0.75rem 0.1rem;
+            font-size: var(--base-font); border: 1px solid var(--px-border); border-radius: 0.3rem; box-sizing: border-box;
+            background: #fff;
+        }
+        .form-floating label {
+            position: absolute; top: 0; left: 0.75rem; height: 100%;
+            padding: 0.75rem 0; pointer-events: none; transition: 0.2s;
+            color: var(--px-text-label); font-size: 0.85rem; transform-origin: 0 0;
+        }
+
+        /* Floating Animation */
+        .form-floating input:focus ~ label, .form-floating input:not(:placeholder-shown) ~ label,
+        .form-floating select:focus ~ label, .form-floating select:not([value=""]) ~ label {
+            transform: scale(0.8) translateY(-0.65rem); font-weight: 700;
+        }
+
+        .readonly-field { background-color: #f8f9fb !important; color: #7a828e; }
+        
+        /* Action Buttons */
+        .btn { padding: 0.5rem 1.2rem; font-weight: 700; border-radius: 0.3rem; border: none; cursor: pointer; font-size: 0.8rem; }
+        .btn-primary { background: var(--px-primary); color: #fff; }
+        .btn-outline { background: #fff; border: 1px solid var(--px-border); color: var(--px-text-label); }
+        .btn-danger { background: var(--px-danger); color: #fff; }
+
+        select { -webkit-appearance: none; appearance: none; }
+
+        @media (max-width: 768px) { .row { grid-template-columns: 1fr; } .col-12 { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-flex">
+        <h2>Lead ID: <span style="color:var(--px-primary)">LD-2026-0402</span></h2>
+        <div style="display:flex; gap: 0.5rem;">
+            <button class="btn btn-outline" onclick="window.open('https://your-crm.com/pdpa-en')">PDPA Link</button>
+            <button class="btn btn-primary" onclick="validateForm()">Save Lead</button>
+        </div>
+    </div>
+
+    <form id="leadForm" onsubmit="return false;">
+        <div class="card">
+            
+            <div class="section-divider">System Information & Assignment</div>
+            <div class="row">
+                <div class="form-floating"><input type="text" class="readonly-field" value="LD-2026-0402" readonly placeholder=" "><label>Lead ID</label></div>
+                <div class="form-floating"><input type="text" class="readonly-field" value="Kevin Lee (SC-092)" readonly placeholder=" "><label>Sales Consultant ID/Name</label></div>
+                <div class="form-floating">
+                    <select id="branch" value="Glenmarie" onchange="this.setAttribute('value', this.value)">
+                        <option value="Glenmarie">Glenmarie HQ</option>
+                        <option value="ShahAlam">Shah Alam Branch</option>
+                    </select><label>Sales Outlet (Branch/Dealer)</label>
+                </div>
+            </div>
+
+            <div class="section-divider">Leads Personal Information</div>
+            <div class="row">
+                <div class="form-floating"><input type="text" id="fname" placeholder=" " value="Ahmad"><label>First Name</label></div>
+                <div class="form-floating"><input type="text" id="lname" placeholder=" " value="Razak"><label>Last Name</label></div>
+                <div class="form-floating">
+                    <select id="ltype" value="Ind" onchange="this.setAttribute('value', this.value)">
+                        <option value="Ind">Individual</option><option value="Co">Company</option>
+                    </select><label>Lead Type</label>
+                </div>
+                <div class="form-floating"><input type="text" id="ic" placeholder=" " value="880101-14-5566"><label>IC Number</label></div>
+                <div class="form-floating"><input type="text" id="phone" placeholder=" " value="0123456789"><label>Mobile Number</label></div>
+                <div class="form-floating"><input type="email" id="email" placeholder=" " value="ahmad.r@email.com"><label>Email Address</label></div>
+                <div class="form-floating"><input type="text" id="loc" placeholder=" " value="Kuala Lumpur"><label>Lead Location</label></div>
+                <div class="form-floating"><input type="text" id="company" placeholder=" "><label>Company Name (Optional)</label></div>
+                <div class="form-floating">
+                    <select id="channel" value="WA" onchange="this.setAttribute('value', this.value)">
+                        <option value="WA">WhatsApp</option>
+                        <option value="Call">Phone Call</option>
+                        <option value="Email">Email</option>
+                        <option value="SMS">SMS</option>
+                    </select><label>Preferred Contact Channel</label>
+                </div>
+            </div>
+
+            <div class="section-divider">Interest & Qualification</div>
+            <div class="row">
+                <div class="form-floating"><input type="text" id="brand" value="Proton" placeholder=" "><label>Vehicle Brand</label></div>
+                <div class="form-floating"><input type="text" id="model" value="X50" placeholder=" "><label>Vehicle Model</label></div>
+                <div class="form-floating"><input type="text" id="desc" placeholder=" "><label>Model Description</label></div>
+                <div class="form-floating"><input type="text" id="source" value="Facebook Campaign" placeholder=" "><label>Source & Campaign</label></div>
+                <div class="form-floating">
+                    <select id="priority" value="High" onchange="this.setAttribute('value', this.value)">
+                        <option value="Normal">Normal</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select><label>Priority</label>
+                </div>
+                <div class="form-floating">
+                    <select id="status" value="Open" onchange="this.setAttribute('value', this.value)">
+                        <option value="Open">Open</option>
+                        <option value="TDB">Test Drive Booked</option>
+                        <option value="Reg">Registration Completed</option>
+                        <option value="Del">Delivered</option>
+                        <option value="Unq">Unqualified</option>
+                    </select><label>Status Lifecycle</label>
+                </div>
+            </div>
+
+            <div class="section-divider" style="color:var(--px-danger)">Booking & Payment (HQ Control)</div>
+            <div class="row">
+                <div class="form-floating">
+                    <select id="pay" value="" onchange="this.setAttribute('value', this.value)">
+                        <option value=""></option>
+                        <option value="Cash">Cash</option>
+                        <option value="CC">Credit Card</option>
+                        <option value="BT">Bank Transfer</option>
+                    </select><label>Payment Method</label>
+                </div>
+                <div class="form-floating"><input type="text" id="chassis" placeholder=" "><label>Chassis Number</label></div>
+                <div class="form-floating"><input type="text" id="plat" placeholder=" "><label>Car No Plat</label></div>
+                <div class="form-floating"><input type="text" id="vso" placeholder=" "><label>VSO Number</label></div>
+                <div class="form-floating"><input type="text" id="bank" placeholder=" "><label>Banker Name</label></div>
+                <div class="form-floating"><input type="number" id="loan" placeholder=" "><label>Loan Amount (RM)</label></div>
+            </div>
+
+            <div class="section-divider">Audit Trail</div>
+            <div class="row" style="opacity: 0.7; font-size: 0.75rem;">
+                <div>Created On: 2026-03-12 09:00</div>
+                <div>Created By: Admin_Sys</div>
+                <div>Last Change: 2026-03-12 14:30 (Kevin Lee)</div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Essential for keeping floating labels up for fields with default values
+    function initSelectors() {
+        document.querySelectorAll('select, input').forEach(el => {
+            if (el.value !== "") {
+                el.setAttribute('value', el.value);
+            }
+        });
+    }
+
+    function validateForm() {
+        // Simple logic for mandatory check
+        const fields = ['fname', 'lname', 'phone'];
+        let valid = true;
+        fields.forEach(f => {
+            const el = document.getElementById(f);
+            if(!el.value.trim()){
+                el.style.borderColor = "var(--px-danger)";
+                valid = false;
+            } else {
+                el.style.borderColor = "var(--px-border)";
+            }
+        });
+        if(valid) alert("Lead Saved Successfully! Duplicate check passed.");
+    }
+
+    window.onload = initSelectors;
+</script>
+
+</body>
+</html>

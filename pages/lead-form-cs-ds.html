@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix CRM - Create Lead</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-card-bg: #ffffff;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-primary-focus: rgba(56, 116, 255, 0.2);
+            --px-text-main: #232e3e; 
+            --px-text-label: #8da1b9; 
+            --px-text-static: #5e6e82; 
+            --px-placeholder: #a5b0be;
+            --px-danger: #f33923;
+            --px-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            
+            --input-height: 2.7rem;
+            --input-padding-x: 0.75rem;
+            --grid-gap: 0.8rem;
+            --base-font: 0.82rem;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--px-bg);
+            color: var(--px-text-main);
+            margin: 0;
+            padding: 1.5rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 950px; margin: 0 auto; }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        h2 { font-weight: 800; font-size: 1.3rem; margin: 0; }
+
+        .card {
+            background: var(--px-card-bg);
+            border: 1px solid var(--px-border);
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            box-shadow: var(--px-shadow);
+            margin-bottom: 1.25rem;
+        }
+        
+        .section-divider {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--px-text-static);
+            letter-spacing: 0.05em;
+            margin: 1.5rem 0 1rem 0;
+            border-bottom: 1px solid #f1f4f8;
+            padding-bottom: 0.4rem;
+        }
+        .section-divider:first-child { margin-top: 0; }
+
+        .row { 
+            display: grid; 
+            grid-template-columns: repeat(12, 1fr); 
+            gap: var(--grid-gap); 
+            margin-bottom: 0.5rem;
+        }
+
+        .col-3 { grid-column: span 3; }
+        .col-4 { grid-column: span 4; }
+        .col-6 { grid-column: span 6; }
+        .col-12 { grid-column: span 12; }
+
+        @media (max-width: 768px) {
+            .col-3, .col-4, .col-6 { grid-column: span 12; }
+        }
+
+        .form-floating { position: relative; }
+        .form-floating input, .form-floating select {
+            display: block; width: 100%; height: var(--input-height);
+            padding: 1.1rem var(--input-padding-x) 0.2rem;
+            font-size: var(--base-font); font-family: inherit;
+            color: var(--px-text-main); font-weight: 600;
+            background-color: #fff; border: 1px solid var(--px-border);
+            border-radius: 0.35rem; transition: all 0.2s; box-sizing: border-box;
+            appearance: none;
+        }
+
+        .form-floating select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%235e6e82' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 10px 8px;
+        }
+
+        .form-floating label {
+            position: absolute; top: 0; left: var(--input-padding-x);
+            height: 100%; padding: 0.8rem 0; pointer-events: none;
+            transition: all 0.2s ease-in-out; color: var(--px-text-static);
+            font-size: var(--base-font); transform-origin: 0 0;
+        }
+
+        .form-floating input:focus ~ label,
+        .form-floating input:not(:placeholder-shown) ~ label,
+        .form-floating select:focus ~ label,
+        .form-floating select:not([value=""]) ~ label {
+            transform: scale(0.8) translateY(-0.7rem);
+            font-weight: 700; color: var(--px-text-label);
+        }
+
+        .form-floating input:focus, .form-floating select:focus {
+            border-color: var(--px-primary); outline: 0;
+            box-shadow: 0 0 0 0.18rem var(--px-primary-focus);
+        }
+
+        .readonly-field { background-color: #f8f9fb !important; color: #7a828e !important; font-weight: 400 !important; }
+
+        .btn {
+            font-family: inherit; font-weight: 700; cursor: pointer;
+            padding: 0.5rem 1.25rem; font-size: 0.8rem; border-radius: 0.3rem;
+            border: 1px solid transparent; transition: opacity 0.2s;
+        }
+        .btn-primary { background-color: var(--px-primary); color: #fff; }
+        .btn-outline { background: #fff; border: 1px solid var(--px-border); color: var(--px-text-static); }
+        .btn-link { background: none; color: var(--px-text-static); text-decoration: none; margin-right: 0.5rem; }
+        
+        .footer-actions {
+            display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem;
+            padding-top: 1.2rem; border-top: 1px dashed var(--px-border);
+        }
+
+        .sys-info-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+            font-size: 0.78rem; color: var(--px-text-static);
+        }
+        .sys-info-grid b { color: var(--px-text-main); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-flex">
+        <h2>Lead - Create</h2>
+        <div>
+            <button class="btn btn-link">Cancel</button>
+            <button class="btn btn-primary">Save Lead</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="section-divider">Lead Basic Information</div>
+        <div class="row">
+            <div class="form-floating col-6">
+                <input type="text" class="readonly-field" value="(Auto ID)" readonly placeholder=" ">
+                <label>Lead ID</label>
+            </div>
+            <div class="form-floating col-6">
+                <select id="ltype" onchange="checkValue(this)">
+                    <option value="Ind" selected>Individual</option>
+                    <option value="Co">Company</option>
+                </select><label>Lead Type</label>
+            </div>
+
+            <div class="form-floating col-6"><input type="text" id="fname" placeholder=" " oninput="checkValue(this)"><label>First Name</label></div>
+            <div class="form-floating col-6"><input type="text" id="lname" placeholder=" " oninput="checkValue(this)"><label>Last Name</label></div>
+            
+            <div class="form-floating col-6"><input type="text" id="ic" placeholder=" " oninput="checkValue(this)"><label>IC Number</label></div>
+            <div class="form-floating col-6"><input type="text" id="location" placeholder=" " oninput="checkValue(this)"><label>Location</label></div>
+
+            <div class="form-floating col-6"><input type="tel" id="phone" placeholder=" " oninput="checkValue(this)"><label>Mobile Number</label></div>
+            <div class="form-floating col-6"><input type="email" id="email" placeholder=" " oninput="checkValue(this)"><label>Email Address</label></div>
+
+            <div class="form-floating col-12">
+                <select id="channel" onchange="checkValue(this)">
+                    <option value="WA" selected>WhatsApp</option>
+                    <option value="EM">Email</option>
+                    <option value="SMS">SMS</option>
+                </select><label>Preferred Channel</label>
+            </div>
+
+            <div class="form-floating col-12"><input type="text" id="company" placeholder=" " oninput="checkValue(this)"><label>Company</label></div>
+
+            <div class="form-floating col-12">
+                <select id="outlet" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="B1">Glenmarie Branch</option>
+                    <option value="B2">Ara Damansara Dealer</option>
+                </select><label>Preferred Outlet</label>
+            </div>
+
+            <div class="form-floating col-6">
+                <select id="brand" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="H">Honda</option>
+                </select><label>Interest Brand</label>
+            </div>
+            <div class="form-floating col-6">
+                <select id="model" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="C">Civic RS</option>
+                </select><label>Model</label>
+            </div>
+
+            <div class="form-floating col-12"><input type="text" id="desc" placeholder=" " oninput="checkValue(this)"><label>Model Description</label></div>
+
+            <div class="form-floating col-6">
+                <select id="source" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="FB">Facebook Ads</option>
+                </select><label>Lead Source</label>
+            </div>
+            <div class="form-floating col-6"><input type="text" id="campaign" placeholder=" " oninput="checkValue(this)"><label>Campaign</label></div>
+
+            <div class="form-floating col-6">
+                <select id="priority" onchange="checkValue(this)">
+                    <option value="H">High</option>
+                    <option value="M" selected>Medium</option>
+                    <option value="N">Normal</option>
+                </select><label>Priority</label>
+            </div>
+            <div class="form-floating col-6">
+                <select id="sc" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="1">Sarah Wong</option>
+                </select><label>Sales Consultant</label>
+            </div>
+
+            <div class="form-floating col-4"><input type="date" id="reg_date" placeholder=" " oninput="checkValue(this)"><label>Registration Date</label></div>
+            <div class="form-floating col-4"><input type="text" id="plate" placeholder=" " oninput="checkValue(this)"><label>Car No Plat</label></div>
+            <div class="form-floating col-4"><input type="text" id="vso" placeholder=" " oninput="checkValue(this)"><label>VSO Number</label></div>
+        </div>
+
+        <div class="section-divider">Qualification Information</div>
+        <div class="row">
+            <div class="form-floating col-3"><input type="number" id="b_min" placeholder=" " oninput="checkValue(this)"><label>Budget Min ($)</label></div>
+            <div class="form-floating col-3"><input type="number" id="b_max" placeholder=" " oninput="checkValue(this)"><label>Budget Max ($)</label></div>
+            <div class="form-floating col-6">
+                <select id="timeline" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="1">Within 1 Month</option>
+                    <option value="3">Within 3 Months</option>
+                </select><label>Purchase Timeline</label>
+            </div>
+            <div class="form-floating col-6">
+                <select id="trade" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                </select><label>Trade-in Interest</label>
+            </div>
+            <div class="form-floating col-6">
+                <select id="finance" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                </select><label>Financing Requirement</label>
+            </div>
+        </div>
+
+        <div class="section-divider">System Information</div>
+        <div class="sys-info-grid">
+            <div>Created On: <b>2024-01-15 09:30</b></div>
+            <div>Created By: <b>Ali Bin Ahmad</b></div>
+            <div>Last Change: <b>-</b></div>
+            <div>Changed By: <b>-</b></div>
+        </div>
+
+        <div class="footer-actions">
+            <button class="btn btn-outline">Send PDPA Form</button>
+            <button class="btn btn-outline">Schedule Test Drive</button>
+            <button class="btn btn-outline">Create Booking</button>
+            <button class="btn btn-outline" style="color: var(--px-danger); border-color: #fadbd8;">Mark as Lost</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function checkValue(el) {
+        if (el.value !== "") {
+            el.setAttribute('value', el.value);
+        } else {
+            el.removeAttribute('value');
+        }
+    }
+    // Initialize labels for fields with default/selected values
+    window.onload = function() {
+        document.querySelectorAll('select, input').forEach(el => checkValue(el));
+    };
+</script>
+
+</body>
+</html>

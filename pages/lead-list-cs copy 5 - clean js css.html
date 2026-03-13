@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix CRM - Car Leads</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-card-bg: #ffffff;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-text-main: #232e3e;
+            --px-text-muted: #5e6e82;
+            --px-success: #25b003;
+            --px-warning: #e5780b;
+            --px-info: #0097eb;
+            --px-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            --base-font: 0.82rem;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--px-bg);
+            color: var(--px-text-main);
+            margin: 0;
+            padding: 1.5rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* Header and Actions */
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        h2 { font-weight: 800; font-size: 1.25rem; margin: 0; }
+
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Search Input Style */
+        .search-box {
+            position: relative;
+            flex-grow: 1;
+            max-width: 300px;
+        }
+        .search-box input {
+            width: 100%;
+            height: 2.2rem;
+            padding: 0 0.75rem;
+            font-size: var(--base-font);
+            border: 1px solid var(--px-border);
+            border-radius: 0.3rem;
+            outline: none;
+        }
+        .search-box input:focus { border-color: var(--px-primary); }
+
+        /* Table Card */
+        .card {
+            background: var(--px-card-bg);
+            border: 1px solid var(--px-border);
+            border-radius: 0.4rem;
+            box-shadow: var(--px-shadow);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--base-font);
+            text-align: left;
+        }
+
+        thead {
+            background-color: #f5f7fa;
+            border-bottom: 1px solid var(--px-border);
+        }
+
+        th {
+            padding: 0.75rem 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.03em;
+            color: var(--px-text-muted);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f1f4f8;
+            vertical-align: middle;
+        }
+
+        tr:hover { background-color: #f9fafd; }
+
+        /* Badge Styles */
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+        .badge-new { background: #e3ebff; color: var(--px-primary); }
+        .badge-contacted { background: #e0f7fa; color: var(--px-info); }
+        .badge-closed { background: #e2f6e0; color: var(--px-success); }
+        .badge-pending { background: #fff4e5; color: var(--px-warning); }
+
+        /* Car Info Column */
+        .car-model { font-weight: 700; color: var(--px-text-main); display: block; }
+        .car-vin { font-size: 0.75rem; color: var(--px-text-muted); }
+
+        /* Contact Column */
+        .customer-name { font-weight: 600; display: block; }
+        .customer-meta { font-size: 0.75rem; color: var(--px-text-muted); }
+
+        /* Buttons */
+        .btn {
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0.45rem 0.8rem;
+            font-size: 0.78rem;
+            border-radius: 0.25rem;
+            border: 1px solid var(--px-border);
+            background: #fff;
+            transition: all 0.2s;
+        }
+        .btn-primary { background-color: var(--px-primary); color: #fff; border-color: var(--px-primary); }
+        .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.7rem; }
+
+        @media (max-width: 768px) {
+            .hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-flex">
+        <h2>Car Leads</h2>
+        <button class="btn btn-primary">+ Add New Lead</button>
+    </div>
+
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" placeholder="Search by name or VIN...">
+        </div>
+        <button class="btn">Filter</button>
+        <button class="btn">Export</button>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Vehicle Details</th>
+                    <th class="hide-mobile">Lead Source</th>
+                    <th>Status</th>
+                    <th class="hide-mobile">Date</th>
+                    <th style="text-align: right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="customer-name">Johnathan Wick</span>
+                        <span class="customer-meta">+1 (555) 012-3456</span>
+                    </td>
+                    <td>
+                        <span class="car-model">2024 Ford Mustang GT</span>
+                        <span class="car-vin">VIN: 1FA6P8CF5R5...</span>
+                    </td>
+                    <td class="hide-mobile">Social Media</td>
+                    <td><span class="badge badge-new">New Lead</span></td>
+                    <td class="hide-mobile">Mar 12, 2026</td>
+                    <td style="text-align: right;">
+                        <button class="btn btn-sm">Edit</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="customer-name">Sarah Connor</span>
+                        <span class="customer-meta">sarah.c@skyline.com</span>
+                    </td>
+                    <td>
+                        <span class="car-model">2025 Tesla Model 3</span>
+                        <span class="car-vin">VIN: 5YJ3E1EA8P...</span>
+                    </td>
+                    <td class="hide-mobile">Walk-in</td>
+                    <td><span class="badge badge-contacted">Contacted</span></td>
+                    <td class="hide-mobile">Mar 11, 2026</td>
+                    <td style="text-align: right;">
+                        <button class="btn btn-sm">Edit</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="customer-name">Bruce Wayne</span>
+                        <span class="customer-meta">bruce@wayneent.com</span>
+                    </td>
+                    <td>
+                        <span class="car-model">2026 Porsche 911 Turbo</span>
+                        <span class="car-vin">VIN: WP0AD2A92S...</span>
+                    </td>
+                    <td class="hide-mobile">Referral</td>
+                    <td><span class="badge badge-pending">Follow-up</span></td>
+                    <td class="hide-mobile">Mar 10, 2026</td>
+                    <td style="text-align: right;">
+                        <button class="btn btn-sm">Edit</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="customer-name">Ellen Ripley</span>
+                        <span class="customer-meta">+1 (555) 999-0000</span>
+                    </td>
+                    <td>
+                        <span class="car-model">2024 Toyota Hilux</span>
+                        <span class="car-vin">VIN: MROFR22G...</span>
+                    </td>
+                    <td class="hide-mobile">Online Store</td>
+                    <td><span class="badge badge-closed">Closed</span></td>
+                    <td class="hide-mobile">Mar 09, 2026</td>
+                    <td style="text-align: right;">
+                        <button class="btn btn-sm">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

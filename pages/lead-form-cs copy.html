@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lead Detail - Phoenix CRM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-text-main: #232e3e;
+            --px-text-label: #5e6e82;
+            --input-height: 2.6rem;
+            --base-font: 0.82rem;
+        }
+        body { font-family: 'Nunito Sans', sans-serif; background: var(--px-bg); padding: 1.5rem; font-size: var(--base-font); }
+        .container { max-width: 900px; margin: 0 auto; }
+        .card { background: #fff; border: 1px solid var(--px-border); border-radius: 0.5rem; padding: 1.2rem; }
+        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        
+        .section-divider {
+            font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+            color: var(--px-primary); border-bottom: 1px solid #f1f4f8;
+            margin: 1.2rem 0 0.8rem 0; padding-bottom: 2px;
+        }
+
+        .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+        .form-floating { position: relative; }
+        .form-floating input, .form-floating select {
+            width: 100%; height: var(--input-height); padding: 0.8rem 0.7rem 0.1rem;
+            font-size: var(--base-font); border: 1px solid var(--px-border); border-radius: 0.3rem; box-sizing: border-box;
+        }
+        .form-floating label {
+            position: absolute; top: 0; left: 0.7rem; height: 100%;
+            padding: 0.7rem 0; pointer-events: none; transition: 0.2s;
+            color: var(--px-text-label); font-size: 0.8rem; transform-origin: 0 0;
+        }
+        /* Floating logic */
+        .form-floating input:focus ~ label, .form-floating input:not(:placeholder-shown) ~ label,
+        .form-floating select:focus ~ label, .form-floating select:not([value=""]) ~ label {
+            transform: scale(0.75) translateY(-0.6rem); font-weight: 700;
+        }
+        
+        .btn { padding: 0.5rem 1rem; font-weight: 700; border-radius: 0.3rem; border: none; cursor: pointer; }
+        .btn-success { background: #25b003; color: #fff; }
+        .btn-link { background: none; color: var(--px-text-label); text-decoration: underline; }
+
+        /* Safari Fix Select */
+        select { -webkit-appearance: none; appearance: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-flex">
+        <h2>Lead Details: LD-2026-001</h2>
+        <div>
+            <button class="btn-link">View PDPA Form</button>
+            <button class="btn btn-success">Update Lead</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="section-divider">Lead Basic Information</div>
+        <div class="row">
+            <div class="form-floating"><input type="text" id="id" value="LD-2026-001" readonly placeholder=" "><label>Lead ID</label></div>
+            <div class="form-floating"><input type="text" id="fn" value="Ahmad" placeholder=" "><label>First Name</label></div>
+            <div class="form-floating"><input type="text" id="ln" value="Razak" placeholder=" "><label>Last Name</label></div>
+            <div class="form-floating">
+                <select id="type" onchange="this.setAttribute('value', this.value)" value="Ind">
+                    <option value="Ind">Individual</option><option value="Co">Company</option>
+                </select><label>Lead Type</label>
+            </div>
+            <div class="form-floating"><input type="text" id="ic" value="880101-14-5566" placeholder=" "><label>IC Number</label></div>
+            <div class="form-floating"><input type="text" id="phone" value="0123456789" placeholder=" "><label>Mobile</label></div>
+        </div>
+
+        <div class="section-divider">Qualification (CRM-Sales Module)</div>
+        <div class="row">
+            <div class="form-floating">
+                <select id="budget" value="1" onchange="this.setAttribute('value', this.value)">
+                    <option value="1">RM 50k - 80k</option><option value="2">RM 80k - 120k</option>
+                </select><label>Budget Range</label>
+            </div>
+            <div class="form-floating"><input type="date" id="timeline" placeholder=" " value="2026-04-01"><label>Purchase Timeline</label></div>
+            <div class="form-floating">
+                <select id="trade" value="N" onchange="this.setAttribute('value', this.value)">
+                    <option value="N">No</option><option value="Y">Yes</option>
+                </select><label>Trade-in Interest</label>
+            </div>
+        </div>
+
+        <div class="section-divider">Test Drive & Status</div>
+        <div class="row">
+            <div class="form-floating">
+                <select id="status" value="booked" onchange="this.setAttribute('value', this.value)">
+                    <option value="new">New</option>
+                    <option value="booked">Test Drive Booked</option>
+                    <option value="done">Test Drive Done</option>
+                    <option value="delivered">Delivered</option>
+                </select><label>Current Lifecycle Status</label>
+            </div>
+            <div class="form-floating"><input type="datetime-local" id="tdtime" placeholder=" "><label>TD Schedule</label></div>
+            <div class="form-floating"><input type="text" id="consultant" value="Kevin Lee (SC-092)" readonly placeholder=" "><label>Sales Consultant</label></div>
+        </div>
+
+        <div class="section-divider">Booking Details (HQ Approval Required)</div>
+        <div class="row">
+            <div class="form-floating">
+                <select id="pay" value="CC" onchange="this.setAttribute('value', this.value)">
+                    <option value="CC">Credit Card</option><option value="BT">Bank Transfer</option>
+                </select><label>Payment Method</label>
+            </div>
+            <div class="form-floating"><input type="text" id="chassis" placeholder=" "><label>Chassis No.</label></div>
+            <div class="form-floating"><input type="number" id="loan" placeholder=" "><label>Loan Amount (RM)</label></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Required to keep label floating for pre-filled values
+    document.querySelectorAll('select').forEach(s => {
+        if(s.value) s.setAttribute('value', s.value);
+    });
+</script>
+
+</body>
+</html>

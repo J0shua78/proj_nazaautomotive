@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix CRM - Lead Detail</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-card-bg: #ffffff;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-primary-focus: rgba(56, 116, 255, 0.2);
+            --px-text-main: #232e3e; /* Standard input text color */
+            --px-text-label: #8da1b9; /* NEW: LIGHTER GREY for floated labels */
+            --px-text-static: #5e6e82; /* Color when label is sitting in input */
+            --px-placeholder: #9da9bb;
+            --px-danger: #f33923;
+            --px-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            
+            /* Compact Spacing */
+            --input-height: 2.7rem;
+            --input-padding-x: 0.75rem;
+            --grid-gap: 0.6rem;
+            --base-font: 0.82rem;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--px-bg);
+            color: var(--px-text-main);
+            margin: 0;
+            padding: 1rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        h2 { font-weight: 800; font-size: 1.2rem; margin: 0; }
+
+        .card {
+            background: var(--px-card-bg);
+            border: 1px solid var(--px-border);
+            border-radius: 0.4rem;
+            padding: 1rem;
+            box-shadow: var(--px-shadow);
+        }
+        
+        .section-divider {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--px-static-label);
+            letter-spacing: 0.03em;
+            margin: 0.5rem 0 0.8rem 0;
+            border-bottom: 1px solid #f1f4f8;
+            padding-bottom: 0.3rem;
+        }
+
+        .row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: var(--grid-gap); 
+        }
+        /* Mobile adjustment */
+        @media (max-width: 600px) { .row { grid-template-columns: 1fr; } .col-12 { grid-column: span 1; } }
+        .col-12 { grid-column: span 2; }
+
+        .form-floating {
+            position: relative;
+        }
+
+        .form-floating input, 
+        .form-floating select {
+            display: block;
+            width: 100%;
+            height: var(--input-height);
+            padding: 0.9rem var(--input-padding-x) 0.1rem; /* Adjusted for smaller height */
+            font-size: var(--base-font);
+            font-family: inherit;
+            color: var(--px-text-main); /* Dark input value */
+            background-color: #fff;
+            border: 1px solid var(--px-border);
+            border-radius: 0.3rem;
+            transition: all 0.2s ease-in-out;
+            box-sizing: border-box;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        /* Safari Fix for Select Arrow */
+        .form-floating select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%235e6e82' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.6rem center;
+            background-size: 10px 8px;
+        }
+
+        /* Placeholder Logic (Hidden initially, visible on focus) */
+        .form-floating input::placeholder {
+            color: var(--px-placeholder);
+            opacity: 0; 
+            transition: opacity 0.15s;
+        }
+        .form-floating input:focus::placeholder { opacity: 1; }
+
+        /* LABEL IN BOX (Before Float) */
+        .form-floating label {
+            position: absolute;
+            top: 0;
+            left: var(--input-padding-x);
+            height: 100%;
+            padding: 0.75rem 0;
+            pointer-events: none;
+            transition: all 0.2s ease-in-out;
+            color: var(--px-static-label); /* Slightly dimmer than black when in box */
+            font-size: var(--base-font);
+            transform-origin: 0 0;
+        }
+
+        /* THE FLOATING LABEL (Reduced Darkness & Repositioned) */
+        .form-floating input:focus ~ label,
+        .form-floating input:not(:placeholder-shown) ~ label,
+        .form-floating select:focus ~ label,
+        .form-floating select:not([value=""]) ~ label {
+            transform: scale(0.78) translateY(-0.65rem); /* Scaled down and moved up slightly more for spacing */
+            font-weight: 700;
+            color: var(--px-text-label); /* NEW: LIGHTER COLOR when floated */
+            opacity: 1; /* Keep it visible, but lighter via color */
+        }
+
+        /* Input field state when label floats */
+        .form-floating input:focus, .form-floating select:focus {
+            border-color: var(--px-primary);
+            outline: 0;
+            box-shadow: 0 0 0 0.15rem var(--px-primary-focus);
+        }
+
+        .form-floating input:focus,
+        .form-floating input:not(:placeholder-shown),
+        .form-floating select:focus,
+        .form-floating select:not([value=""]) {
+            padding-top: 1.1rem; /* Adjust padding to fit lighter label above */
+            padding-bottom: 0.2rem;
+        }
+
+        /* Validation Style (Unqualified/Rejected state) */
+        .form-floating.is-invalid input { border-color: var(--px-danger) !important; }
+        .error-msg {
+            color: var(--px-danger);
+            font-size: 0.68rem;
+            font-weight: 700;
+            margin-top: 1px;
+            display: none;
+        }
+        .is-invalid .error-msg { display: block; }
+
+        /* Audit Trail at Bottom */
+        .readonly-field { background-color: #f8f9fb !important; color: #7a828e !important; }
+
+        /* Buttons */
+        .btn {
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0.45rem 1rem;
+            font-size: 0.78rem;
+            border-radius: 0.25rem;
+            border: 1px solid transparent;
+        }
+        .btn-primary { background-color: var(--px-primary); color: #fff; }
+        .btn-link { background: none; color: var(--px-static-label); text-decoration: none; margin-right: 0.4rem; font-size: 0.75rem;}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-flex">
+        <h2>Add/Edit Lead</h2>
+        <div>
+            <button class="btn btn-link">Cancel</button>
+            <button class="btn btn-primary" onclick="validateForm()">Save Lead</button>
+        </div>
+    </div>
+
+    <form id="contactForm" onsubmit="return false;">
+        <div class="card">
+            <div class="section-divider">Lead Basic Information</div>
+            <div class="row">
+                <div class="form-floating"><input type="text" class="readonly-field" value="LD-2026-003" readonly placeholder=" "><label>Lead ID (Auto-generated)</label></div>
+                <div class="form-floating"><input type="text" id="fname" placeholder=" " oninput="checkValue(this)" value="Siti"><label>First Name</label></div>
+                <div class="form-floating"><input type="text" id="lname" placeholder=" " oninput="checkValue(this)" value="Aminah"><label>Last Name</label></div>
+                
+                <div class="form-floating">
+                    <select id="ltype" onchange="checkValue(this)" value="Co">
+                        <option value=""></option>
+                        <option value="Ind">Individual</option>
+                        <option value="Co">Company</option>
+                    </select><label>Lead Type</label>
+                </div>
+                <div class="form-floating"><input type="text" id="ic" placeholder=" " oninput="checkValue(this)" value="910505-10-1234"><label>IC Number</label></div>
+                <div class="form-floating"><input type="tel" id="phone" placeholder=" " oninput="checkValue(this)" value="0129876543"><label>Mobile Number</label></div>
+                <div class="form-floating col-12"><input type="email" id="email" placeholder=" " oninput="checkValue(this)" value="siti.a@company.com"><label>Email Address</label></div>
+                <div class="form-floating"><input type="text" id="company" placeholder=" " oninput="checkValue(this)"><label>Company Name (Required if Type: Company)</label></div>
+                <div class="form-floating"><input type="text" id="loc" placeholder=" " oninput="checkValue(this)" value="Shah Alam"><label>Lead Location</label></div>
+                <div class="form-floating">
+                    <select id="channel" onchange="checkValue(this)" value="WA">
+                        <option value=""></option>
+                        <option value="WA">WhatsApp</option>
+                        <option value="Email">Email</option>
+                        <option value="Call">Call</option>
+                        <option value="SMS">SMS</option>
+                    </select><label>Preferred Contact Channel</label>
+                </div>
+            </div>
+
+            <div class="section-divider" style="margin-top: 1rem;">Interest & Assignment</div>
+            <div class="row">
+                <div class="form-floating">
+                    <select id="priority" onchange="checkValue(this)" value="Normal">
+                        <option value="Normal">Normal</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select><label>Priority</label>
+                </div>
+                <div class="form-floating">
+                    <select id="status" onchange="checkValue(this)" value="new">
+                        <option value="new">New</option>
+                        <option value="contacted">Contacted</option>
+                        <option value="qualified">Qualified</option>
+                        <option value="in_progress">In Progress</option>
+                    }
+                    </select><label>Lead Status Lifecycle</label>
+                </div>
+                <div class="form-floating"><input type="text" id="vehicle" placeholder=" " oninput="checkValue(this)" value="Honda Civic RS"><label>Interest Vehicle Model</label></div>
+                <div class="form-floating"><input type="text" id="source" placeholder=" " oninput="checkValue(this)" value="Facebook Ad"><label>Lead Source & Campaign</label></div>
+                <div class="form-floating"><input type="text" id="outlet" placeholder=" " oninput="checkValue(this)" value="Glenmarie HQ"><label>Preferred Sales Outlet</label></div>
+                <div class="form-floating"><input type="text" class="readonly-field" value="Sarah Wong (SC-105)" readonly placeholder=" "><label>Sales Consultant (ID/Name)</label></div>
+            </div>
+
+            <div class="section-divider" style="margin-top: 1rem; color:var(--px-danger)">HQ Controls / Booking</div>
+            <div class="row">
+                <div class="form-floating"><input type="text" id="vso" placeholder=" " oninput="checkValue(this)"><label>VSO Number (Required for Booking)</label></div>
+                <div class="form-floating"><input type="text" id="chassis" placeholder=" " oninput="checkValue(this)"><label>Chassis Number (Controlled)</label></div>
+                <div class="form-floating col-12"><input type="text" id="plat" placeholder=" " oninput="checkValue(this)"><label>Car No Plat (Locked until HQ Approval)</label></div>
+            </div>
+            
+            <div class="section-divider" style="margin-top: 1rem;">Audit Trail</div>
+            <div class="row readonly-field" style="grid-template-columns: 1fr 1fr 1fr; border-radius: 4px; padding: 4px; font-size: 0.75rem;">
+                <div>Created By: SYS_ADMIN</div>
+                <div>Created On: 2026-03-12 10:15</div>
+                <div>Last Change: Sarah Wong (2026-03-12 11:30)</div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Handles floating label persistence for all fields
+    function initSelectors() {
+        document.querySelectorAll('select, input').forEach(el => {
+            if (el.value !== "") {
+                el.setAttribute('value', el.value);
+            }
+        });
+    }
+
+    // Dynamic value check for real-time floating logic
+    function checkValue(el) {
+        if (el.value !== "") {
+            el.setAttribute('value', el.value);
+            // Optional: reset validation error
+            el.parentElement.classList.remove('is-invalid');
+        } else {
+            el.removeAttribute('value');
+        }
+    }
+
+    function validateForm() {
+        // Simple duplicate detection check (Demo Logic)
+        const ic = document.getElementById('ic').value;
+        const phone = document.getElementById('phone').value;
+
+        // Simulate a duplicate block on the same Phone number within branch
+        if (phone === "0129876543") {
+            alert("Lead creation blocked. Duplicate found within the same branch (Same Phone Number: " + phone + ")");
+            document.getElementById('phone').focus();
+            return false;
+        }
+
+        // Simulating different branches (IC check allows for different branches)
+        alert("Lead details saved successfully! Duplicate check passed.");
+    }
+
+    // Run on load to handle pre-filled forms
+    window.onload = initSelectors;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix CRM - Create New Lead</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-card-bg: #ffffff;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-primary-focus: rgba(56, 116, 255, 0.2);
+            --px-text-main: #232e3e; 
+            --px-text-label: #8da1b9; 
+            --px-text-static: #5e6e82; 
+            --px-placeholder: #a5b0be;
+            --px-danger: #f33923;
+            --px-success: #00d27a;
+            --px-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            
+            --input-height: 2.7rem;
+            --input-padding-x: 0.75rem;
+            --grid-gap: 0.8rem;
+            --base-font: 0.82rem;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--px-bg);
+            color: var(--px-text-main);
+            margin: 0;
+            padding: 1.5rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+        
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        h2 { font-weight: 800; font-size: 1.15rem; margin: 0; text-transform: uppercase; letter-spacing: 0.02em; }
+
+        .card {
+            background: var(--px-card-bg);
+            border: 1px solid var(--px-border);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: var(--px-shadow);
+        }
+        
+        .section-divider {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--px-text-main);
+            margin: 1.8rem 0 1rem 0;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid var(--px-border);
+        }
+        .section-divider:first-child { margin-top: 0; }
+
+        .row { 
+            display: grid; 
+            grid-template-columns: repeat(12, 1fr); 
+            gap: var(--grid-gap); 
+            margin-bottom: 0.4rem;
+        }
+
+        .col-3 { grid-column: span 3; }
+        .col-4 { grid-column: span 4; }
+        .col-6 { grid-column: span 6; }
+        .col-8 { grid-column: span 8; }
+        .col-9 { grid-column: span 9; }
+        .col-12 { grid-column: span 12; }
+
+        .form-floating { position: relative; }
+        .form-floating input, .form-floating select {
+            display: block; width: 100%; height: var(--input-height);
+            padding: 1.1rem var(--input-padding-x) 0.2rem;
+            font-size: var(--base-font); font-family: inherit;
+            color: var(--px-text-main); font-weight: 600;
+            background-color: #fff; border: 1px solid var(--px-border);
+            border-radius: 0.35rem; transition: all 0.2s; box-sizing: border-box;
+            appearance: none;
+        }
+
+        .form-floating select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%235e6e82' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 10px 8px;
+        }
+
+        .form-floating label {
+            position: absolute; top: 0; left: var(--input-padding-x);
+            height: 100%; padding: 0.8rem 0; pointer-events: none;
+            transition: all 0.2s ease-in-out; color: var(--px-text-static);
+            font-size: var(--base-font); transform-origin: 0 0;
+        }
+
+        .form-floating input:focus ~ label,
+        .form-floating input:not(:placeholder-shown) ~ label,
+        .form-floating select:focus ~ label,
+        .form-floating select:not([value=""]) ~ label {
+            transform: scale(0.8) translateY(-0.7rem);
+            font-weight: 700; color: var(--px-text-label);
+        }
+
+        .form-floating input:focus, .form-floating select:focus {
+            border-color: var(--px-primary); outline: 0;
+            box-shadow: 0 0 0 0.18rem var(--px-primary-focus);
+        }
+
+        .btn {
+            font-family: inherit; font-weight: 700; cursor: pointer;
+            padding: 0.5rem 1rem; font-size: 0.78rem; border-radius: 0.3rem;
+            border: 1px solid transparent; transition: all 0.2s;
+        }
+        .btn-primary { background-color: var(--px-primary); color: #fff; }
+        .btn-outline { background: #fff; border: 1px solid var(--px-border); color: var(--px-text-static); }
+        .btn-check { 
+            background: #edf2ff; color: var(--px-primary); border: 1px solid #d0dfff; 
+            height: var(--input-height); width: 100%;
+        }
+        .btn-check:hover { background: var(--px-primary); color: #fff; }
+
+        .readonly-field { background-color: #f8f9fb !important; color: #7a828e !important; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-flex">
+        <div class="header-left">
+            <button class="btn btn-outline" style="padding: 0.4rem 0.8rem;">← Back</button>
+            <h2>Create New Lead</h2>
+        </div>
+        <div>
+            <button class="btn btn-outline" style="margin-right: 0.4rem;">CANCEL</button>
+            <button class="btn btn-primary">SAVE</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="section-divider">SECTION A: CUSTOMER PROFILE</div>
+        <div class="row">
+            <div class="form-floating col-6">
+                <select id="lead_type" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="IND">Individual</option>
+                    <option value="CO">Company</option>
+                </select><label>Lead Type</label>
+            </div>
+            <div class="form-floating col-6">
+                <select id="priority" onchange="checkValue(this)">
+                    <option value="N">Normal</option>
+                    <option value="M">Medium</option>
+                    <option value="H">High</option>
+                </select><label>Priority</label>
+            </div>
+
+            <div class="form-floating col-6"><input type="text" id="fname" placeholder=" " oninput="checkValue(this)"><label>First Name</label></div>
+            <div class="form-floating col-6"><input type="text" id="lname" placeholder=" " oninput="checkValue(this)"><label>Last Name</label></div>
+
+            <div class="form-floating col-9"><input type="text" id="ic" placeholder=" " oninput="checkValue(this)"><label>IC / Passport (Mandatory)</label></div>
+            <div class="col-3"><button class="btn btn-check">Check Duplicate</button></div>
+
+            <div class="form-floating col-6"><input type="tel" id="mobile" placeholder=" " oninput="checkValue(this)"><label>Mobile No</label></div>
+            <div class="form-floating col-6"><input type="email" id="email" placeholder=" " oninput="checkValue(this)"><label>Email Address</label></div>
+
+            <div class="form-floating col-6"><input type="text" id="loc" placeholder=" " oninput="checkValue(this)"><label>Location</label></div>
+            <div class="form-floating col-6"><input type="text" id="comp_name" placeholder=" " oninput="checkValue(this)"><label>Company Name (If applicable)</label></div>
+
+            <div class="form-floating col-12">
+                <select id="channel" onchange="checkValue(this)">
+                    <option value="WA">WhatsApp</option>
+                    <option value="EM">Email</option>
+                    <option value="SMS">SMS</option>
+                </select><label>Contact Channel</label>
+            </div>
+        </div>
+
+        <div class="section-divider">SECTION B: VEHICLE INTEREST & ASSIGNMENT</div>
+        <div class="row">
+            <div class="form-floating col-6">
+                <select id="brand" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="HONDA">Honda</option>
+                </select><label>Brand/Product</label>
+            </div>
+            <div class="form-floating col-6">
+                <select id="model" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="CIVIC">Civic RS</option>
+                </select><label>Vehicle Model</label>
+            </div>
+            <div class="form-floating col-12"><input type="text" id="m_desc" placeholder=" " oninput="checkValue(this)"><label>Model Description</label></div>
+
+            <div class="form-floating col-6">
+                <select id="source" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="FB">Facebook</option>
+                    <option value="WI">Walk-in</option>
+                </select><label>Lead Source</label>
+            </div>
+            <div class="form-floating col-6"><input type="text" id="campaign" placeholder=" " oninput="checkValue(this)"><label>Campaign</label></div>
+
+            <div class="form-floating col-6"><input type="text" class="readonly-field" value="Glenmarie Branch (Auto)" readonly placeholder=" "><label>Sales Outlet</label></div>
+            <div class="form-floating col-6">
+                <select id="sc" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="SC101">Ali (SC101)</option>
+                    <option value="SC102">Siti (SC102)</option>
+                </select><label>Sales Consultant</label>
+            </div>
+        </div>
+
+        <div class="section-divider">SECTION C: QUALIFICATION (Sales Advisor Updates)</div>
+        <div class="row">
+            <div class="form-floating col-3"><input type="text" id="b_min" placeholder=" " oninput="checkValue(this)"><label>Min Budget (RM)</label></div>
+            <div class="form-floating col-3"><input type="text" id="b_max" placeholder=" " oninput="checkValue(this)"><label>Max Budget (RM)</label></div>
+            <div class="form-floating col-6"><input type="date" id="p_date" placeholder=" " oninput="checkValue(this)"><label>Purchase Timeline</label></div>
+
+            <div class="form-floating col-6">
+                <select id="trade" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                </select><label>Trade-in Interest</label>
+            </div>
+            <div class="form-floating col-6">
+                <select id="finance" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                </select><label>Financing Needed</label>
+            </div>
+
+            <div class="form-floating col-6">
+                <select id="status" onchange="checkValue(this)">
+                    <option value="NEW">New</option>
+                    <option value="CON">Contacted</option>
+                    <option value="QUAL">Qualified</option>
+                    <option value="LOST">Lost</option>
+                </select><label>Status</label>
+            </div>
+            <div class="form-floating col-6">
+                <select id="lost_reason" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="BUD">Over Budget</option>
+                    <option value="COMP">Bought Competitor</option>
+                    <option value="NR">No Response</option>
+                </select><label>If Unqualified/Lost: Reason</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function checkValue(el) {
+        if (el.value !== "") { el.setAttribute('value', el.value); } 
+        else { el.removeAttribute('value'); }
+    }
+    window.onload = function() {
+        document.querySelectorAll('select, input').forEach(el => checkValue(el));
+    };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Management - Sky Lounge Suzuki</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-card-bg: #ffffff;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-primary-focus: rgba(56, 116, 255, 0.2);
+            --px-text-main: #232e3e; 
+            --px-text-label: #8da1b9; 
+            --px-text-static: #5e6e82; 
+            --px-placeholder: #a5b0be;
+            --px-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            --input-height: 2.5rem;
+            --input-padding-x: 0.65rem;
+            --grid-gap: 0.6rem;
+            --base-font: 0.8rem;
+        }
+
+        body { font-family: 'Nunito Sans', sans-serif; background-color: var(--px-bg); color: var(--px-text-main); margin: 0; padding: 0.75rem; -webkit-font-smoothing: antialiased; }
+        
+        h2 { font-weight: 800; font-size: 1.1rem; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.02em; }
+
+        .row { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--grid-gap); margin-bottom: 0.8rem; }
+        .col-search { grid-column: span 8; }
+        .col-status { grid-column: span 4; }
+        @media (max-width: 600px) { .col-search, .col-status { grid-column: span 12; } }
+
+        /* Floating Labels - Perfect Alignment */
+        .form-floating { position: relative; }
+        .form-floating input, .form-floating select {
+            display: block; width: 100%; height: var(--input-height);
+            padding: 1rem var(--input-padding-x) 0.2rem;
+            font-size: var(--base-font); font-family: inherit;
+            color: var(--px-text-main); font-weight: 600;
+            background-color: #fff; border: 1px solid var(--px-border);
+            border-radius: 0.35rem; transition: all 0.2s; box-sizing: border-box; appearance: none;
+        }
+
+        .form-floating label {
+            position: absolute; top: 0; left: var(--input-padding-x);
+            height: 100%; display: flex; align-items: center; pointer-events: none;
+            transition: all 0.2s ease-in-out; color: var(--px-text-static);
+            font-size: var(--base-font); transform-origin: 0 0;
+        }
+
+        .form-floating input:focus ~ label,
+        .form-floating input:not(:placeholder-shown) ~ label,
+        .form-floating select:focus ~ label,
+        .form-floating select:not([value=""]) ~ label {
+            transform: scale(0.82) translateY(-0.75rem);
+            font-weight: 700; color: var(--px-primary);
+        }
+
+        .form-floating select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%235e6e82' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 0.6rem center; background-size: 9px 7px;
+        }
+
+        /* Table & Highlight UI */
+        .card { background: var(--px-card-bg); border: 1px solid var(--px-border); border-radius: 0.4rem; box-shadow: var(--px-shadow); overflow: hidden; }
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        
+        table th { background: #f8f9fb; padding: 10px 8px; text-align: left; font-weight: 700; color: var(--px-text-static); text-transform: uppercase; font-size: 0.65rem; border-bottom: 1px solid var(--px-border); white-space: nowrap; }
+        table td { padding: 8px; border-bottom: 1px solid var(--px-border); vertical-align: middle; }
+
+        /* Row Hover Highlight */
+        table tbody tr { transition: background-color 0.15s ease; }
+        table tbody tr:hover { background-color: #f2f5f9 !important; }
+
+        /* Sorting Icons */
+        .sortable { cursor: pointer; position: relative; padding-right: 20px !important; }
+        .sortable::after { content: "\f0dc"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 6px; color: #cbd5e0; font-size: 0.6rem; opacity: 0.6; }
+        .sortable.asc { color: var(--px-primary); }
+        .sortable.asc::after { content: "\f0de"; color: var(--px-primary); opacity: 1; }
+        .sortable.desc { color: var(--px-primary); }
+        .sortable.desc::after { content: "\f0dd"; color: var(--px-primary); opacity: 1; }
+
+        /* Column Highlight */
+        .sorted-column { background-color: rgba(56, 116, 255, 0.015); }
+
+        /* Status Badges */
+        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.65rem; font-weight: 700; min-width: 80px; text-align: center; }
+        .status-new { background: #e0f2fe; color: #0369a1; }
+        .status-contacted { background: #fef3c7; color: #b45309; }
+        .status-qualified { background: #dcfce7; color: #15803d; }
+        .status-in-progress { background: #ede9fe; color: #6d28d9; }
+        .status-converted { background: #d1fae5; color: #065f46; }
+        .status-lost-closed { background: #fee2e2; color: #991b1b; }
+
+        /* Efficient Footer */
+        .card-footer { 
+            padding: 0.5rem 0.75rem; background: #f8f9fb; border-top: 1px solid var(--px-border);
+            display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+        }
+        .footer-left, .footer-right { display: flex; align-items: center; gap: 0.5rem; }
+
+        .btn-page, .select-page-limit {
+            background: #fff; border: 1px solid var(--px-border); 
+            padding: 4px 8px; border-radius: 4px; cursor: pointer; 
+            font-weight: 700; color: var(--px-text-static); font-size: 0.75rem;
+            transition: all 0.2s; height: 28px; box-sizing: border-box;
+        }
+        .select-page-limit { font-weight: 500; padding-right: 1.5rem; appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%235e6e82' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 6px center; background-size: 8px 6px; }
+        .btn-page:hover:not(:disabled) { border-color: var(--px-primary); color: var(--px-primary); }
+        .btn-page:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .object-id-link { color: var(--px-primary); text-decoration: none; font-weight: 700; }
+        .object-id-link:hover { text-decoration: underline; }
+        .monospace-numbers { font-variant-numeric: tabular-nums; }
+        
+        @media (max-width: 480px) { #table-summary { display: none; } }
+    </style>
+</head>
+<body>
+
+    <h2>Lead Management</h2>
+
+    <div class="row">
+        <div class="col-search">
+            <div class="form-floating">
+                <input type="text" id="search-objects" placeholder=" ">
+                <label>Search Lead, Name, or Vehicle</label>
+            </div>
+        </div>
+        <div class="col-status">
+            <div class="form-floating">
+                <select id="filter-status" value="">
+                    <option value=""></option>
+                    <option value="New">New</option>
+                    <option value="Contacted">Contacted</option>
+                    <option value="Qualified">Qualified</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Converted">Converted</option>
+                    <option value="Lost / Closed">Lost / Closed</option>
+                </select>
+                <label>Filter Status</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="table-responsive">
+            <table id="objectsTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th class="sortable" data-sort="objectId">Lead ID</th>
+                        <th class="sortable" data-sort="name">Customer Name</th>
+                        <th class="sortable" data-sort="vehicleInterest">Vehicle Interest</th>
+                        <th class="sortable" data-sort="priority">Priority</th>
+                        <th class="sortable" data-sort="consultant">Consultant</th>
+                        <th class="sortable" data-sort="createDate">Date</th>
+                        <th class="sortable" data-sort="status" style="text-align: center;">Status</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        
+        <div class="card-footer">
+            <div class="footer-left">
+                <button id="prev-page" class="btn-page"><i class="fas fa-chevron-left"></i></button>
+                <span id="page-info" style="font-size: 0.75rem; font-weight: 700;">Page 1 of 1</span>
+                <button id="next-page" class="btn-page"><i class="fas fa-chevron-right"></i></button>
+                <div id="table-summary" style="font-size: 0.75rem; color: var(--px-text-static); margin-left: 0.5rem;">Showing 0-0 of 0</div>
+            </div>
+            <div class="footer-right">
+                <select id="items-per-page" class="select-page-limit">
+                    <option value="10">10 per page</option>
+                    <option value="25">25 per page</option>
+                    <option value="50">50 per page</option>
+                    <option value="9999">All</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const mockObjectsData = [
+            { id: '1', objectId: '10001', name: 'Ahmad bin Razak', vehicleInterest: 'Suzuki Jimny 5-Door', priority: 'High', consultant: 'Sales A', createDate: '2026-01-15', status: 'New' },
+            { id: '2', objectId: '10002', name: 'Siti Nurhaliza', vehicleInterest: 'Suzuki Swift Sport', priority: 'Medium', consultant: 'Sales B', createDate: '2026-01-16', status: 'Contacted' },
+            { id: '3', objectId: '10003', name: 'Tan Wei Ming', vehicleInterest: 'Suzuki Jimny 3-Door', priority: 'Low', consultant: 'Sales A', createDate: '2026-01-17', status: 'Qualified' },
+            { id: '4', objectId: '10004', name: 'Devi A/P Subramaniam', vehicleInterest: 'Suzuki Fronx', priority: 'High', consultant: 'Sales C', createDate: '2026-01-18', status: 'In Progress' },
+            { id: '5', objectId: '10005', name: 'Mohd Fikri', vehicleInterest: 'Suzuki Jimny 5-Door', priority: 'Medium', consultant: 'Sales B', createDate: '2026-01-19', status: 'Converted' },
+            { id: '6', objectId: '10006', name: 'Lim Kah Seng', vehicleInterest: 'Suzuki Jimny 3-Door', priority: 'Low', consultant: 'Sales A', createDate: '2026-01-20', status: 'Lost / Closed' },
+            { id: '7', objectId: '10007', name: 'Nurul Huda', vehicleInterest: 'Suzuki Swift Sport', priority: 'High', consultant: 'Sales C', createDate: '2026-01-21', status: 'New' },
+            { id: '8', objectId: '10008', name: 'Kavita A/P Ravi', vehicleInterest: 'Suzuki Jimny 5-Door', priority: 'Medium', consultant: 'Sales B', createDate: '2026-01-22', status: 'Contacted' },
+            { id: '9', objectId: '10009', name: 'Chong Kok Leong', vehicleInterest: 'Suzuki Fronx', priority: 'High', consultant: 'Sales A', createDate: '2026-01-23', status: 'Qualified' },
+            { id: '10', objectId: '10010', name: 'Farah Izzati', vehicleInterest: 'Suzuki Swift Sport', priority: 'Low', consultant: 'Sales C', createDate: '2026-01-24', status: 'In Progress' }
+        ];
+
+        class ObjectsController {
+            constructor() {
+                this.elements = {
+                    searchInput: document.getElementById('search-objects'),
+                    statusFilter: document.getElementById('filter-status'),
+                    itemsPerPage: document.getElementById('items-per-page'),
+                    tableBody: document.querySelector('#objectsTable tbody'),
+                    summary: document.getElementById('table-summary'),
+                    prevBtn: document.getElementById('prev-page'),
+                    nextBtn: document.getElementById('next-page'),
+                    pageInfo: document.getElementById('page-info'),
+                    sortHeaders: document.querySelectorAll('.sortable')
+                };
+
+                this.state = {
+                    currentPage: 1,
+                    itemsPerPage: 10,
+                    all: [...mockObjectsData],
+                    filtered: [],
+                    sortField: 'objectId',
+                    sortDirection: 'asc'
+                };
+
+                this.bindEvents();
+                this.initFloatingLabels();
+                this.filter();
+            }
+
+            bindEvents() {
+                this.elements.searchInput.addEventListener('input', () => this.filter());
+                this.elements.statusFilter.addEventListener('change', () => this.filter());
+                this.elements.itemsPerPage.addEventListener('change', (e) => {
+                    this.state.itemsPerPage = parseInt(e.target.value);
+                    this.state.currentPage = 1;
+                    this.update();
+                });
+                this.elements.prevBtn.addEventListener('click', () => { this.state.currentPage--; this.update(); });
+                this.elements.nextBtn.addEventListener('click', () => { this.state.currentPage++; this.update(); });
+
+                this.elements.sortHeaders.forEach(header => {
+                    header.addEventListener('click', () => {
+                        const field = header.dataset.sort;
+                        this.state.sortDirection = (this.state.sortField === field && this.state.sortDirection === 'asc') ? 'desc' : 'asc';
+                        this.state.sortField = field;
+                        this.updateSortIcons(header);
+                        this.filter();
+                    });
+                });
+            }
+
+            updateSortIcons(activeHeader) {
+                this.elements.sortHeaders.forEach(h => h.classList.remove('asc', 'desc'));
+                activeHeader.classList.add(this.state.sortDirection);
+            }
+
+            initFloatingLabels() {
+                document.querySelectorAll('.form-floating select').forEach(s => {
+                    s.addEventListener('change', () => s.setAttribute('value', s.value));
+                });
+            }
+
+            filter() {
+                const search = this.elements.searchInput.value.toLowerCase();
+                const status = this.elements.statusFilter.value;
+
+                let result = this.state.all.filter(obj => {
+                    const matchesSearch = obj.name.toLowerCase().includes(search) || obj.objectId.includes(search) || obj.vehicleInterest.toLowerCase().includes(search);
+                    const matchesStatus = status ? obj.status === status : true;
+                    return matchesSearch && matchesStatus;
+                });
+
+                result.sort((a, b) => {
+                    let vA = a[this.state.sortField], vB = b[this.state.sortField];
+                    if (this.state.sortField === 'objectId') { vA = parseInt(vA); vB = parseInt(vB); }
+                    return this.state.sortDirection === 'asc' ? (vA > vB ? 1 : -1) : (vA < vB ? 1 : -1);
+                });
+
+                this.state.filtered = result;
+                this.update();
+            }
+
+            update() {
+                const start = (this.state.currentPage - 1) * this.state.itemsPerPage;
+                const end = start + this.state.itemsPerPage;
+                const displayed = this.state.filtered.slice(start, end);
+                const total = this.state.filtered.length;
+                const totalPages = Math.ceil(total / this.state.itemsPerPage) || 1;
+
+                this.elements.tableBody.innerHTML = displayed.map((obj, i) => {
+                    const isSorted = (f) => this.state.sortField === f ? 'class="sorted-column"' : '';
+                    return `
+                        <tr>
+                            <td>${start + i + 1}</td>
+                            <td ${isSorted('objectId')}><a href="#" class="object-id-link">${obj.objectId}</a></td>
+                            <td ${isSorted('name')} style="font-weight:700">${obj.name}</td>
+                            <td ${isSorted('vehicleInterest')}>${obj.vehicleInterest}</td>
+                            <td ${isSorted('priority')}>${obj.priority}</td>
+                            <td ${isSorted('consultant')}>${obj.consultant}</td>
+                            <td ${isSorted('createDate')} class="monospace-numbers">${obj.createDate}</td>
+                            <td style="text-align:center">${this.getBadge(obj.status)}</td>
+                        </tr>`;
+                }).join('');
+
+                this.elements.summary.textContent = `Showing ${total ? start + 1 : 0}-${Math.min(end, total)} of ${total}`;
+                this.elements.pageInfo.textContent = `Page ${this.state.currentPage} of ${totalPages}`;
+                this.elements.prevBtn.disabled = this.state.currentPage <= 1;
+                this.elements.nextBtn.disabled = this.state.currentPage >= totalPages;
+            }
+
+            getBadge(status) {
+                const cls = status.toLowerCase().replace(/ \/ /g, '-').replace(/ /g, '-');
+                return `<span class="status-badge status-${cls}">${status}</span>`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => new ObjectsController());
+    </script>
+</body>
+</html>

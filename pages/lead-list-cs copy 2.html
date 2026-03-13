@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix CRM - Lead Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-card-bg: #ffffff;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-text-main: #232e3e;
+            --px-text-muted: #5e6e82;
+            --px-success: #25b003;
+            --px-danger: #f33923;
+            --px-warning: #e5780b;
+            --base-font: 0.82rem;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--px-bg);
+            margin: 0;
+            padding: 1.5rem;
+            color: var(--px-text-main);
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background: var(--px-card-bg);
+            border: 1px solid var(--px-border);
+            border-radius: 0.4rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--base-font);
+            min-width: 1000px;
+        }
+
+        th {
+            background: #f5f7fa;
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--px-text-muted);
+            border-bottom: 1px solid var(--px-border);
+        }
+
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f1f4f8;
+        }
+
+        .badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .bg-new { background: #e3ebff; color: var(--px-primary); }
+        .bg-converted { background: #e2f6e0; color: var(--px-success); }
+        .bg-lost { background: #ffe5e5; color: var(--px-danger); }
+
+        .btn {
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.25rem;
+            border: 1px solid var(--px-border);
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-primary { background: var(--px-primary); color: #fff; border: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-flex">
+        <h2>Leads Listing</h2>
+        <div>
+            <button class="btn">Export Excel</button>
+            <button class="btn btn-primary">+ Create Lead</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID / Name</th>
+                    <th>Type</th>
+                    <th>Interest</th>
+                    <th>Priority</th>
+                    <th>Consultant</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div style="font-weight:700">LD-2026-001</div>
+                        <div style="color:var(--px-text-muted)">Ahmad Razak</div>
+                    </td>
+                    <td>Individual</td>
+                    <td>Proton X50 (Premium)</td>
+                    <td><span style="color:var(--px-danger)">● High</span></td>
+                    <td>SC-092 / Kevin Lee</td>
+                    <td><span class="badge bg-new">New</span></td>
+                    <td>12/03/2026</td>
+                    <td><button class="btn">View</button></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="font-weight:700">LD-2026-005</div>
+                        <div style="color:var(--px-text-muted)">Siti Aminah</div>
+                    </td>
+                    <td>Company</td>
+                    <td>Honda Civic (RS)</td>
+                    <td>Normal</td>
+                    <td>SC-105 / Sarah Wong</td>
+                    <td><span class="badge bg-converted">Delivered</span></td>
+                    <td>10/03/2026</td>
+                    <td><button class="btn">View</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

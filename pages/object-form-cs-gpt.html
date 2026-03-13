@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add contact (simple + clean)</title>
+  <style>
+    /* minimal, clean, no icons, just structure */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #f4f6fa;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 880px;
+      width: 100%;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.03), 0 6px 10px rgba(0,0,0,0.02);
+      padding: 2rem 2.25rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: #1a2639;
+      margin-bottom: 2rem;
+      letter-spacing: -0.01em;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 0.75rem;
+    }
+
+    /* simple two‑column grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem 2rem;
+    }
+
+    .full {
+      grid-column: 1 / 3;
+    }
+
+    /* form group — clean, no floating label tricks */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #2d3a5e;
+      margin-bottom: 0.3rem;
+      margin-left: 0.1rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid #dce2ec;
+      border-radius: 14px;
+      font-size: 1rem;
+      background: white;
+      transition: 0.15s;
+      font-family: inherit;
+    }
+
+    input:focus, select:focus {
+      border-color: #1e3a8a;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.08);
+    }
+
+    /* validation hint for first name — simple text */
+    .hint {
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+      margin-left: 0.3rem;
+      min-height: 1.2rem;
+      color: #5b687c;
+    }
+
+    .hint.error {
+      color: #b91c1c;
+    }
+
+    .hint.valid {
+      color: #1e7b4c;
+    }
+
+    /* first name specific styles (border colour on error/valid) */
+    .error input {
+      border-color: #b91c1c;
+      background-color: #fff9f9;
+    }
+
+    .valid input {
+      border-color: #1e7b4c;
+    }
+
+    /* button — clean, no extra icons */
+    button {
+      margin-top: 2rem;
+      padding: 0.85rem 2.2rem;
+      background: #1a2639;
+      color: white;
+      border: none;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    button:hover {
+      background: #111c2f;
+    }
+
+    /* small screens */
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .full {
+        grid-column: 1;
+      }
+    }
+
+    /* no icons, no floating labels, just clean */
+    select {
+      background: white; /* remove any custom arrow if needed, but keep default */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Add contact</h2>
+
+    <form id="contactForm">
+      <div class="grid">
+        <!-- FIRST NAME (with validation) -->
+        <div class="form-group" id="groupFirstName">
+          <label for="firstName">First name <span style="color:#b91c1c;">*</span></label>
+          <input type="text" id="firstName" name="firstName" placeholder="e.g. Alex" maxlength="50">
+          <div class="hint" id="firstNameHint">only letters, min 2 characters</div>
+        </div>
+
+        <!-- LAST NAME -->
+        <div class="form-group">
+          <label for="lastName">Last name</label>
+          <input type="text" id="lastName" name="lastName" placeholder="Smith">
+          <div class="hint"></div> <!-- empty hint keeps alignment -->
+        </div>
+
+        <!-- COMPANY -->
+        <div class="form-group">
+          <label for="company">Company</label>
+          <input type="text" id="company" name="company" placeholder="Acme Inc.">
+          <div class="hint"></div>
+        </div>
+
+        <!-- JOB TITLE -->
+        <div class="form-group">
+          <label for="jobTitle">Job title</label>
+          <input type="text" id="jobTitle" name="jobTitle" placeholder="Product designer">
+          <div class="hint"></div>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="alex@company.com">
+          <div class="hint"></div>
+        </div>
+
+        <!-- PHONE -->
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="text" id="phone" name="phone" placeholder="+1 234 567 890">
+          <div class="hint"></div>
+        </div>
+
+        <!-- DROPDOWN LIST (simple select) -->
+        <div class="form-group full">
+          <label for="contactType">Contact type <span style="color:#b91c1c;">*</span></label>
+          <select id="contactType" name="contactType">
+            <option value="" disabled selected>– select one –</option>
+            <option value="prospect">Prospect</option>
+            <option value="customer">Customer</option>
+            <option value="partner">Partner</option>
+            <option value="vendor">Vendor</option>
+            <option value="other">Other</option>
+          </select>
+          <div class="hint"></div>
+        </div>
+
+        <!-- ADDRESS (full width) -->
+        <div class="form-group full">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address" placeholder="Street, city, postal code">
+          <div class="hint"></div>
+        </div>
+      </div>
+
+      <button type="submit">Save contact</button>
+    </form>
+  </div>
+
+  <script>
+    (function() {
+      // ----- First name validation (simple, letters only, min 2) -----
+      const firstNameInput = document.getElementById('firstName');
+      const group = document.getElementById('groupFirstName');
+      const hint = document.getElementById('firstNameHint');
+
+      function validateFirstName(value) {
+        const trimmed = value.trim();
+        if (trimmed === '') return 'empty';
+        // letters, spaces, hyphens, apostrophes – no numbers, at least 2 chars
+        const regex = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]{2,50}$/;
+        return regex.test(trimmed) ? 'valid' : 'invalid';
+      }
+
+      function updateValidation() {
+        const val = firstNameInput.value;
+        const status = validateFirstName(val);
+
+        // remove previous classes
+        group.classList.remove('error', 'valid');
+        hint.classList.remove('error', 'valid');
+
+        if (status === 'empty') {
+          group.classList.add('error');
+          hint.classList.add('error');
+          hint.textContent = 'first name is required';
+        } else if (status === 'invalid') {
+          group.classList.add('error');
+          hint.classList.add('error');
+          hint.textContent = 'use only letters (min 2), spaces, hyphens or apostrophes';
+        } else { // valid
+          group.classList.add('valid');
+          hint.classList.add('valid');
+          hint.textContent = '✓ valid name';
+        }
+      }
+
+      // initial & events
+      if (firstNameInput) {
+        firstNameInput.addEventListener('input', updateValidation);
+        firstNameInput.addEventListener('blur', updateValidation);
+        updateValidation(); // set initial hint (empty shows error)
+      }
+
+      // ----- dropdown: simple required check on submit -----
+      const form = document.getElementById('contactForm');
+      const contactTypeSelect = document.getElementById('contactType');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault(); // demo, no actual POST
+
+        // revalidate first name (in case it's hidden)
+        if (firstNameInput) updateValidation();
+
+        const firstNameValid = group.classList.contains('valid');
+        if (!firstNameValid) {
+          alert('Please enter a valid first name (letters only, at least 2).');
+          firstNameInput?.focus();
+          return;
+        }
+
+        // check dropdown (contact type)
+        if (!contactTypeSelect.value || contactTypeSelect.value === '') {
+          alert('Please select a contact type from the dropdown list.');
+          contactTypeSelect.focus();
+          return;
+        }
+
+        // everything ok
+        alert('✓ Contact saved (demo).\nAll validations passed.');
+        // (in real case you'd submit the form here)
+      });
+
+      // optional: hint alignment for all empty hints – but they're fine
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix CRM - Add Contact</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-card-bg: #ffffff;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-primary-focus: rgba(56, 116, 255, 0.2);
+            --px-text-main: #232e3e;
+            --px-text-label: #5e6e82;
+            --px-placeholder: #9da9bb;
+            --px-danger: #f33923;
+            --px-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            
+            /* Ultra-Compact Variables */
+            --input-height: 2.7rem;
+            --input-padding-x: 0.75rem;
+            --grid-gap: 0.6rem;
+            --base-font: 0.82rem;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--px-bg);
+            color: var(--px-text-main);
+            margin: 0;
+            padding: 1rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 750px; margin: 0 auto; }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        h2 { font-weight: 800; font-size: 1.2rem; margin: 0; }
+
+        .card {
+            background: var(--px-card-bg);
+            border: 1px solid var(--px-border);
+            border-radius: 0.4rem;
+            padding: 1rem;
+            box-shadow: var(--px-shadow);
+        }
+        
+        .section-divider {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--px-text-label);
+            letter-spacing: 0.03em;
+            margin: 0.5rem 0 0.8rem 0;
+            border-bottom: 1px solid #f1f4f8;
+            padding-bottom: 0.3rem;
+        }
+
+        .row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: var(--grid-gap); 
+        }
+        .col-12 { grid-column: span 2; }
+
+        .form-floating {
+            position: relative;
+        }
+
+        .form-floating input, 
+        .form-floating select {
+            display: block;
+            width: 100%;
+            height: var(--input-height);
+            padding: 0.8rem var(--input-padding-x) 0.1rem;
+            font-size: var(--base-font);
+            font-family: inherit;
+            color: var(--px-text-main);
+            background-color: #fff;
+            border: 1px solid var(--px-border);
+            border-radius: 0.3rem;
+            transition: all 0.2s ease-in-out;
+            box-sizing: border-box;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        /* Safari Fix for Select Arrow */
+        .form-floating select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%235e6e82' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.6rem center;
+            background-size: 10px 8px;
+        }
+
+        /* Placeholder Logic */
+        .form-floating input::placeholder {
+            color: var(--px-placeholder);
+            opacity: 0; 
+            transition: opacity 0.15s;
+        }
+        .form-floating input:focus::placeholder { opacity: 1; }
+
+        .form-floating label {
+            position: absolute;
+            top: 0;
+            left: var(--input-padding-x);
+            height: 100%;
+            padding: 0.7rem 0;
+            pointer-events: none;
+            transition: all 0.2s ease-in-out;
+            color: var(--px-text-label);
+            font-size: var(--base-font);
+            transform-origin: 0 0;
+        }
+
+        /* Floating Logic */
+        .form-floating input:focus ~ label,
+        .form-floating input:not(:placeholder-shown) ~ label,
+        .form-floating select:focus ~ label,
+        .form-floating select:not([value=""]) ~ label {
+            transform: scale(0.78) translateY(-0.55rem);
+            font-weight: 700;
+        }
+
+        .form-floating input:focus, .form-floating select:focus {
+            border-color: var(--px-primary);
+            outline: 0;
+            box-shadow: 0 0 0 0.15rem var(--px-primary-focus);
+        }
+
+        .form-floating input:focus,
+        .form-floating input:not(:placeholder-shown),
+        .form-floating select:focus,
+        .form-floating select:not([value=""]) {
+            padding-top: 1rem;
+            padding-bottom: 0.2rem;
+        }
+
+        /* Validation Style */
+        .form-floating.is-invalid input { border-color: var(--px-danger) !important; }
+        .error-msg {
+            color: var(--px-danger);
+            font-size: 0.68rem;
+            font-weight: 700;
+            margin-top: 1px;
+            display: none;
+        }
+        .is-invalid .error-msg { display: block; }
+
+        /* Buttons */
+        .btn {
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0.45rem 1rem;
+            font-size: 0.78rem;
+            border-radius: 0.25rem;
+            border: 1px solid transparent;
+        }
+        .btn-primary { background-color: var(--px-primary); color: #fff; }
+        .btn-link { background: none; color: var(--px-text-label); text-decoration: none; margin-right: 0.4rem; }
+
+        @media (max-width: 600px) { .row { grid-template-columns: 1fr; } .col-12 { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-flex">
+        <h2>Add a contact</h2>
+        <div>
+            <button class="btn btn-link">Cancel</button>
+            <button class="btn btn-primary" onclick="validateForm()">Create contact</button>
+        </div>
+    </div>
+
+    <form id="contactForm" onsubmit="return false;">
+        <div class="card">
+            <div class="section-divider">Contact Details</div>
+            <div class="row">
+                <div class="form-floating" id="fname-wrapper">
+                    <input type="text" id="fname" placeholder="First Name" oninput="checkValue(this)">
+                    <label for="fname">First Name</label>
+                    <div class="error-msg">Required</div>
+                </div>
+                <div class="form-floating" id="lname-wrapper">
+                    <input type="text" id="lname" placeholder="Last Name" oninput="checkValue(this)">
+                    <label for="lname">Last Name</label>
+                    <div class="error-msg">Required</div>
+                </div>
+                <div class="form-floating col-12">
+                    <input type="email" id="email" placeholder="Email address" oninput="checkValue(this)">
+                    <label for="email">Email address</label>
+                </div>
+                <div class="form-floating">
+                    <input type="tel" id="phone" placeholder="Phone" oninput="checkValue(this)">
+                    <label for="phone">Phone</label>
+                </div>
+                <div class="form-floating">
+                    <select id="leadSource" onchange="checkValue(this)">
+                        <option value="" hidden></option>
+                        <option value="referral">Referral</option>
+                        <option value="social">Social Media</option>
+                        <option value="adv">Advertisement</option>
+                    </select>
+                    <label for="leadSource">Lead Source</label>
+                </div>
+            </div>
+
+            <div class="section-divider" style="margin-top: 1rem;">Work Information</div>
+            <div class="row">
+                <div class="form-floating">
+                    <input type="text" id="company" placeholder="Company Name" oninput="checkValue(this)">
+                    <label for="company">Company Name</label>
+                </div>
+                <div class="form-floating">
+                    <input type="text" id="job" placeholder="Job Title" oninput="checkValue(this)">
+                    <label for="job">Job Title</label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function checkValue(el) {
+        if (el.value !== "") {
+            el.setAttribute('value', el.value);
+            el.parentElement.classList.remove('is-invalid');
+        } else {
+            el.removeAttribute('value');
+        }
+    }
+
+    function validateForm() {
+        const fname = document.getElementById('fname');
+        const lname = document.getElementById('lname');
+        let isValid = true;
+
+        if (!fname.value.trim()) {
+            document.getElementById('fname-wrapper').classList.add('is-invalid');
+            isValid = false;
+        }
+        if (!lname.value.trim()) {
+            document.getElementById('lname-wrapper').classList.add('is-invalid');
+            isValid = false;
+        }
+
+        if (isValid) alert("Contact Created!");
+    }
+</script>
+
+</body>
+</html>

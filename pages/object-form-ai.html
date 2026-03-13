@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Form - Sky Lounge Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c7be5;
+            --secondary: #6e84a3;
+            --success: #00a65a;
+            --info: #39afd1;
+            --warning: #f39c12;
+            --danger: #e63757;
+            --light: #f9fafd;
+            --dark: #12263f;
+            --dark-light: #4a5a72;
+            --gray: #95aac9;
+            --light-gray: #edf2f9;
+            --border-color: #e3ebf6;
+            --success-dark: #008d4c;
+            --warning-dark: #e08e0b;
+            --danger-dark: #d33724;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: white;
+            color: var(--dark);
+            padding: 15px;
+            font-size: 13px;
+            line-height: 1.4;
+            height: 100%;
+        }
+
+        .form-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-header {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
+            /* Prevent wrapping */
+            gap: 10px;
+        }
+
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            white-space: nowrap;
+            /* Prevent title from wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: auto;
+            /* Push title to left */
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            /* Prevent buttons from shrinking */
+        }
+
+        .form-body {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+        }
+
+        .form-section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 12px;
+        }
+
+        .form-row {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .form-label {
+            width: 120px;
+            font-weight: 500;
+            color: var(--dark-light);
+            font-size: 12.5px;
+        }
+
+        .form-value {
+            flex: 1;
+            color: var(--dark);
+        }
+
+        .form-control {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13px;
+            min-height: 34px;
+        }
+
+        .form-control:disabled {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            border-color: var(--border-color);
+        }
+
+        textarea.form-control {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .status-badge.active {
+            background-color: rgba(0, 166, 90, 0.1);
+            color: var(--success-dark);
+            border: 1px solid rgba(0, 166, 90, 0.2);
+        }
+
+        .status-badge.pending {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning-dark);
+            border: 1px solid rgba(243, 156, 18, 0.2);
+        }
+
+        .status-badge.expired {
+            background-color: rgba(230, 55, 87, 0.1);
+            color: var(--danger-dark);
+            border: 1px solid rgba(230, 55, 87, 0.2);
+        }
+
+        .loading-container {
+            display: none;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px solid rgba(44, 123, 229, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-container {
+            display: none;
+            padding: 10px 14px;
+            background-color: rgba(230, 55, 87, 0.1);
+            color: var(--danger);
+            border-radius: 4px;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .form-header {
+                flex-direction: row;
+                /* Keep horizontal layout */
+                align-items: center;
+            }
+
+            .form-title {
+                flex: 1;
+                min-width: 0;
+                /* Allow text truncation */
+            }
+
+            .form-actions {
+                flex-shrink: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <h1 class="form-title" id="form-title">Member</h1>
+            <div class="form-actions" id="form-actions">
+                <!-- Buttons will be added here by JavaScript -->
+            </div>
+        </div>
+
+        <div class="error-container" id="error-container"></div>
+        <div class="loading-container" id="loading-container">
+            <div class="loading-spinner"></div>
+        </div>
+
+        <div class="form-body" id="form-body">
+            <div class="form-section">
+                <h3 class="form-section-title">Basic Information</h3>
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label class="form-label">Member ID</label>
+                        <input type="text" class="form-control" id="member-id" disabled>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">Name *</label>
+                        <input type="text" class="form-control" id="member-name" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">Status *</label>
+                        <select class="form-control" id="member-status" required>
+                            <option value="active">Active</option>
+                            <option value="pending">Pending</option>
+                            <option value="expired">Expired</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">Join Date</label>
+                        <input type="text" class="form-control" id="join-date" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="form-section-title">Contact Information</h3>
+                <div class="form-grid">
+                    <div class="form-row">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-control" id="phone">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="form-section-title">Additional Information</h3>
+                <div class="form-row">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-control" id="notes" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="module" >
+        // js/pages/member-form.js
+import {
+    fetchMemberDetails,
+    addMember,
+    updateMember,
+    deleteMember
+} from '../js/services/objectService.js';
+
+export class MemberFormController {
+    constructor() {
+        this.elements = {
+            formTitle: document.getElementById('form-title'),
+            formActions: document.getElementById('form-actions'),
+            errorContainer: document.getElementById('error-container'),
+            loadingContainer: document.getElementById('loading-container'),
+            formBody: document.getElementById('form-body'),
+            memberId: document.getElementById('member-id'),
+            memberName: document.getElementById('member-name'),
+            memberStatus: document.getElementById('member-status'),
+            joinDate: document.getElementById('join-date'),
+            email: document.getElementById('email'),
+            phone: document.getElementById('phone'),
+            notes: document.getElementById('notes')
+        };
+
+        this.mode = 'add';
+        this.memberId = null;
+        this.originalData = {};
+
+        this.parseUrlParams();
+        this.bindEvents();
+        this.initialize();
+    }
+
+    parseUrlParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        this.mode = urlParams.get('mode') || 'add';
+        this.memberId = urlParams.get('id');
+    }
+
+    bindEvents() {
+        // Events will be bound to dynamically created buttons
+    }
+
+    async initialize() {
+        this.updateUIForMode();
+
+        if (this.mode !== 'add' && this.memberId) {
+            await this.loadMemberData();
+        }
+
+        this.createActionButtons();
+    }
+
+    updateUIForMode() {
+        const modeTitles = {
+            'view': 'View',
+            'edit': 'Edit',
+            'add': 'Add New'
+        };
+
+        this.elements.formTitle.textContent = `Member - ${modeTitles[this.mode]}`;
+
+        if (this.mode === 'view') {
+            this.disableAllInputs();
+        } else if (this.mode === 'edit') {
+            this.disableNonEditableFields();
+        }
+    }
+
+    createActionButtons() {
+        this.elements.formActions.innerHTML = '';
+
+        if (this.mode === 'view') {
+            const editBtn = this.createButton('Edit', 'fas fa-edit', 'btn-primary', () => this.switchToEditMode());
+            const deleteBtn = this.createButton('Delete', 'fas fa-trash', 'btn-danger', () => this.confirmDelete());
+            const closeBtn = this.createButton('Close', 'fas fa-times', 'btn-secondary', () => this.closeForm());
+
+            this.elements.formActions.appendChild(editBtn);
+            this.elements.formActions.appendChild(deleteBtn);
+            this.elements.formActions.appendChild(closeBtn);
+        }
+        else if (this.mode === 'edit') {
+            const saveBtn = this.createButton('Save', 'fas fa-save', 'btn-primary', () => this.saveMember());
+            const cancelBtn = this.createButton('Cancel', 'fas fa-times', 'btn-secondary', () => this.cancelEdit());
+
+            this.elements.formActions.appendChild(saveBtn);
+            this.elements.formActions.appendChild(cancelBtn);
+        }
+        else if (this.mode === 'add') {
+            const saveBtn = this.createButton('Save', 'fas fa-save', 'btn-primary', () => this.saveMember());
+            const cancelBtn = this.createButton('Cancel', 'fas fa-times', 'btn-secondary', () => this.closeForm());
+
+            this.elements.formActions.appendChild(saveBtn);
+            this.elements.formActions.appendChild(cancelBtn);
+        }
+
+        // Hide the iframe close button after page loads
+        window.parent.postMessage({ type: 'OBJECT_FORM_LOADED' }, '*');
+    }
+
+    createButton(text, icon, style, onClick) {
+        const btn = document.createElement('button');
+        btn.className = `btn btn-sm ${style}`;
+        btn.innerHTML = `<i class="${icon}"></i> ${text}`;
+        btn.addEventListener('click', onClick);
+        return btn;
+    }
+
+    disableAllInputs() {
+        const inputs = this.elements.formBody.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.disabled = true;
+        });
+    }
+
+    enableAllInputs() {
+        const inputs = this.elements.formBody.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.disabled = false;
+        });
+        this.disableNonEditableFields(); // Keep non-editable fields disabled
+    }
+
+    disableNonEditableFields() {
+        this.elements.memberId.disabled = true;
+        this.elements.joinDate.disabled = true;
+    }
+
+    async loadMemberData() {
+        try {
+            this.showLoading();
+            const { data: member, success } = await fetchMemberDetails(this.memberId);
+
+            if (success && member) {
+                this.originalData = { ...member }; // Store original data for cancel
+                this.populateForm(member);
+            } else {
+                throw new Error('Failed to load member data');
+            }
+        } catch (error) {
+            this.showError(error.message);
+        } finally {
+            this.hideLoading();
+        }
+    }
+
+    populateForm(member) {
+        this.elements.memberId.value = member.memberId || '';
+        this.elements.memberName.value = member.name || '';
+        this.elements.memberStatus.value = member.status || 'active';
+        this.elements.joinDate.value = member.joinDate ? new Date(member.joinDate).toLocaleDateString() : '';
+        this.elements.email.value = member.email || '';
+        this.elements.phone.value = member.phone || '';
+        this.elements.notes.value = member.notes || '';
+    }
+
+    switchToEditMode() {
+        this.mode = 'edit';
+        this.updateUIForMode();
+        this.enableAllInputs();
+        this.createActionButtons();
+    }
+
+    cancelEdit() {
+        if (this.memberId) {
+            // Restore original data
+            this.populateForm(this.originalData);
+            this.mode = 'view';
+            this.updateUIForMode();
+            this.disableAllInputs();
+            this.createActionButtons();
+        } else {
+            this.closeForm();
+        }
+    }
+
+    async saveMember() {
+        const memberData = {
+            name: this.elements.memberName.value,
+            status: this.elements.memberStatus.value,
+            email: this.elements.email.value,
+            phone: this.elements.phone.value,
+            notes: this.elements.notes.value
+        };
+
+        if (!memberData.name) {
+            this.showError('Name is required');
+            return;
+        }
+
+        try {
+            this.showLoading();
+            let result;
+
+            if (this.mode === 'add') {
+                memberData.memberId = `SLM-${Math.floor(1000 + Math.random() * 9000)}`;
+                memberData.joinDate = new Date().toISOString();
+                result = await addMember(memberData);
+            } else {
+                memberData.id = this.memberId;
+                result = await updateMember(this.memberId, memberData);
+            }
+
+            if (result.success) {
+                this.notifyParent('OBJECT_FORM_SAVED');
+                this.closeForm();
+            } else {
+                throw new Error(result.error || 'Failed to save member');
+            }
+        } catch (error) {
+            this.showError(error.message);
+        } finally {
+            this.hideLoading();
+        }
+    }
+
+    confirmDelete() {
+        if (confirm('Are you sure you want to delete this member? This action cannot be undone.')) {
+            this.deleteMember();
+        }
+    }
+
+    async deleteMember() {
+        try {
+            this.showLoading();
+            const result = await deleteMember(this.memberId);
+
+            if (result.success) {
+                this.notifyParent('OBJECT_FORM_SAVED');
+                this.closeForm();
+            } else {
+                throw new Error(result.error || 'Failed to delete member');
+            }
+        } catch (error) {
+            this.showError(error.message);
+        } finally {
+            this.hideLoading();
+        }
+    }
+
+    closeForm() {
+        this.notifyParent('OBJECT_FORM_CLOSE');
+    }
+
+    notifyParent(type) {
+        window.parent.postMessage({ type }, '*');
+    }
+
+    showLoading() {
+        this.elements.loadingContainer.style.display = 'block';
+        this.elements.errorContainer.style.display = 'none';
+    }
+
+    hideLoading() {
+        this.elements.loadingContainer.style.display = 'none';
+    }
+
+    showError(message) {
+        this.elements.errorContainer.textContent = message || 'An unknown error occurred';
+        this.elements.errorContainer.style.display = 'block';
+    }
+}
+
+// Initialize controller
+document.addEventListener('DOMContentLoaded', () => {
+    new MemberFormController();
+});
+
+    </script>
+</body>
+
+</html>

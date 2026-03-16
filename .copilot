@@ -1,0 +1,13 @@
+{
+  "enable": true,
+  "preferences": {
+    "suggestionStyle": "inline",
+    "languages": {
+      "javascript": { "enabled": true },
+      "typescript": { "enabled": true }
+    }
+  },
+  "privacy": {
+    "sendTelemetry": false
+  }
+}

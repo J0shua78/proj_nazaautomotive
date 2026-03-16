@@ -1,0 +1,72 @@
+# Copilot Instructions - Naza Automotive Test Drive CRM
+
+## Project Overview
+This is a lightweight CRM system for managing test drive leads at Naza Automotive. The application uses vanilla JavaScript, HTML, and CSS with a modern, efficient UI.
+
+## File Structure
+- `pages/` — HTML pages 
+- `assets/` — Styles, images, icons
+- `copilot-instructions.md` — This file
+
+## Coding Standards
+
+### JavaScript
+- Use `const`/`let`, not `var`
+- Use class-based controllers (see `ObjectsController`)
+- Use arrow functions for callbacks
+- Centralize state in controller's `state` object
+- Use event delegation for dynamic elements
+
+### CSS
+- Use CSS variables for colors, spacing, and fonts
+- Mobile-first responsive design
+- Use CSS Grid for layouts
+- Use `.status-badge` and `.priority-badge` for status/priority
+
+### HTML
+- Use semantic HTML5
+- Use floating label pattern for form fields
+- Use `data-sort` attributes for sortable columns
+
+## UI Patterns
+
+- **Floating labels** for inputs/selects
+- **Status badges**: `.status-new`, `.status-contacted`, etc.
+- **Priority badges**: `.priority-high`, `.priority-medium`, `.priority-normal`
+- **Sortable table columns**: Use `.sortable` and `data-sort`
+- **Pagination**: Default 10 per page, options for 25/50/ALL
+
+## Data Structure
+
+```js
+{
+  id: string,
+  objectId: string,      // Lead ID
+  name: string,          // Customer name
+  vehicleInterest: string,
+  priority: string,      // High/Medium/Normal
+  consultant: string,
+  createDate: string,    // YYYY-MM-DD
+  status: string,        // New, Contacted, etc.
+  mobile: string
+}
+```
+
+## How to Extend
+
+- **Add a column**: Add `<th>` and `<td>` in the table, update sorting/filtering if needed.
+- **Add a filter**: Add input/select, bind event, update filter logic.
+- **Add an action**: Add button in action column, implement handler.
+
+## Testing
+
+- Use mock data in `mockObjectsData`
+- Test all filters, sorts, and pagination
+- Check mobile responsiveness
+
+## Future Enhancements
+
+- Backend API integration
+- Export features
+- Advanced filtering
+- User authentication

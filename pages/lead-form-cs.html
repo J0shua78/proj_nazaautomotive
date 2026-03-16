@@ -78,6 +78,11 @@
         .col-6 { grid-column: span 6; }
         .col-8 { grid-column: span 8; }
         .col-9 { grid-column: span 9; }
+        .col-12 { grid-column: span 12; }.col-3 { grid-column: span 3; }
+        .col-4 { grid-column: span 4; }
+        .col-6 { grid-column: span 6; }
+        .col-8 { grid-column: span 8; }
+        .col-9 { grid-column: span 9; }
         .col-12 { grid-column: span 12; }
         .col-32 { grid-column: span 4; }
         @media (max-width: 768px) { .col-32 { grid-column: span 6; } }
@@ -87,6 +92,7 @@
         .col-432 { grid-column: span 3; }
         @media (max-width: 768px) { .col-432 { grid-column: span 4; } }
         @media (max-width: 500px) { .col-432 { grid-column: span 6; } }
+
 
         .form-floating { position: relative; }
         .form-floating input, .form-floating select {
@@ -99,6 +105,16 @@
             appearance: none;
         }
 
+                /* Placeholder Logic */
+        .form-floating input::placeholder {
+            color: var(--px-placeholder);
+            font-style: italic; /* ADDED: Placeholder with italic */
+            font-weight: 400;
+            opacity: 0; 
+            transition: opacity 0.15s;
+        }
+        .form-floating input:focus::placeholder { opacity: 1; }
+
         .form-floating select {
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%235e6e82' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
             background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 10px 8px;
@@ -110,6 +126,20 @@
             transition: all 0.2s ease-in-out; color: var(--px-text-static);
             font-size: var(--base-font); transform-origin: 0 0;
         }
+
+        /* Fix for date input label */
+        .form-floating input[type="date"]:focus ~ label,
+        .form-floating input[type="date"]:valid ~ label {
+            transform: scale(0.8) translateY(-0.7rem);
+            font-weight: 700; color: var(--px-text-label);
+        }
+
+        /* Ensure labels don't get stuck if the browser autofills the input */
+    input:-webkit-autofill ~ label,
+    input:-webkit-autofill:focus ~ label {
+        transform: scale(0.8) translateY(-0.7rem);
+        font-weight: 700;
+    }
 
         .form-floating input:focus ~ label,
         .form-floating input:not(:placeholder-shown) ~ label,
@@ -131,22 +161,20 @@
         }
         .btn-primary { background-color: var(--px-primary); color: #fff; }
         .btn-outline { background: #fff; border: 1px solid var(--px-border); color: var(--px-text-static); }
-        .btn-check { 
-            background: #edf2ff; color: var(--px-primary); border: 1px solid #d0dfff; 
-            height: var(--input-height); width: 100%;
-        }
-        .btn-check:hover { background: var(--px-primary); color: #fff; }
-
+        
         .readonly-field { background-color: #f8f9fb !important; color: #7a828e !important; }
-    </style>
-    <style>
-
-        .sys-info-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
-            font-size: 0.78rem; color: var(--px-text-static);
+        
+        .error-text {
+            color: var(--px-danger);
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: none;
+            margin-top: 2px;
+            margin-left: 5px;
         }
-        .sys-info-grid b { color: var(--px-text-main); }
-
+        .is-invalid {
+            border-color: var(--px-danger) !important;
+        }
     </style>
 </head>
 <body>
@@ -154,110 +182,198 @@
 <div class="container">
     <div class="header-flex">
         <div class="header-left">
-            <h2>LEAD - VIEW</h2>
+            <h2>LEAD - ADD</h2>
         </div>
         <div>
-            <!--button class="btn btn-outline">SCHEDULE TEST DRIVE</button>
-            <button class="btn btn-primary">CREATE BOOKING</button-->
-            <button class="btn btn-primary" style="margin-right: 0.4rem;">CLOSE</button>
-            
+            <button class="btn btn-outline" style="margin-right: 0.4rem;">CANCEL</button>
+            <button class="btn btn-primary" onclick="validateForm()">SAVE</button>
         </div>
     </div>
 
-    
+    <div class="card">
         <div class="section-divider">LEAD INFO</div>
         <div class="row">
-            <div class="form-floating col-32">
-                <input type="text" class="readonly-field" value="L-2026-001" readonly placeholder=" "><label>Lead ID</label>
+            <div class="form-floating col-12">
+                <input type="text" class="readonly-field" value="(AUTO ID)" readonly placeholder=" "><label>Lead ID</label>
             </div>
-            <div class="form-floating col-32">
-                <select class="readonly-field" style="pointer-events: none;"><option>Glenmarie HQ</option></select><label>Sales Outlet</label>
+            <div class="form-floating col-6">
+                <select id="branch" value="" onchange="this.setAttribute('value', this.value)">
+                    <option value=""></option>
+                    <option value="Glenmarie">Glenmarie HQ</option>
+                    <option value="ShahAlam">Shah Alam Branch</option>
+                </select><label>Sales Outlet </label>
             </div>
-            <div class="form-floating col-32">
-                <select class="readonly-field" style="pointer-events: none;"><option>Ali (SC101)</option></select><label>Sales Consultant</label>
+            <div class="form-floating col-6">
+                <select id="sc" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="SC101">Ali (SC101)</option>
+                    <option value="SC102">Siti (SC102)</option>
+                </select><label>Sales Consultant</label>
             </div>
         </div>
 
         <div class="section-divider">CUSTOMER PROFILE</div>
         <div class="row">
             <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>Individual</option></select><label>Customer Type</label>
+                <select id="lead_type" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="IND">Individual</option>
+                    <option value="CO">Company</option>
+                </select><label>Customer Type</label>
             </div>
             <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>High</option></select><label>Priority</label>
-            </div>
-            <div class="form-floating col-432"><input type="text" class="readonly-field" value="Ahmad" readonly placeholder=" "><label>First Name*</label></div>
-            <div class="form-floating col-432"><input type="text" class="readonly-field" value="Bin Hassan" readonly placeholder=" "><label>Last Name*</label></div>
-            <div class="form-floating col-432"><input type="text" class="readonly-field" value="880101-14-5566" readonly placeholder=" "><label>IC / Passport</label></div>
-            <div class="form-floating col-432"><input type="text" class="readonly-field" value="Tech Solutions" readonly placeholder=" "><label>Company Name</label></div>
-            <div class="form-floating col-432"><input type="text" class="readonly-field" value="012-3456789" readonly placeholder=" "><label>Mobile No</label></div>
-            <div class="form-floating col-6"><input type="text" class="readonly-field" value="ahmad@email.com" readonly placeholder=" "><label>Email Address</label></div>
-            <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>KL</option></select><label>Location</label>
+                <select id="priority" onchange="checkValue(this)">
+                    <option value="N">Normal</option>
+                    <option value="M">Medium</option>
+                    <option value="H">High</option>
+                </select><label>Priority</label>
             </div>
             <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>WhatsApp</option></select><label>Contact Channel</label>
+                <input type="text" id="fname" placeholder=" " oninput="checkValue(this); clearError(this)">
+                <label>First Name*</label>
+                <div id="fname-error" class="error-text">Required</div>
+            </div>
+            <div class="form-floating col-6">
+                <input type="text" id="lname" placeholder=" " oninput="checkValue(this); clearError(this)">
+                <label>Last Name*</label>
+                <div id="lname-error" class="error-text">Required</div>
+            </div>
+            <div class="form-floating col-6"><input type="text" id="ic" placeholder="eg. 901030105432" oninput="checkValue(this)"><label>IC / Passport / Company Reg.</label></div>
+            <div class="form-floating col-6"><input type="text" id="comp_name" placeholder=" " oninput="checkValue(this)"><label>Company Name</label></div>
+            <div class="form-floating col-6"><input type="tel" id="mobile" placeholder="eg. 01234567890" oninput="checkValue(this)"><label>Mobile No</label></div>
+            <div class="form-floating col-6"><input type="email" id="email" placeholder=" " oninput="checkValue(this)"><label>Email Address</label></div>
+            <div class="form-floating col-6">
+                <select id="loc" onchange="checkValue(this)">
+                    <option value="WA">KL</option>
+                    <option value="EM">PJ</option>
+                </select><label>Location</label>
+            </div>
+            <div class="form-floating col-6">
+                <select id="channel" onchange="checkValue(this)">
+                    <option value="WA">WhatsApp</option>
+                    <option value="EM">Email</option>
+                    <option value="SMS">SMS</option>
+                </select><label>Contact Channel</label>
             </div>
         </div>
 
         <div class="section-divider">VEHICLE INTEREST</div>
         <div class="row">
             <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>SUZUKI</option></select><label>Brand</label>
+                <select id="brand" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="SUZUKI">SUZUKI</option>
+                </select><label>Brand</label>
             </div>
             <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>JIMNY 5-DOOR</option></select><label>Vehicle Model</label>
+                <select id="model" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="JIMNY">JIMNY 5-DOOR</option>
+                    <option value="SWIFT">SWIFT SPORT</option>
+                </select><label>Vehicle Model</label>
             </div>
-            <div class="form-floating col-12"><input type="text" class="readonly-field" value="White, Black, Full Spec" readonly placeholder=" "><label>Model Description</label></div>
+            <div class="form-floating col-12"><input type="text" id="m_desc" placeholder=" " oninput="checkValue(this)"><label>Model Description</label></div>
             <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>Campaign</option></select><label>Lead Source</label>
+                <select id="source" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="FB">Facebook</option>
+                    <option value="WI">Walk-in</option>
+                    <option value="CAM">Campaign</option>
+                    <option value="CALL">Call</option>
+                </select><label>Lead Source</label>
             </div>
-            <div class="form-floating col-6"><input type="text" class="readonly-field" value="CNY 2026" readonly placeholder=" "><label>Campaign</label></div>
+            <div class="form-floating col-6"><input type="text" id="campaign" placeholder=" " oninput="checkValue(this)"><label>Campaign</label></div>
             <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>Glenmarie HQ</option></select><label>Prefer Outlet</label>
+                <select id="pbranch" onchange="checkValue(this)">
+                    <option value="Glenmarie">Glenmarie HQ</option>
+                    <option value="ShahAlam">Shah Alam Branch</option>
+                </select><label>Prefer Outlet </label>
             </div>
         </div>
 
-        <div class="section-divider">QUALIFICATION</div>
+        <div class="section-divider">QUALIFICATION (Sales Advisor Updates)</div>
         <div class="row">
             <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>RM100K-RM120K</option></select><label>Budget Range</label>
+                <select id="budget" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="80-100">RM80K-RM100K</option>
+                    <option value="100-120">RM100K-RM120K</option>
+                </select><label>Budget Range</label>
             </div>
-            <div class="form-floating col-6"><input type="text" class="readonly-field" value="2026-04-15" readonly placeholder=" "><label>Purchase Timeline</label></div>
+                        <div class="form-floating col-6">
+                <select id="finance" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                </select><label>Financing Needed</label>
+            </div>
+            <div class="form-floating col-6"><input type="date" id="p_date" onchange="checkValue(this)"><label>Purchase Timeline</label></div>
             <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>Yes</option></select><label>Trade-in Interest</label>
+                <select id="trade" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="Y">Yes</option>
+                    <option value="N">No</option>
+                </select><label>Trade-in Interest</label>
+            </div>
+      
+            <div class="form-floating col-6">
+                <select id="status" onchange="checkValue(this)">
+                    <option value="NEW">New</option>
+                    <option value="CON">Contacted</option>
+                    <option value="QUAL">Qualified</option>
+                    <option value="LOST">Lost</option>
+                </select><label>Status</label>
             </div>
             <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>Yes</option></select><label>Financing Needed</label>
+                <select id="lost_reason" onchange="checkValue(this)">
+                    <option value=""></option>
+                    <option value="BUD">Over Budget</option>
+                    <option value="COMP">Bought Competitor</option>
+                    <option value="NR">No Response</option>
+                </select><label>If Unqualified/Lost: Reason</label>
             </div>
-            <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>New</option></select><label>Status</label>
-            </div>
-            <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>N/A</option></select><label>If Unqualified/Lost: Reason</label>
-            </div>
-            <div class="form-floating col-6">
-                <select class="readonly-field" style="pointer-events: none;"><option>High</option></select><label>Priority</label>
+                        <div class="form-floating col-6">
+                <select id="q_priority" onchange="checkValue(this)">
+                    <option value="Normal">Normal</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select><label>Priority</label>
             </div>
         </div>
-        <div class="section-divider">PDPA</div>
-        <div class="sys-info-grid">
-            <div>Request Sent: <b>2026-01-15 09:30</b></div>
-            <div>Accepted On: <b>2026-01-15 09:32</b></div>
-        </div>
-        <div class="section-divider">SYSTEM INFO</div>
-        <div class="sys-info-grid">
-            <div>Created On: <b>2024-01-15 09:30</b></div>
-            <div>Created By: <b>Ali Bin Ahmad</b></div>
-            <div>Last Change: <b>-</b></div>
-            <div>Changed By: <b>-</b></div>
-        </div>
-
-
-    
+    </div>
 </div>
 
+<script>
+    function checkValue(el) {
+        if (el.value !== "") { el.setAttribute('value', el.value); } 
+        else { el.removeAttribute('value'); }
+    }
+    window.onload = function() {
+        document.querySelectorAll('select, input').forEach(el => checkValue(el));
+    };
 
+    function validateForm() {
+        let isValid = true;
+        const fields = ['fname', 'lname'];
+        fields.forEach(id => {
+            const el = document.getElementById(id);
+            const errorEl = document.getElementById(id + '-error');
+            if (!el.value || el.value.trim() === "") {
+                el.classList.add('is-invalid');
+                errorEl.style.display = 'block';
+                isValid = false;
+            } else {
+                el.classList.remove('is-invalid');
+                errorEl.style.display = 'none';
+            }
+        });
+        if (isValid) alert('Form saved successfully!');
+    }
 
+    function clearError(el) {
+        el.classList.remove('is-invalid');
+        document.getElementById(el.id + '-error').style.display = 'none';
+    }
+</script>
 </body>
 </html>

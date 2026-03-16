@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-card-bg: #ffffff;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-text-main: #232e3e;
+            --px-text-label: #8da1b9;
+            --px-text-static: #5e6e82;
+            --px-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--px-bg);
+            color: var(--px-text-main);
+            margin: 0;
+            padding: 1rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        h2 {
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        /* Filter Section */
+        .filter-container {
+            background: var(--px-card-bg);
+            border: 1px solid var(--px-border);
+            border-radius: 0.4rem;
+            padding: 1rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .filter-container label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--px-text-static);
+        }
+        .filter-container input[type="date"] {
+            padding: 0.5rem;
+            border: 1px solid var(--px-border);
+            border-radius: 0.3rem;
+            font-family: inherit;
+            color: var(--px-text-main);
+        }
+
+        /* Stats Cards - Clean Style */
+        .dashboard-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+        @media (max-width: 900px) { .dashboard-row { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .dashboard-row { grid-template-columns: 1fr; } }
+
+        .dashboard-card {
+            background: var(--px-card-bg);
+            border: 1px solid var(--px-border);
+            border-radius: 0.4rem;
+            box-shadow: var(--px-shadow);
+            padding: 1.5rem 1rem;
+            text-align: center;
+        }
+        .dashboard-card .label {
+            font-size: 0.75rem;
+            color: var(--px-text-label);
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+        .dashboard-card .value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--px-primary);
+        }
+
+        /* Table Components */
+        .card {
+            background: var(--px-card-bg);
+            border: 1px solid var(--px-border);
+            border-radius: 0.4rem;
+            box-shadow: var(--px-shadow);
+            margin-bottom: 1.2rem;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 1rem;
+            font-size: 0.9rem;
+            font-weight: 800;
+            background: #f8f9fb;
+            border-bottom: 1px solid var(--px-border);
+        }
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        table th {
+            background: #f8f9fb;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--px-text-static);
+            text-transform: uppercase;
+            font-size: 0.65rem;
+            border-bottom: 1px solid var(--px-border);
+        }
+        table td { padding: 10px; border-bottom: 1px solid var(--px-border); }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            min-width: 80px;
+            text-align: center;
+        }
+        .status-new { background: #e0f2fe; color: #0369a1; }
+        .status-contacted { background: #fef3c7; color: #b45309; }
+        .status-qualified { background: #fff3c5; color: #886f30; }
+        .status-converted { background: #d1fae5; color: #065f46; }
+        .status-arrived { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+        .status-confirmed { background: #dcfce7; color: #166534; }
+
+        .monospace-numbers { font-variant-numeric: tabular-nums; }
+    </style>
+</head>
+<body>
+
+    <h2>CRM Dashboard</h2>
+
+    <div class="filter-container">
+        <label for="startDate">Calculate Stats From:</label>
+        <input type="date" id="startDate" value="2026-01-01">
+    </div>
+    
+    <div class="dashboard-row">
+        <div class="dashboard-card">
+            <div class="label">New Leads</div>
+            <div class="value" id="stat-new">0</div>
+        </div>
+        <div class="dashboard-card">
+            <div class="label">Contacted</div>
+            <div class="value" id="stat-contacted">0</div>
+        </div>
+        <div class="dashboard-card">
+            <div class="label">Qualified</div>
+            <div class="value" id="stat-qualified">0</div>
+        </div>
+        <div class="dashboard-card">
+            <div class="label">Converted</div>
+            <div class="value" id="stat-converted">0</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Test Drive Schedule Today</div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Customer</th>
+                        <th>Model</th>
+                        <th>Consultant</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="monospace-numbers">10:30 AM</td>
+                        <td style="font-weight:600">Ahmad bin Razak</td>
+                        <td>Kia Carnival</td>
+                        <td>Sales A</td>
+                        <td><span class="status-badge status-arrived">Arrived</span></td>
+                    </tr>
+                    <tr>
+                        <td class="monospace-numbers">02:00 PM</td>
+                        <td style="font-weight:600">Siti Nurhaliza</td>
+                        <td>Maserati Grecale</td>
+                        <td>Sales B</td>
+                        <td><span class="status-badge status-contacted">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Recent Leads</div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Lead ID</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Status</th>
+                        <th>Consultant</th>
+                    </tr>
+                </thead>
+                <tbody id="leads-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const mockLeads = [
+            { id: '10001', date: '2026-01-15', name: 'Ahmad bin Razak', mobile: '0111000001', status: 'New', consultant: 'Sales A' },
+            { id: '10002', date: '2026-01-16', name: 'Siti Nurhaliza', mobile: '0111000002', status: 'Contacted', consultant: 'Sales B' },
+            { id: '10003', date: '2026-01-17', name: 'Tan Wei Ming', mobile: '0111000003', status: 'Qualified', consultant: 'Sales A' },
+            { id: '10004', date: '2026-01-18', name: 'Devi A/P Subramaniam', mobile: '0111000004', status: 'New', consultant: 'Sales C' },
+            { id: '10005', date: '2026-01-19', name: 'Mohd Fikri', mobile: '0111000005', status: 'Converted', consultant: 'Sales B' },
+            { id: '10006', date: '2026-01-20', name: 'Lim Kah Seng', mobile: '0111000006', status: 'Qualified', consultant: 'Sales A' },
+            { id: '10007', date: '2026-01-21', name: 'Nurul Huda', mobile: '0111000007', status: 'New', consultant: 'Sales C' },
+            { id: '10008', date: '2026-01-22', name: 'Kavita A/P Ravi', mobile: '0111000008', status: 'Contacted', consultant: 'Sales B' }
+        ];
+
+        const dateInput = document.getElementById('startDate');
+        
+        function updateDashboard() {
+            const filterDate = new Date(dateInput.value);
+            
+            // Filter leads based on start date
+            const filteredLeads = mockLeads.filter(lead => new Date(lead.date) >= filterDate);
+
+            // Calculate Counts
+            const counts = {
+                'New': 0,
+                'Contacted': 0,
+                'Qualified': 0,
+                'Converted': 0
+            };
+
+            filteredLeads.forEach(lead => {
+                if(counts.hasOwnProperty(lead.status)) counts[lead.status]++;
+            });
+
+            // Update DOM
+            document.getElementById('stat-new').textContent = counts['New'];
+            document.getElementById('stat-contacted').textContent = counts['Contacted'];
+            document.getElementById('stat-qualified').textContent = counts['Qualified'];
+            document.getElementById('stat-converted').textContent = counts['Converted'];
+
+            // Render Table
+            const tbody = document.getElementById('leads-tbody');
+            tbody.innerHTML = filteredLeads.map(lead => `
+                <tr>
+                    <td style="color:#3874ff; font-weight:600">${lead.id}</td>
+                    <td class="monospace-numbers">${lead.date}</td>
+                    <td style="font-weight:600">${lead.name}</td>
+                    <td>${lead.mobile}</td>
+                    <td><span class="status-badge status-${lead.status.toLowerCase()}">${lead.status}</span></td>
+                    <td>${lead.consultant}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Listener for date change
+        dateInput.addEventListener('change', updateDashboard);
+
+        // Initial run
+        updateDashboard();
+    </script>
+</body>
+</html>

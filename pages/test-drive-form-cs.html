@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix CRM - Add Test Drive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --px-bg: #f9fafd;
+            --px-card-bg: #ffffff;
+            --px-border: #d8e2ef;
+            --px-primary: #3874ff;
+            --px-primary-focus: rgba(56, 116, 255, 0.2);
+            --px-text-main: #232e3e;
+            --px-text-label: #8da1b9;
+            --px-text-static: #5e6e82;
+            --px-placeholder: #a5b0be;
+            --px-danger: #f33923;
+            --px-success: #00d27a;
+            --px-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            --input-height: 2.7rem;
+            --input-padding-x: 0.75rem;
+            --grid-gap: 0.8rem;
+            --base-font: 0.82rem;
+        }
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--px-bg);
+            color: var(--px-text-main);
+            margin: 0;
+            padding: 1.5rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        h2 { font-weight: 800; font-size: 1.15rem; margin: 0; text-transform: uppercase; letter-spacing: 0.02em; }
+        .card {
+            background: var(--px-card-bg);
+            border: 1px solid var(--px-border);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: var(--px-shadow);
+        }
+        .section-divider {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--px-text-main);
+            margin: 1.8rem 0 1rem 0;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid var(--px-border);
+        }
+        .section-divider:first-child { margin-top: 0; }
+        .row {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--grid-gap);
+            margin-bottom: 0.4rem;
+        }
+        .col-6 { grid-column: span 6; }
+        .col-12 { grid-column: span 12; }
+        @media (max-width: 480px) { .col-6 { grid-column: span 12; } }
+        .form-floating { position: relative; }
+        .form-floating input, .form-floating select {
+            display: block; width: 100%; height: var(--input-height);
+            padding: 1.1rem var(--input-padding-x) 0.2rem;
+            font-size: var(--base-font); font-family: inherit;
+            color: var(--px-text-main); font-weight: 600;
+            background-color: #fff; border: 1px solid var(--px-border);
+            border-radius: 0.35rem; transition: all 0.2s; box-sizing: border-box;
+            appearance: none;
+        }
+        .form-floating input::placeholder {
+            color: var(--px-placeholder);
+            font-style: italic;
+            font-weight: 400;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .form-floating input:focus::placeholder { opacity: 1; }
+        .form-floating select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%235e6e82' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 10px 8px;
+        }
+        .form-floating label {
+            position: absolute; top: 0; left: var(--input-padding-x);
+            height: 100%; padding: 0.8rem 0; pointer-events: none;
+            transition: all 0.2s ease-in-out; color: var(--px-text-static);
+            font-size: var(--base-font); transform-origin: 0 0;
+        }
+        .form-floating input:focus ~ label,
+        .form-floating input:not(:placeholder-shown) ~ label,
+        .form-floating select:focus ~ label,
+        .form-floating select:not([value=""]) ~ label {
+            transform: scale(0.8) translateY(-0.7rem);
+            font-weight: 700; color: var(--px-text-label);
+        }
+        .form-floating input:focus, .form-floating select:focus {
+            border-color: var(--px-primary); outline: 0;
+            box-shadow: 0 0 0 0.18rem var(--px-primary-focus);
+        }
+        .btn {
+            font-family: inherit; font-weight: 700; cursor: pointer;
+            padding: 0.5rem 1rem; font-size: 0.78rem; border-radius: 0.3rem;
+            border: 1px solid transparent; transition: all 0.2s;
+        }
+        .btn-primary { background-color: var(--px-primary); color: #fff; }
+        .btn-outline { background: #fff; border: 1px solid var(--px-border); color: var(--px-text-static); }
+        .readonly-field { background-color: #f8f9fb !important; color: #7a828e !important; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header-flex">
+        <div class="header-left">
+            <h2>TEST DRIVE - ADD</h2>
+        </div>
+        <div>
+            <button class="btn btn-outline" style="margin-right: 0.4rem;" type="button">CANCEL</button>
+            <button class="btn btn-primary" form="testDriveForm" type="submit">SAVE</button>
+        </div>
+    </div>
+    <div class="card">
+        <!-- Lead Search Section -->
+        <div class="section-divider">SELECT LEAD</div>
+        <div class="row">
+            <div class="form-floating col-12">
+                <input type="text" id="leadSearch" placeholder=" " autocomplete="off">
+                <label>Search Lead by Name, Mobile, or Lead ID</label>
+                <div id="leadSearchResults" style="position:relative; z-index:10; background:#fff; border:1px solid var(--px-border); border-radius:0.3rem; max-height:180px; overflow-y:auto; display:none;"></div>
+            </div>
+        </div>
+        <!-- ...existing form... -->
+        <form id="testDriveForm" novalidate>
+            <div class="section-divider">TEST DRIVE INFO</div>
+            <div class="row">
+                <div class="form-floating col-12">
+                    <input type="text" class="readonly-field" id="testDriveId" value="(AUTO ID)" readonly placeholder=" "><label>Test Drive ID</label>
+                </div>
+                <div class="form-floating col-6">
+                    <input type="text" id="customerName" name="customerName" placeholder=" " required readonly>
+                    <label>Customer Name*</label>
+                </div>
+                <div class="form-floating col-6">
+                    <input type="tel" id="mobile" name="mobile" placeholder="eg. 01234567890" required readonly>
+                    <label>Mobile No*</label>
+                </div>
+                <div class="form-floating col-6">
+                    <select id="consultant" name="consultant" required>
+                        <option value=""></option>
+                        <option value="Sales A">Sales A</option>
+                        <option value="Sales B">Sales B</option>
+                        <option value="Sales C">Sales C</option>
+                    </select>
+                    <label>Sales Consultant*</label>
+                </div>
+                <div class="form-floating col-6">
+                    <input type="datetime-local" id="scheduledDateTime" name="scheduledDateTime" required>
+                    <label>Scheduled Date Time*</label>
+                </div>
+            </div>
+            <div class="section-divider">VEHICLE INFO</div>
+            <div class="row">
+                <div class="form-floating col-6">
+                    <select id="vehicleModel" name="vehicleModel" required>
+                        <option value=""></option>
+                        <option value="Suzuki Jimny 5-Door">Suzuki Jimny 5-Door</option>
+                        <option value="Suzuki Swift Sport">Suzuki Swift Sport</option>
+                        <option value="Suzuki Jimny 3-Door">Suzuki Jimny 3-Door</option>
+                        <option value="Suzuki Fronx">Suzuki Fronx</option>
+                    </select>
+                    <label>Vehicle Model*</label>
+                </div>
+                <div class="form-floating col-6">
+                    <input type="text" id="modelDescription" name="modelDescription" placeholder=" ">
+                    <label>Model Description</label>
+                </div>
+            </div>
+            <div class="section-divider">STATUS</div>
+            <div class="row">
+                <div class="form-floating col-6">
+                    <select id="status" name="status" required>
+                        <option value="New">New</option>
+                        <option value="Contacted">Contacted</option>
+                        <option value="Qualified">Qualified</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Converted">Converted</option>
+                        <option value="Lost / Closed">Lost / Closed</option>
+                    </select>
+                    <label>Status*</label>
+                </div>
+                <div class="form-floating col-6">
+                    <select id="priority" name="priority">
+                        <option value="Normal">Normal</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    <label>Priority</label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    // Mock lead data for demo
+    const mockLeads = [
+        { id: '10001', name: 'Ahmad bin Razak', mobile: '0111000001', consultant: 'Sales A' },
+        { id: '10002', name: 'Siti Nurhaliza', mobile: '0111000002', consultant: 'Sales B' },
+        { id: '10003', name: 'Tan Wei Ming', mobile: '0111000003', consultant: 'Sales A' },
+        { id: '10004', name: 'Devi A/P Subramaniam', mobile: '0111000004', consultant: 'Sales C' },
+        { id: '10005', name: 'Mohd Fikri', mobile: '0111000005', consultant: 'Sales B' }
+        // ...add more as needed
+    ];
+
+    // Floating label logic for selects and inputs
+    function updateFloatingLabel(element) {
+        if (element.value !== "") {
+            element.setAttribute('value', element.value);
+        } else {
+            element.removeAttribute('value');
+        }
+    }
+    function initializeFloatingLabels() {
+        document.querySelectorAll('select, input').forEach(element => updateFloatingLabel(element));
+    }
+
+    // Lead search and populate logic
+    function filterLeads(query) {
+        query = query.trim().toLowerCase();
+        if (!query) return [];
+        return mockLeads.filter(lead =>
+            lead.name.toLowerCase().includes(query) ||
+            lead.mobile.includes(query) ||
+            lead.id.includes(query)
+        );
+    }
+
+    function showLeadResults(results) {
+        const resultsDiv = document.getElementById('leadSearchResults');
+        if (results.length === 0) {
+            resultsDiv.style.display = 'none';
+            resultsDiv.innerHTML = '';
+            return;
+        }
+        resultsDiv.innerHTML = results.map(lead =>
+            `<div class="lead-result-item" style="padding:8px; cursor:pointer; border-bottom:1px solid #eee;" data-id="${lead.id}" data-name="${lead.name}" data-mobile="${lead.mobile}" data-consultant="${lead.consultant}">
+                <strong>${lead.name}</strong> (${lead.id})<br>
+                <span style="font-size:0.85em;color:#888;">${lead.mobile} &middot; ${lead.consultant}</span>
+            </div>`
+        ).join('');
+        resultsDiv.style.display = 'block';
+    }
+
+    function selectLead(lead) {
+        document.getElementById('customerName').value = lead.name;
+        document.getElementById('mobile').value = lead.mobile;
+        document.getElementById('consultant').value = lead.consultant;
+        updateFloatingLabel(document.getElementById('customerName'));
+        updateFloatingLabel(document.getElementById('mobile'));
+        updateFloatingLabel(document.getElementById('consultant'));
+        document.getElementById('leadSearch').value = `${lead.name} (${lead.id})`;
+        document.getElementById('leadSearchResults').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeFloatingLabels();
+
+        // Lead search event
+        const leadSearchInput = document.getElementById('leadSearch');
+        const leadSearchResults = document.getElementById('leadSearchResults');
+        leadSearchInput.addEventListener('input', function() {
+            const results = filterLeads(this.value);
+            showLeadResults(results);
+        });
+        // Click on result
+        leadSearchResults.addEventListener('mousedown', function(e) {
+            const item = e.target.closest('.lead-result-item');
+            if (item) {
+                selectLead({
+                    id: item.getAttribute('data-id'),
+                    name: item.getAttribute('data-name'),
+                    mobile: item.getAttribute('data-mobile'),
+                    consultant: item.getAttribute('data-consultant')
+                });
+            }
+        });
+        // Hide results on blur (with delay for click)
+        leadSearchInput.addEventListener('blur', function() {
+            setTimeout(() => { leadSearchResults.style.display = 'none'; }, 200);
+        });
+
+        // Form validation
+        const form = document.getElementById('testDriveForm');
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                form.reportValidity();
+                return;
+            }
+            event.preventDefault();
+            alert('Test Drive saved successfully!');
+            // ...submit logic here...
+        });
+        document.querySelectorAll('select').forEach(selectEl => {
+            selectEl.addEventListener('change', function() {
+                updateFloatingLabel(this);
+            });
+        });
+    });
+</script>
+</body>
+</html>

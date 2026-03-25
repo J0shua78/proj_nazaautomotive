@@ -176,6 +176,121 @@
         .is-invalid {
             border-color: var(--px-danger) !important;
         }
+
+        /* --- Consistent style for radio and checkbox --- */
+    .input-group-row {
+        display: flex;
+        align-items: center;
+        height: var(--input-height);
+        border: 1px solid var(--px-border);
+        border-radius: 0.35rem;
+        background: #fff;
+        padding: 0 0.75rem;
+        font-size: var(--base-font);
+        font-family: inherit;
+        color: var(--px-text-main);
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+        box-sizing: border-box;
+        gap: 2rem;
+    }
+    .input-group-row label {
+        margin: 0;
+        font-size: var(--base-font);
+        font-family: inherit;
+        color: var(--px-text-main);
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.4em;
+        cursor: pointer;
+    }
+    .input-group-row input[type="radio"],
+    .input-group-row input[type="checkbox"] {
+        width: 1.1em;
+        height: 1.1em;
+        accent-color: var(--px-primary);
+        margin: 0 0.4em 0 0;
+        vertical-align: middle;
+        flex-shrink: 0;
+    }
+    /* Checkbox single row style */
+    .input-group-checkbox {
+        display: flex;
+        align-items: center;
+        height: var(--input-height);
+        border: 1px solid var(--px-border);
+        border-radius: 0.35rem;
+        background: #fff;
+        padding: 0 0.75rem;
+        font-size: var(--base-font);
+        font-family: inherit;
+        color: var(--px-text-main);
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+        box-sizing: border-box;
+        gap: 0.7em;
+    }
+    .input-group-checkbox label {
+        margin: 0;
+        font-size: var(--base-font);
+        font-family: inherit;
+        color: var(--px-text-main);
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.4em;
+        cursor: pointer;
+    }
+    .input-group-checkbox input[type="checkbox"] {
+        width: 1.1em;
+        height: 1.1em;
+        accent-color: var(--px-primary);
+        margin: 0 0.4em 0 0;
+        vertical-align: middle;
+        flex-shrink: 0;
+    }
+
+    /* --- Consistent style for textarea --- */
+    .form-floating textarea {
+        display: block;
+        width: 100%;
+        height: var(--input-height);
+        min-height: var(--input-height);
+        max-height: 8rem;
+        padding: 1.1rem var(--input-padding-x) 0.2rem;
+        font-size: var(--base-font);
+        font-family: inherit;
+        color: var(--px-text-main);
+        font-weight: 700;
+        background-color: #fff;
+        border: 1px solid var(--px-border);
+        border-radius: 0.35rem;
+        transition: all 0.2s;
+        box-sizing: border-box;
+        resize: vertical;
+    }
+    .form-floating textarea::placeholder {
+        color: var(--px-placeholder);
+        font-style: italic;
+        font-weight: 400;
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+    .form-floating textarea:focus::placeholder {
+        opacity: 1;
+    }
+    .form-floating textarea:focus ~ label,
+    .form-floating textarea:not(:placeholder-shown) ~ label {
+        transform: scale(0.8) translateY(-0.7rem);
+        font-weight: 700;
+        color: var(--px-text-label);
+    }
+    .form-floating textarea:focus {
+        border-color: var(--px-primary);
+        outline: 0;
+        box-shadow: 0 0 0 0.18rem var(--px-primary-focus);
+    }
     </style>
 </head>
 <body>
@@ -186,7 +301,7 @@
             <h2>LEAD - ADD</h2>
         </div>
         <div>
-            <button class="btn btn-outline" style="margin-right: 0.4rem;">CANCEL</button>
+            <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="closeParentPopup()">CANCEL</button>
             <button class="btn btn-primary" onclick="validateForm()">SAVE</button>
         </div>
     </div>
@@ -346,6 +461,64 @@
                 </select><label>If Unqualified/Lost: Reason</label>
             </div>
         </div>
+
+        <div class="section-divider">EXTRA INPUT TYPES</div>
+        <div class="row">
+            <!-- Radio Button Example (no label, keep as is) -->
+            <div class="col-32">
+                <div class="input-group-row">
+                    <label>
+                        <input type="radio" name="gender" value="male"> Male
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="female"> Female
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="other"> Other
+                    </label>
+                </div>
+            </div>
+            <!-- Checkbox Example (no label, keep as is) -->
+            <div class="col-32">
+                <div class="input-group-checkbox">
+                    <label>
+                        <input type="checkbox" id="newsletter" value="yes"> Yes, send me updates
+                    </label>
+                </div>
+            </div>
+
+            
+            <!-- Textarea Example -->
+            <div class="form-floating col-32">
+                <textarea id="notes" placeholder="Additional Notes"></textarea>
+                <label>Additional Notes</label>
+            </div>
+            <!-- File Input Example -->
+            <div class="col-32" style="display: flex; flex-direction: column;">
+                <label for="attachment" style="font-size:0.82rem; font-weight:700; color:var(--px-text-static); margin-bottom:0.2rem;">Upload Attachment</label>
+                <input type="file" id="attachment" name="attachment">
+            </div>
+            <!-- Range Example -->
+            <div class="col-32" style="display: flex; flex-direction: column;">
+                <label for="satisfaction" style="font-size:0.82rem; font-weight:700; color:var(--px-text-static); margin-bottom:0.2rem;">Satisfaction Level</label>
+                <input type="range" id="satisfaction" name="satisfaction" min="1" max="10" value="5" style="width:100%;">
+            </div>
+            <!-- Color Picker Example -->
+            <div class="col-32" style="display: flex; flex-direction: column;">
+                <label for="favcolor" style="font-size:0.82rem; font-weight:700; color:var(--px-text-static); margin-bottom:0.2rem;">Favorite Color</label>
+                <input type="color" id="favcolor" name="favcolor" value="#3874ff" style="width:40px; height:28px; border:none;">
+            </div>
+            <!-- Number Example -->
+            <div class="form-floating col-32">
+                <input type="number" id="quantity" min="1" max="100" placeholder=" ">
+                <label>Quantity</label>
+            </div>
+            <!-- Password Example -->
+            <div class="form-floating col-32">
+                <input type="password" id="password" placeholder=" ">
+                <label>Password</label>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -379,6 +552,16 @@
     function clearError(el) {
         el.classList.remove('is-invalid');
         document.getElementById(el.id + '-error').style.display = 'none';
+    }
+
+    // Close the parent popup iframe if possible
+    function closeParentPopup() {
+        if (window.parent && typeof window.parent.document !== "undefined") {
+            var overlay = window.parent.document.getElementById('popup-overlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+            }
+        }
     }
 </script>
 </body>

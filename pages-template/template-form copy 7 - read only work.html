@@ -1154,7 +1154,7 @@
             // Set all input and textarea as readonly, except buttons
             document.querySelectorAll('input, textarea').forEach(function(el) {
                 if (el.type !== 'button' && el.type !== 'submit' && el.type !== 'reset') {
-                    // For special types inside fieldset, apply readonly-style to fieldset and disable input
+                    // For special types inside fieldset, apply readonly-style to fieldset
                     if (
                         el.type === 'file' ||
                         el.type === 'color' ||
@@ -1163,7 +1163,6 @@
                         el.type === 'checkbox'
                     ) {
                         el.classList.remove('readonly-style');
-                        el.setAttribute('disabled', 'disabled'); // Disable input so user cannot change value
                         const fieldset = el.closest('fieldset.input-fieldset');
                         if (fieldset) fieldset.classList.add('readonly-style');
                     } else {

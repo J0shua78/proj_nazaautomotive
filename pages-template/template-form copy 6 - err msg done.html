@@ -654,17 +654,6 @@
             accent-color: var(--px-primary);
             cursor: pointer;
         }
-
-        .readonly-style,
-        input[readonly],
-        textarea[readonly],
-        select[disabled] {
-            background-color: #f8f9fb !important;
-            color: #7a828e !important;
-            cursor: not-allowed !important;
-            opacity: 1 !important;
-            border-style: dashed !important;
-        }
     </style>
 </head>
 
@@ -679,7 +668,6 @@
                 <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="requiredAllFields()">REQUIRED ALL FIELDS</button>
                 <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="invalidAllFields()">INVALID ALL FIELDS</button>
                 <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="customErrorAllFields()">CUSTOM ERROR ALL FIELDS</button>
-                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="setAllReadOnly()">READ ONLY</button>
                 <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="closeParentPopup()">CANCEL</button>
                 <button class="btn btn-primary" onclick="validateForm()">SAVE</button>
             </div>
@@ -1147,42 +1135,6 @@
                     overlay.style.display = 'none';
                 }
             }
-        }
-
-        // Set all fields as readonly/disabled and apply readonly style
-        function setAllReadOnly() {
-            // Set all input and textarea as readonly, except buttons
-            document.querySelectorAll('input, textarea').forEach(function(el) {
-                if (el.type !== 'button' && el.type !== 'submit' && el.type !== 'reset') {
-                    // For special types inside fieldset, apply readonly-style to fieldset and disable input
-                    if (
-                        el.type === 'file' ||
-                        el.type === 'color' ||
-                        el.type === 'range' ||
-                        el.type === 'radio' ||
-                        el.type === 'checkbox'
-                    ) {
-                        el.classList.remove('readonly-style');
-                        el.setAttribute('disabled', 'disabled'); // Disable input so user cannot change value
-                        const fieldset = el.closest('fieldset.input-fieldset');
-                        if (fieldset) fieldset.classList.add('readonly-style');
-                    } else {
-                        el.setAttribute('readonly', 'readonly');
-                        el.classList.add('readonly-style');
-                    }
-                }
-            });
-            // Set all select as disabled and apply style
-            document.querySelectorAll('select').forEach(function(el) {
-                el.setAttribute('disabled', 'disabled');
-                el.classList.add('readonly-style');
-            });
-            // Also visually disable dropdown-checkbox-btn
-            document.querySelectorAll('.dropdown-checkbox-btn').forEach(function(btn) {
-                btn.classList.add('readonly-style');
-                btn.setAttribute('tabindex', '-1');
-                btn.style.pointerEvents = 'none';
-            });
         }
     </script>
 </body>

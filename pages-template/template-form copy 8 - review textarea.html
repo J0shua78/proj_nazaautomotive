@@ -580,7 +580,7 @@
             font-size: var(--base-font);
             font-family: inherit;
             color: var(--px-text-main);
-            font-weight: 700;
+            /* font-weight: 700; */
             background-color: #fff;
             border: 1px solid var(--px-border);
             border-radius: 0.35rem;
@@ -660,11 +660,10 @@
         textarea[readonly],
         select[disabled] {
             background-color: #f8f9fb !important;
-            color: #7a828e !important;
+            color: #000000 !important;
             cursor: not-allowed !important;
             opacity: 1 !important;
-            border-style: dashed !important;
-        }
+            border-style: dashed !important;        }
     </style>
 </head>
 
@@ -1177,12 +1176,29 @@
                 el.setAttribute('disabled', 'disabled');
                 el.classList.add('readonly-style');
             });
-            // Also visually disable dropdown-checkbox-btn
-            document.querySelectorAll('.dropdown-checkbox-btn').forEach(function(btn) {
+            // Visually disable dropdown-checkbox-btn, but allow dropdown to open for viewing
+            document.querySelectorAll('.dropdown-checkbox-wrapper').forEach(function(wrapper) {
+                const btn = wrapper.querySelector('.dropdown-checkbox-btn');
                 btn.classList.add('readonly-style');
-                btn.setAttribute('tabindex', '-1');
-                btn.style.pointerEvents = 'none';
+                btn.setAttribute('tabindex', '0');
+                btn.style.pointerEvents = 'auto';
+                wrapper.classList.add('open');
+                // Prevent toggling/closing in readonly mode
+                btn.onclick = function(e) {
+                    e.stopPropagation();
+                    // Always keep open in readonly
+                    wrapper.classList.add('open');
+                };
             });
+            // Prevent closing dropdown in readonly mode
+            document.addEventListener('click', function keepDropdownOpenReadonly(e) {
+                document.querySelectorAll('.dropdown-checkbox-wrapper').forEach(function(wrapper) {
+                    const btn = wrapper.querySelector('.dropdown-checkbox-btn');
+                    if (btn.classList.contains('readonly-style')) {
+                        wrapper.classList.add('open');
+                    }
+                });
+            }, { capture: true });
         }
     </script>
 </body>

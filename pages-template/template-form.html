@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phoenix CRM - Create New Lead</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+
     <style>
         :root {
             --px-bg: #f9fafd;
@@ -13,14 +15,14 @@
             --px-border: #d8e2ef;
             --px-primary: #3874ff;
             --px-primary-focus: rgba(56, 116, 255, 0.2);
-            --px-text-main: #232e3e; 
-            --px-text-label: #8da1b9; 
-            --px-text-static: #5e6e82; 
+            --px-text-main: #232e3e;
+            --px-text-label: #8da1b9;
+            --px-text-static: #5e6e82;
             --px-placeholder: #a5b0be;
             --px-danger: #f33923;
             --px-success: #00d27a;
             --px-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-            
+
             --input-height: 2.7rem;
             --input-padding-x: 0.75rem;
             --grid-gap: 0.8rem;
@@ -37,7 +39,10 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        .container { max-width: 1000px; margin: 0 auto; }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
 
         .header-flex {
             display: flex;
@@ -45,9 +50,20 @@
             align-items: center;
             margin-bottom: 0.5rem;
         }
-        
-        .header-left { display: flex; align-items: center; gap: 1rem; }
-        h2 { font-weight: 800; font-size: 1.15rem; margin: 0; text-transform: uppercase; letter-spacing: 0.02em; }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        h2 {
+            font-weight: 800;
+            font-size: 1.15rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
 
         .card {
             background: var(--px-card-bg);
@@ -56,7 +72,7 @@
             padding: 0.75rem;
             box-shadow: var(--px-shadow);
         }
-        
+
         .section-divider {
             font-size: 0.78rem;
             font-weight: 800;
@@ -65,12 +81,15 @@
             padding-bottom: 0.4rem;
             border-bottom: 1px solid var(--px-border);
         }
-        .section-divider:first-child { margin-top: 0; }
 
-        .row { 
-            display: grid; 
-            grid-template-columns: repeat(12, 1fr); 
-            gap: var(--grid-gap); 
+        .section-divider:first-child {
+            margin-top: 0;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: var(--grid-gap);
             margin-bottom: 0.4rem;
         }
 
@@ -83,6 +102,9 @@
         .col-4 { grid-column: span 4; }
         .col-6 { grid-column: span 6; }
         .col-8 { grid-column: span 8; }
+        .col-8-12 { grid-column: span 8; }
+        @media (max-width: 768px) { .col-8-12 { grid-column: span 12; } }
+        @media (max-width: 500px) { .col-8-12 { grid-column: span 12; } }
         .col-9 { grid-column: span 9; }
         .col-12 { grid-column: span 12; }
         .col-32 { grid-column: span 4; }
@@ -95,76 +117,121 @@
         @media (max-width: 500px) { .col-432 { grid-column: span 6; } }
 
 
-        .form-floating { position: relative; }
-        .form-floating input, .form-floating select {
-            display: block; width: 100%; height: var(--input-height);
+
+        .form-floating {
+            position: relative;
+        }
+
+        .form-floating input,
+        .form-floating select {
+            display: block;
+            width: 100%;
+            height: var(--input-height);
             padding: 1.1rem var(--input-padding-x) 0.2rem;
-            font-size: var(--base-font); font-family: inherit;
-            color: var(--px-text-main); font-weight: 700;
-            background-color: #fff; border: 1px solid var(--px-border);
-            border-radius: 0.35rem; transition: all 0.2s; box-sizing: border-box;
+            font-size: var(--base-font);
+            font-family: inherit;
+            color: var(--px-text-main);
+            font-weight: 700;
+            background-color: #fff;
+            border: 1px solid var(--px-border);
+            border-radius: 0.35rem;
+            transition: all 0.2s;
+            box-sizing: border-box;
             appearance: none;
         }
 
-                /* Placeholder Logic */
+        /* Placeholder Logic */
         .form-floating input::placeholder {
             color: var(--px-placeholder);
-            font-style: italic; /* ADDED: Placeholder with italic */
+            font-style: italic;
+            /* ADDED: Placeholder with italic */
             font-weight: 400;
-            opacity: 0; 
+            opacity: 0;
             transition: opacity 0.15s;
         }
-        .form-floating input:focus::placeholder { opacity: 1; }
+
+        .form-floating input:focus::placeholder {
+            opacity: 1;
+        }
 
         .form-floating select {
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%235e6e82' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
-            background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 10px 8px;
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 10px 8px;
         }
 
         .form-floating label {
-            position: absolute; top: 0; left: var(--input-padding-x);
-            height: 100%; padding: 0.8rem 0; pointer-events: none;
-            transition: all 0.2s ease-in-out; color: var(--px-text-static);
-            font-size: var(--base-font); transform-origin: 0 0;
+            position: absolute;
+            top: 0;
+            left: var(--input-padding-x);
+            height: 100%;
+            padding: 0.8rem 0;
+            pointer-events: none;
+            transition: all 0.2s ease-in-out;
+            color: var(--px-text-static);
+            font-size: var(--base-font);
+            transform-origin: 0 0;
         }
 
         /* Fix for date input label */
-        .form-floating input[type="date"]:focus ~ label,
-        .form-floating input[type="date"]:valid ~ label {
+        .form-floating input[type="date"]:focus~label,
+        .form-floating input[type="date"]:valid~label {
             transform: scale(0.8) translateY(-0.7rem);
-            font-weight: 600; color: var(--px-text-label);
+            font-weight: 600;
+            color: var(--px-text-label);
         }
 
         /* Ensure labels don't get stuck if the browser autofills the input */
-    input:-webkit-autofill ~ label,
-    input:-webkit-autofill:focus ~ label {
-        transform: scale(0.8) translateY(-0.7rem);
-        font-weight: 700;
-    }
-
-        .form-floating input:focus ~ label,
-        .form-floating input:not(:placeholder-shown) ~ label,
-        .form-floating select:focus ~ label,
-        .form-floating select:not([value=""]) ~ label {
+        input:-webkit-autofill~label,
+        input:-webkit-autofill:focus~label {
             transform: scale(0.8) translateY(-0.7rem);
-            font-weight: 700; color: var(--px-text-label);
+            font-weight: 700;
         }
 
-        .form-floating input:focus, .form-floating select:focus {
-            border-color: var(--px-primary); outline: 0;
+        .form-floating input:focus~label,
+        .form-floating input:not(:placeholder-shown)~label,
+        .form-floating select:focus~label,
+        .form-floating select:not([value=""])~label {
+            transform: scale(0.8) translateY(-0.7rem);
+            font-weight: 700;
+            color: var(--px-text-label);
+        }
+
+        .form-floating input:focus,
+        .form-floating select:focus {
+            border-color: var(--px-primary);
+            outline: 0;
             box-shadow: 0 0 0 0.18rem var(--px-primary-focus);
         }
 
         .btn {
-            font-family: inherit; font-weight: 700; cursor: pointer;
-            padding: 0.5rem 1rem; font-size: 0.78rem; border-radius: 0.3rem;
-            border: 1px solid transparent; transition: all 0.2s;
+            font-family: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            font-size: 0.78rem;
+            border-radius: 0.3rem;
+            border: 1px solid transparent;
+            transition: all 0.2s;
         }
-        .btn-primary { background-color: var(--px-primary); color: #fff; }
-        .btn-outline { background: #fff; border: 1px solid var(--px-border); color: var(--px-text-static); }
-        
-        .readonly-field { background-color: #f8f9fb !important; color: #7a828e !important; }
-        
+
+        .btn-primary {
+            background-color: var(--px-primary);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid var(--px-border);
+            color: var(--px-text-static);
+        }
+
+        .readonly-field {
+            background-color: #f8f9fb !important;
+            color: #7a828e !important;
+        }
+
         .error-text {
             color: var(--px-danger);
             font-size: 0.7rem;
@@ -173,396 +240,908 @@
             margin-top: 2px;
             margin-left: 5px;
         }
+
         .is-invalid {
             border-color: var(--px-danger) !important;
         }
 
+        /* Ensure all input types, textarea, and select show red border when invalid */
+        input.is-invalid,
+        select.is-invalid,
+        textarea.is-invalid {
+            border-color: var(--px-danger) !important;
+            box-shadow: 0 0 0 0.18rem rgba(243,57,35,0.12);
+        }
+
+        /* Highlight fieldset for file, color, range, radio, checkbox when invalid */
+        fieldset.input-fieldset.is-invalid {
+            border-color: var(--px-danger) !important;
+            box-shadow: 0 0 0 0.18rem rgba(243,57,35,0.12);
+        }
+
+        /* Highlight dropdown-checkbox-btn when invalid */
+        .dropdown-checkbox-btn.is-invalid {
+            border-color: var(--px-danger) !important;
+            box-shadow: 0 0 0 0.18rem rgba(243,57,35,0.12);
+        }
         /* --- Consistent style for radio and checkbox --- */
-    .input-group-row {
-        display: flex;
-        align-items: center;
-        height: var(--input-height);
-        border: 1px solid var(--px-border);
-        border-radius: 0.35rem;
-        background: #fff;
-        padding: 0 0.75rem;
-        font-size: var(--base-font);
-        font-family: inherit;
-        color: var(--px-text-main);
-        font-weight: 700;
-        margin-bottom: 0.4rem;
-        box-sizing: border-box;
-        gap: 2rem;
-    }
-    .input-group-row label {
-        margin: 0;
-        font-size: var(--base-font);
-        font-family: inherit;
-        color: var(--px-text-main);
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 0.4em;
-        cursor: pointer;
-    }
-    .input-group-row input[type="radio"],
-    .input-group-row input[type="checkbox"] {
-        width: 1.1em;
-        height: 1.1em;
-        accent-color: var(--px-primary);
-        margin: 0 0.4em 0 0;
-        vertical-align: middle;
-        flex-shrink: 0;
-    }
-    /* Checkbox single row style */
-    .input-group-checkbox {
-        display: flex;
-        align-items: center;
-        height: var(--input-height);
-        border: 1px solid var(--px-border);
-        border-radius: 0.35rem;
-        background: #fff;
-        padding: 0 0.75rem;
-        font-size: var(--base-font);
-        font-family: inherit;
-        color: var(--px-text-main);
-        font-weight: 700;
-        margin-bottom: 0.4rem;
-        box-sizing: border-box;
-        gap: 0.7em;
-    }
-    .input-group-checkbox label {
-        margin: 0;
-        font-size: var(--base-font);
-        font-family: inherit;
-        color: var(--px-text-main);
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 0.4em;
-        cursor: pointer;
-    }
-    .input-group-checkbox input[type="checkbox"] {
-        width: 1.1em;
-        height: 1.1em;
-        accent-color: var(--px-primary);
-        margin: 0 0.4em 0 0;
-        vertical-align: middle;
-        flex-shrink: 0;
-    }
+        .input-group-row,
+        .input-group-checkbox {
+            display: flex;
+            align-items: center;
+            min-height: var(--input-height);
+            height: auto;
+            border: 1px solid var(--px-border);
+            border-radius: 0.35rem;
+            background: #fff;
+            padding: 0.4rem 0.75rem;
+            font-size: var(--base-font);
+            font-family: inherit;
+            color: var(--px-text-main);
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            box-sizing: border-box;
+            gap: 0.5rem 1.5rem;
+            position: relative;
+            flex-wrap: wrap;
+        }
 
-    /* --- Consistent style for textarea --- */
-    .form-floating textarea {
-        display: block;
-        width: 100%;
-        height: var(--input-height);
-        min-height: var(--input-height);
-        max-height: 8rem;
-        padding: 1.1rem var(--input-padding-x) 0.2rem;
-        font-size: var(--base-font);
-        font-family: inherit;
-        color: var(--px-text-main);
-        font-weight: 700;
-        background-color: #fff;
-        border: 1px solid var(--px-border);
-        border-radius: 0.35rem;
-        transition: all 0.2s;
-        box-sizing: border-box;
-        resize: vertical;
-    }
-    .form-floating textarea::placeholder {
-        color: var(--px-placeholder);
-        font-style: italic;
-        font-weight: 400;
-        opacity: 0;
-        transition: opacity 0.15s;
-    }
-    .form-floating textarea:focus::placeholder {
-        opacity: 1;
-    }
-    .form-floating textarea:focus ~ label,
-    .form-floating textarea:not(:placeholder-shown) ~ label {
-        transform: scale(0.8) translateY(-0.7rem);
-        font-weight: 700;
-        color: var(--px-text-label);
-    }
-    .form-floating textarea:focus {
-        border-color: var(--px-primary);
-        outline: 0;
-        box-shadow: 0 0 0 0.18rem var(--px-primary-focus);
-    }
-    </style>
-</head>
-<body>
+        .input-group-row label,
+        .input-group-checkbox label {
+            margin: 0;
+            font-size: var(--base-font);
+            font-family: inherit;
+            color: var(--px-text-main);
+            font-weight: 400;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.4em;
+            cursor: pointer;
+            position: relative;
+            /* Prevent overlap */
+            min-width: 0;
+            flex: 0 1 auto;
+            white-space: normal;
+        }
 
-<div class="container">
-    <div class="header-flex">
-        <div class="header-left">
-            <h2>LEAD - ADD</h2>
-        </div>
-        <div>
-            <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="closeParentPopup()">CANCEL</button>
-            <button class="btn btn-primary" onclick="validateForm()">SAVE</button>
-        </div>
-    </div>
+        .input-group-row input[type="radio"],
+        .input-group-checkbox input[type="checkbox"] {
+            width: 1.1em;
+            height: 1.1em;
+            accent-color: var(--px-primary);
+            margin: 0.2em 0.4em 0 0;
+            vertical-align: middle;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
 
-    <div class="card">
-        <div class="section-divider">LEAD INFO</div>
-        <div class="row">
-            <div class="form-floating col-32">
-                <input type="text" class="readonly-field" value="(AUTO ID)" readonly placeholder=" "><label>Lead ID</label>
-            </div>
-            <div class="form-floating col-32">
-                <select id="status" onchange="checkValue(this)">
-                    <option value="NEW">New</option>
-                    <option value="CON">Contacted</option>
-                    <option value="QUAL">Qualified</option>
-                    <option value="LOST">Lost</option>
-                </select><label>Status</label>
-            </div>               
-            <div class="form-floating col-32">
-                <select id="priority" onchange="checkValue(this)">
-                    <option value="N">Normal</option>
-                    <option value="M">Medium</option>
-                    <option value="H">High</option>
-                </select><label>Priority</label>
-            </div>  
-            <div class="form-floating col-32">
-                <select id="branch" value="" onchange="this.setAttribute('value', this.value)" >
-                    <option value=""></option>
-                    <option value="Glenmarie">Glenmarie HQ</option>
-                    <option value="ShahAlam">Shah Alam Branch</option>
-                </select><label>Sales Outlet </label>
-            </div>
-            <div class="form-floating col-32">
-                <select id="sc" onchange="checkValue(this)">
-                    <option value=""></option>
-                    <option value="SC101">Ali (SC101)</option>
-                    <option value="SC102">Siti (SC102)</option>
-                </select><label>Sales Consultant</label>
-            </div>         
+        /* Fix for floating label with custom group */
+        .form-floating.input-group-float {
+            padding: 0;
+            height: var(--input-height);
+            margin-bottom: 0.4rem;
+            position: relative;
+            background-color: #fff;
+            border: 1px solid var(--px-border);
+            border-radius: 0.35rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
 
-                        <div class="form-floating col-32">
-                <select id="source" onchange="checkValue(this)">
-                    <option value=""></option>
-                    <option value="FB">Facebook</option>
-                    <option value="WI">Walk-in</option>
-                    <option value="CAM">Campaign</option>
-                    <option value="CALL">Call</option>
-                </select><label>Lead Source</label>
-            </div>
-            <div class="form-floating col-32">
-                 <select id="campaign" onchange="checkValue(this)">
-                    <option value=""></option>
-                    <option value="FB">CNY 2026</option>
-                    <option value="WI">RAYA 2026</option>
-                </select><label>Campaign</label>
-                
-                </div>
-            <div class="form-floating col-32">
-                <select id="pbranch" onchange="checkValue(this)">
-                    <option value="Glenmarie">Glenmarie HQ</option>
-                    <option value="ShahAlam">Shah Alam Branch</option>
-                </select><label>Prefer Outlet </label>
-            </div>          
-        </div>
+        .form-floating.input-group-float:focus-within {
+            border-color: var(--px-primary);
+            outline: 0;
+            box-shadow: 0 0 0 0.18rem var(--px-primary-focus);
+        }
 
-        <div class="section-divider">CUSTOMER PROFILE</div>
-        <div class="row">
+        .form-floating.input-group-float>.input-group-row,
+        .form-floating.input-group-float>.input-group-checkbox {
+            border: none;
+            padding: 1.1rem var(--input-padding-x) 0.2rem;
+            height: 100%;
+            background: transparent;
+            margin-bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-            <div class="form-floating col-32">
-                <input type="text" id="fname" placeholder=" " oninput="checkValue(this); clearError(this)">
-                <label>First Name*</label>
-                <div id="fname-error" class="error-text">Required</div>
-            </div>
-            <div class="form-floating col-32">
-                <input type="text" id="lname" placeholder=" " oninput="checkValue(this); clearError(this)">
-                <label>Last Name*</label>
-                <div id="lname-error" class="error-text">Required</div>
-            </div>
-            <div class="form-floating col-32">
-                <select id="lead_type" onchange="checkValue(this)">
-                    <option value=""></option>
-                    <option value="IND">Individual</option>
-                    <option value="CO">Company</option>
-                </select><label>Customer Type</label>
-            </div>            
-            <div class="form-floating col-32"><input type="text" id="ic" placeholder="eg. 901030105432" oninput="checkValue(this)"><label>IC / Company Reg.</label></div>
-            <div class="form-floating col-32"><input type="tel" id="mobile" placeholder="eg. 01234567890" oninput="checkValue(this)"><label>Mobile No</label></div>
-            <div class="form-floating col-32"><input type="text" id="comp_name" placeholder=" " oninput="checkValue(this)"><label>Company Name</label></div>
-            <div class="form-floating col-32"><input type="email" id="email" placeholder=" " oninput="checkValue(this)"><label>Email Address</label></div>
-            <div class="form-floating col-32">
-                <select id="loc" onchange="checkValue(this)">
-                    <option value="WA">KL</option>
-                    <option value="EM">PJ</option>
-                </select><label>Location</label>
-            </div>
-            <div class="form-floating col-32">
-                <select id="channel" onchange="checkValue(this)">
-                    <option value="WA">WhatsApp</option>
-                    <option value="EM">Email</option>
-                    <option value="SMS">SMS</option>
-                </select><label>Contact Channel</label>
-            </div>
+        .form-floating.input-group-float>label {
+            position: absolute;
+            top: 0;
+            left: var(--input-padding-x);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            pointer-events: none;
+            transition: all 0.2s ease-in-out;
+            color: var(--px-text-static);
+            font-size: var(--base-font);
+            transform-origin: 0 0;
+            background: transparent;
+            z-index: 1;
+        }
 
-        </div>
+        .form-floating.input-group-float:focus-within>label,
+        .form-floating.input-group-float.filled>label {
+            transform: scale(0.8) translateY(-0.7rem);
+            font-weight: 700;
+            color: var(--px-text-label);
+        }
 
-        <div class="section-divider">VEHICLE</div>
-        <div class="row">
-            <div class="form-floating col-32">
-                <select id="brand" onchange="checkValue(this)">
-                    <option value=""></option>
-                    <option value="SUZUKI">SUZUKI</option>
-                </select><label>Brand</label>
-            </div>
-            <div class="form-floating col-32">
-                <select id="model" onchange="checkValue(this)">
-                    <option value=""></option>
-                    <option value="JIMNY">JIMNY 5-DOOR</option>
-                    <option value="SWIFT">SWIFT SPORT</option>
-                </select><label>Model</label>
-            </div>
-            <div class="form-floating col-321"><input type="text" id="m_desc" placeholder=" " oninput="checkValue(this)"><label>Model Description</label></div>
+        /* --- Consistent style for textarea --- */
+        .form-floating textarea {
+            display: block;
+            width: 100%;
+            height: var(--input-height);
+            min-height: var(--input-height);
+            max-height: 8rem;
+            padding: 1.1rem var(--input-padding-x) 0.2rem;
+            font-size: var(--base-font);
+            font-family: inherit;
+            color: var(--px-text-main);
+            font-weight: 700;
+            background-color: #fff;
+            border: 1px solid var(--px-border);
+            border-radius: 0.35rem;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        /* Add row-2 style for textarea */
+        .form-floating textarea.row-2 {
+            height: calc(var(--input-height) * 2 + 0.5rem);
+            min-height: calc(var(--input-height) * 2 + 0.5rem);
+            max-height: 12rem;
+        }
 
-        </div>
+        .form-floating textarea::placeholder {
+            color: var(--px-placeholder);
+            font-style: italic;
+            font-weight: 400;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
 
-        <div class="section-divider">QUALIFICATION</div>
-        <div class="row">
-            <div class="form-floating col-32">
-                <select id="budget" onchange="checkValue(this)">
-                    <option value=""></option>
-                    <option value="80-100">RM80K-RM100K</option>
-                    <option value="100-120">RM100K-RM120K</option>
-                </select><label>Budget Range</label>
-            </div>
-                        <div class="form-floating col-32">
-                <select id="finance" onchange="checkValue(this)">
-                    <option value=""></option>
-                    <option value="Y">Yes</option>
-                    <option value="N">No</option>
-                </select><label>Financing Needed</label>
-            </div>
-            <div class="form-floating col-32"><input type="date" id="p_date" onchange="checkValue(this)"><label>Purchase Timeline</label></div>
-            <div class="form-floating col-32">
-                <select id="trade" onchange="checkValue(this)">
-                    <option value=""></option>
-                    <option value="Y">Yes</option>
-                    <option value="N">No</option>
-                </select><label>Trade-in Interest</label>
-            </div>
-      
+        .form-floating textarea:focus::placeholder {
+            opacity: 1;
+        }
 
-            <div class="form-floating col-32">
-                <select id="lost_reason" onchange="checkValue(this)">
-                    <option value=""></option>
-                    <option value="BUD">Over Budget</option>
-                    <option value="COMP">Bought Competitor</option>
-                    <option value="NR">No Response</option>
-                </select><label>If Unqualified/Lost: Reason</label>
-            </div>
-        </div>
+        .form-floating textarea:focus~label,
+        .form-floating textarea:not(:placeholder-shown)~label {
+            transform: scale(0.8) translateY(-0.7rem);
+            font-weight: 700;
+            color: var(--px-text-label);
+        }
 
-        <div class="section-divider">EXTRA INPUT TYPES</div>
-        <div class="row">
-            <!-- Radio Button Example (no label, keep as is) -->
-            <div class="col-32">
-                <div class="input-group-row">
-                    <label>
-                        <input type="radio" name="gender" value="male"> Male
-                    </label>
-                    <label>
-                        <input type="radio" name="gender" value="female"> Female
-                    </label>
-                    <label>
-                        <input type="radio" name="gender" value="other"> Other
-                    </label>
-                </div>
-            </div>
-            <!-- Checkbox Example (no label, keep as is) -->
-            <div class="col-32">
-                <div class="input-group-checkbox">
-                    <label>
-                        <input type="checkbox" id="newsletter" value="yes"> Yes, send me updates
-                    </label>
-                </div>
-            </div>
+        .form-floating textarea:focus {
+            border-color: var(--px-primary);
+            outline: 0;
+            box-shadow: 0 0 0 0.18rem var(--px-primary-focus);
+        }
 
-            
-            <!-- Textarea Example -->
-            <div class="form-floating col-32">
-                <textarea id="notes" placeholder="Additional Notes"></textarea>
-                <label>Additional Notes</label>
-            </div>
-            <!-- File Input Example -->
-            <div class="col-32" style="display: flex; flex-direction: column;">
-                <label for="attachment" style="font-size:0.82rem; font-weight:700; color:var(--px-text-static); margin-bottom:0.2rem;">Upload Attachment</label>
-                <input type="file" id="attachment" name="attachment">
-            </div>
-            <!-- Range Example -->
-            <div class="col-32" style="display: flex; flex-direction: column;">
-                <label for="satisfaction" style="font-size:0.82rem; font-weight:700; color:var(--px-text-static); margin-bottom:0.2rem;">Satisfaction Level</label>
-                <input type="range" id="satisfaction" name="satisfaction" min="1" max="10" value="5" style="width:100%;">
-            </div>
-            <!-- Color Picker Example -->
-            <div class="col-32" style="display: flex; flex-direction: column;">
-                <label for="favcolor" style="font-size:0.82rem; font-weight:700; color:var(--px-text-static); margin-bottom:0.2rem;">Favorite Color</label>
-                <input type="color" id="favcolor" name="favcolor" value="#3874ff" style="width:40px; height:28px; border:none;">
-            </div>
-            <!-- Number Example -->
-            <div class="form-floating col-32">
-                <input type="number" id="quantity" min="1" max="100" placeholder=" ">
-                <label>Quantity</label>
-            </div>
-            <!-- Password Example -->
-            <div class="form-floating col-32">
-                <input type="password" id="password" placeholder=" ">
-                <label>Password</label>
-            </div>
-        </div>
-    </div>
-</div>
+        .static-label-inside-radio {
+            position: absolute;
+            left: var(--input-padding-x);
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            color: var(--px-text-static);
+            font-size: var(--base-font);
+            font-family: inherit;
+            font-weight: 700;
+            pointer-events: none;
+            z-index: 2;
+            background: transparent;
+            /* visually match floating label style */
+            /* mimic .form-floating label */
+        }
 
-<script>
-    function checkValue(el) {
-        if (el.value !== "") { el.setAttribute('value', el.value); } 
-        else { el.removeAttribute('value'); }
-    }
-    window.onload = function() {
-        document.querySelectorAll('select, input').forEach(el => checkValue(el));
-    };
+        .input-group-row {
+            /* ...existing code... */
+        }
 
-    function validateForm() {
-        let isValid = true;
-        const fields = ['fname', 'lname'];
-        fields.forEach(id => {
-            const el = document.getElementById(id);
-            const errorEl = document.getElementById(id + '-error');
-            if (!el.value || el.value.trim() === "") {
-                el.classList.add('is-invalid');
-                errorEl.style.display = 'block';
-                isValid = false;
-            } else {
-                el.classList.remove('is-invalid');
-                errorEl.style.display = 'none';
+        .input-group-row label {
+            /* ...existing code... */
+            margin-left: 0;
+        }
+
+        @media (max-width: 600px) {
+            .static-label-inside-radio {
+                font-size: 0.75rem;
+                left: 0.5rem;
             }
-        });
-        if (isValid) alert('Form saved successfully!');
-    }
 
-    function clearError(el) {
-        el.classList.remove('is-invalid');
-        document.getElementById(el.id + '-error').style.display = 'none';
-    }
-
-    // Close the parent popup iframe if possible
-    function closeParentPopup() {
-        if (window.parent && typeof window.parent.document !== "undefined") {
-            var overlay = window.parent.document.getElementById('popup-overlay');
-            if (overlay) {
-                overlay.style.display = 'none';
+            .input-group-row {
+                padding-left: 0 !important;
             }
         }
-    }
-</script>
+
+        /* --- Fieldset Style (alternative to form-floating) --- */
+        fieldset.input-fieldset {
+            position: relative;
+            border: 1px solid var(--px-border);
+            border-radius: 0.35rem;
+            padding: 1.1rem var(--input-padding-x) 0.3rem;
+            /* match form-floating input padding */
+            margin: 0 0 0.4rem 0;
+            background-color: #fff;
+            min-height: var(--input-height);
+            height: auto;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        fieldset.input-fieldset:focus-within {
+            border-color: var(--px-primary);
+            box-shadow: 0 0 0 0.18rem var(--px-primary-focus);
+            outline: none;
+        }
+
+        fieldset.input-fieldset legend {
+            position: absolute;
+            top: 0;
+            left: var(--input-padding-x);
+            padding: 0.8rem 0;
+            margin: 0;
+            transform: scale(0.8) translateY(-0.7rem);
+            transform-origin: 0 0;
+            font-size: var(--base-font);
+            font-weight: 700;
+            color: var(--px-text-label);
+            width: auto;
+            pointer-events: none;
+        }
+
+        fieldset.input-fieldset .input-group-row,
+        fieldset.input-fieldset .input-group-checkbox {
+            border: none;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            min-height: unset;
+            height: auto;
+            width: 100%;
+        }
+
+        /* --- Checkbox Dropdown Style --- */
+        .dropdown-checkbox-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-checkbox-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: var(--input-height);
+            padding: 0 var(--input-padding-x);
+            font-size: var(--base-font);
+            font-family: inherit;
+            color: var(--px-text-main);
+            /* font-weight: 700; */
+            background-color: #fff;
+            border: 1px solid var(--px-border);
+            border-radius: 0.35rem;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .dropdown-checkbox-btn:hover,
+        .dropdown-checkbox-btn:focus {
+            border-color: var(--px-primary);
+            outline: 0;
+        }
+
+        .dropdown-checkbox-btn::after {
+            content: "";
+            width: 10px;
+            height: 8px;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%235e6e82' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            transition: transform 0.2s;
+        }
+
+        .dropdown-checkbox-wrapper.open .dropdown-checkbox-btn::after {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-checkbox-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background: #fff;
+            border: 1px solid var(--px-border);
+            border-radius: 0.35rem;
+            margin-top: 0.2rem;
+            box-shadow: var(--px-shadow);
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-checkbox-wrapper.open .dropdown-checkbox-content {
+            display: block;
+        }
+
+        .dropdown-checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 0.4rem var(--input-padding-x);
+            cursor: pointer;
+            font-size: var(--base-font);
+            font-weight: 400;
+            color: var(--px-text-main);
+            transition: background-color 0.2s;
+            margin: 0;
+        }
+
+        .dropdown-checkbox-item:hover {
+            background-color: var(--px-bg);
+        }
+
+        .dropdown-checkbox-item input[type="checkbox"] {
+            margin: 0 0.5rem 0 0;
+            width: 1.1em;
+            height: 1.1em;
+            accent-color: var(--px-primary);
+            cursor: pointer;
+        }
+
+        .readonly-style,
+        input[readonly],
+        textarea[readonly],
+        select[disabled] {
+            background-color: #f8f9fb !important;
+            color: #000000 !important;
+            cursor: not-allowed !important;
+            opacity: 1 !important;
+            border-style: dashed !important;        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header-flex">
+            <div class="header-left">
+                <h2>LEAD - ADD</h2>
+            </div>
+            <div>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="requiredAllFields()">REQUIRED</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="requiredAllFields()">REQUIRED</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="invalidAllFields()">INVALID</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="customErrorAllFields()">CUSTOM</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="setAllReadOnly()">READ ONLY</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="closeParentPopup()">CANCEL</button>
+                <button class="btn btn-primary" onclick="validateForm()">SAVE</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-divider">LEAD INFO</div>
+            <div class="row">
+                <div class="form-floating col-32">
+                    <input type="text" class="readonly-field" value="(AUTO ID)" readonly placeholder=" "><label>Lead
+                        ID</label>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="status" onchange="checkValue(this)">
+                        <option value="NEW">New</option>
+                        <option value="CON">Contacted</option>
+                        <option value="QUAL">Qualified</option>
+                        <option value="LOST">Lost</option>
+                    </select><label>Status</label>
+                    <div id="status-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="priority" onchange="checkValue(this)">
+                        <option value="N">Normal</option>
+                        <option value="M">Medium</option>
+                        <option value="H">High</option>
+                    </select><label>Priority</label>
+                    <div id="priority-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="branch" value="" onchange="this.setAttribute('value', this.value)">
+                        <option value=""></option>
+                        <option value="Glenmarie">Glenmarie HQ</option>
+                        <option value="ShahAlam">Shah Alam Branch</option>
+                    </select><label>Sales Outlet </label>
+                    <div id="branch-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="sc" onchange="checkValue(this)">
+                        <option value=""></option>
+                        <option value="SC101">Ali (SC101)</option>
+                        <option value="SC102">Siti (SC102)</option>
+                    </select><label>Sales Consultant</label>
+                    <div id="sc-error" class="error-text"></div>
+                </div>
+
+                <div class="form-floating col-32">
+                    <select id="source" onchange="checkValue(this)">
+                        <option value=""></option>
+                        <option value="FB">Facebook</option>
+                        <option value="WI">Walk-in</option>
+                        <option value="CAM">Campaign</option>
+                        <option value="CALL">Call</option>
+                    </select><label>Lead Source</label>
+                    <div id="source-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="campaign" onchange="checkValue(this)">
+                        <option value=""></option>
+                        <option value="FB">CNY 2026</option>
+                        <option value="WI">RAYA 2026</option>
+                    </select><label>Campaign</label>
+                    <div id="campaign-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="pbranch" onchange="checkValue(this)">
+                        <option value="Glenmarie">Glenmarie HQ</option>
+                        <option value="ShahAlam">Shah Alam Branch</option>
+                    </select><label>Prefer Outlet </label>
+                    <div id="pbranch-error" class="error-text"></div>
+                </div>
+            </div>
+
+            <div class="section-divider">CUSTOMER PROFILE</div>
+            <div class="row">
+
+                <div class="form-floating col-32">
+                    <input type="text" id="fname" placeholder=" " oninput="checkValue(this); clearError(this)">
+                    <label>First Name*</label>
+                    <div id="fname-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <input type="text" id="lname" placeholder=" " oninput="checkValue(this); clearError(this)">
+                    <label>Last Name*</label>
+                    <div id="lname-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="lead_type" onchange="checkValue(this)">
+                        <option value=""></option>
+                        <option value="IND">Individual</option>
+                        <option value="CO">Company</option>
+                    </select><label>Customer Type</label>
+                    <div id="lead_type-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <input type="text" id="ic" placeholder="eg. 901030105432" oninput="checkValue(this)">
+                    <label>IC / Company Reg.</label>
+                    <div id="ic-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <input type="tel" id="mobile" placeholder="eg. 01234567890" oninput="checkValue(this)">
+                    <label>Mobile No</label>
+                    <div id="mobile-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <input type="text" id="comp_name" placeholder=" " oninput="checkValue(this)">
+                    <label>Company Name</label>
+                    <div id="comp_name-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <input type="email" id="email" placeholder=" " oninput="checkValue(this)">
+                    <label>Email Address</label>
+                    <div id="email-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="loc" onchange="checkValue(this)">
+                        <option value="WA">KL</option>
+                        <option value="EM">PJ</option>
+                    </select><label>Location</label>
+                    <div id="loc-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="channel" onchange="checkValue(this)">
+                        <option value="WA">WhatsApp</option>
+                        <option value="EM">Email</option>
+                        <option value="SMS">SMS</option>
+                    </select><label>Contact Channel</label>
+                    <div id="channel-error" class="error-text"></div>
+                </div>
+
+            </div>
+
+            <div class="section-divider">VEHICLE</div>
+            <div class="row">
+                <div class="form-floating col-32">
+                    <select id="brand" onchange="checkValue(this)">
+                        <option value=""></option>
+                        <option value="SUZUKI">SUZUKI</option>
+                    </select><label>Brand</label>
+                    <div id="brand-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="model" onchange="checkValue(this)">
+                        <option value=""></option>
+                        <option value="JIMNY">JIMNY 5-DOOR</option>
+                        <option value="SWIFT">SWIFT SPORT</option>
+                    </select><label>Model</label>
+                    <div id="model-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-321">
+                    <input type="text" id="m_desc" placeholder=" " oninput="checkValue(this)">
+                    <label>Model Description</label>
+                    <div id="m_desc-error" class="error-text"></div>
+                </div>
+
+            </div>
+
+            <div class="section-divider">QUALIFICATION</div>
+            <div class="row">
+                <div class="form-floating col-32">
+                    <select id="budget" onchange="checkValue(this)">
+                        <option value=""></option>
+                        <option value="80-100">RM80K-RM100K</option>
+                        <option value="100-120">RM100K-RM120K</option>
+                    </select><label>Budget Range</label>
+                    <div id="budget-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="finance" onchange="checkValue(this)">
+                        <option value=""></option>
+                        <option value="Y">Yes</option>
+                        <option value="N">No</option>
+                    </select><label>Financing Needed</label>
+                    <div id="finance-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <input type="date" id="p_date" onchange="checkValue(this)">
+                    <label>Purchase Timeline</label>
+                    <div id="p_date-error" class="error-text"></div>
+                </div>
+                <div class="form-floating col-32">
+                    <select id="trade" onchange="checkValue(this)">
+                        <option value=""></option>
+                        <option value="Y">Yes</option>
+                        <option value="N">No</option>
+                    </select><label>Trade-in Interest</label>
+                    <div id="trade-error" class="error-text"></div>
+                </div>
+
+
+                <div class="form-floating col-32">
+                    <select id="lost_reason" onchange="checkValue(this)">
+                        <option value=""></option>
+                        <option value="BUD">Over Budget</option>
+                        <option value="COMP">Bought Competitor</option>
+                        <option value="NR">No Response</option>
+                    </select><label>If Unqualified/Lost: Reason</label>
+                    <div id="lost_reason-error" class="error-text"></div>
+                </div>
+
+                <div class="form-floating col-32">
+                    <input type="datetime-local" id="scheduledDateTime" name="scheduledDateTime" required>
+                    <label>Scheduled Date Time*</label>
+                    <div id="scheduledDateTime-error" class="error-text"></div>
+                </div>
+            </div>
+
+            <div class="section-divider">EXTRA INPUT TYPES</div>
+            <div class="row">
+                <!-- Radio Button Example with fieldset -->
+                <div class="col-32" style="padding:0;">
+                    <fieldset class="input-fieldset">
+                        <legend>Contact Method</legend>
+                        <div class="input-group-row">
+                            <label for="cm-phone"><input type="radio" name="contactMethod" value="phone" id="cm-phone">
+                                Phone</label>
+                            <label for="cm-email"><input type="radio" name="contactMethod" value="email" id="cm-email">
+                                Email</label>
+                            <label for="cm-sms"><input type="radio" name="contactMethod" value="sms" id="cm-sms">
+                                SMS</label>
+                            <label for="cm-sms"><input type="radio" name="contactMethod" value="sms" id="cm-sms">
+                                SMS</label>
+                            <label for="cm-sms"><input type="radio" name="contactMethod" value="sms" id="cm-sms">
+                                SMS s adfdsfa sdf</label>
+                            <label for="cm-sms"><input type="radio" name="contactMethod" value="sms" id="cm-sms">
+                                SMS sdfasdf asdf sdad fsdafddf </label>
+                        </div>
+                    </fieldset>
+                    <div id="contactMethod-error" class="error-text"></div>
+                </div>
+
+                <!-- Checkbox Example with fieldset -->
+                <div class="col-32" style="padding:0;">
+                    <fieldset class="input-fieldset">
+                        <legend>Agreement</legend>
+                        <div class="input-group-checkbox">
+                            <label for="agreeTerms">
+                                <input type="checkbox" id="agreeTerms" value="yes"> I agree to the terms, I agree to the terms, I agree to the terms, I agree to the terms,
+                            </label>
+                        </div>
+                    </fieldset>
+                    <div id="agreeTerms-error" class="error-text"></div>
+                </div>
+
+                <!-- Checkbox Dropdown Example -->
+                <div class="col-32" style="display: flex; flex-direction: column;">
+                    <div class="dropdown-checkbox-wrapper" id="sampleDropdownCheckbox">
+                        <div class="dropdown-checkbox-btn" tabindex="0">
+                            <span class="dropdown-checkbox-label">Select items...</span>
+                        </div>
+                        <div class="dropdown-checkbox-content">
+                            <label class="dropdown-checkbox-item">
+                                <input type="checkbox" value="Option A"> Option A
+                            </label>
+                            <label class="dropdown-checkbox-item">
+                                <input type="checkbox" value="Option B"> Option B
+                            </label>
+                            <label class="dropdown-checkbox-item">
+                                <input type="checkbox" value="Option C"> Option C
+                            </label>
+                        </div>
+                    </div>
+                    <div id="sampleDropdownCheckbox-error" class="error-text"></div>
+                </div>
+
+                <!-- Textarea Example -->
+                <div class="form-floating col-8-12">
+                    <textarea id="notes" class="row-2" placeholder="Additional Notes"></textarea>
+                    <label>Additional Notes</label>
+                    <div id="notes-error" class="error-text"></div>
+                </div>
+                <!-- File Input Example -->
+                <div class="col-32" style="padding:0;">
+                    <fieldset class="input-fieldset">
+                        <legend>Upload Attachment</legend>
+                        <div class="input-group-row" style="padding:0; margin:0;">
+                            <input type="file" id="attachment" name="attachment"
+                                style="width:100%; font-family:inherit; font-size:var(--base-font); color:var(--px-text-main); outline:none; border:none; background:transparent;">
+                        </div>
+                    </fieldset>
+                    <div id="attachment-error" class="error-text"></div>
+                </div>
+                <!-- Range Example -->
+                <div class="col-32" style="padding:0;">
+                    <fieldset class="input-fieldset">
+                        <legend>Satisfaction Level</legend>
+                        <div class="input-group-row" style="padding:0; margin:0;">
+                            <input type="range" id="satisfaction" name="satisfaction" min="1" max="10" value="5"
+                                style="width:100%; accent-color:var(--px-primary); margin:0;">
+                        </div>
+                    </fieldset>
+                    <div id="satisfaction-error" class="error-text"></div>
+                </div>
+                <!-- Color Picker Example -->
+                <div class="col-32" style="padding:0;">
+                    <fieldset class="input-fieldset">
+                        <legend>Favorite Color</legend>
+                        <div class="input-group-row" style="padding:0; margin:0;">
+                            <input type="color" id="favcolor" name="favcolor" value="#3874ff"
+                                style="width:100%; height:1.5rem; border:none; padding:0; background:transparent; cursor:pointer;">
+                        </div>
+                    </fieldset>
+                    <div id="favcolor-error" class="error-text"></div>
+                </div>
+                <!-- Number Example -->
+                <div class="form-floating col-32">
+                    <input type="number" id="quantity" min="1" max="100" placeholder=" ">
+                    <label>Quantity</label>
+                    <div id="quantity-error" class="error-text"></div>
+                </div>
+                <!-- Password Example -->
+                <div class="form-floating col-32">
+                    <input type="password" id="password" placeholder=" ">
+                    <label>Password</label>
+                    <div id="password-error" class="error-text"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkValue(el) {
+            if (el.value !== "") { el.setAttribute('value', el.value); }
+            else { el.removeAttribute('value'); }
+        }
+        window.onload = function () {
+            document.querySelectorAll('select, input').forEach(el => checkValue(el));
+
+            // Checkbox Dropdown Logic
+            document.querySelectorAll('.dropdown-checkbox-wrapper').forEach(wrapper => {
+                const btn = wrapper.querySelector('.dropdown-checkbox-btn');
+                const label = wrapper.querySelector('.dropdown-checkbox-label');
+                const inputs = wrapper.querySelectorAll('input[type="checkbox"]');
+
+                // Toggle dropdown
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Close others
+                    document.querySelectorAll('.dropdown-checkbox-wrapper').forEach(w => {
+                        if (w !== wrapper) w.classList.remove('open');
+                    });
+                    wrapper.classList.toggle('open');
+                });
+
+                // Prevent closing when clicking inside content
+                wrapper.querySelector('.dropdown-checkbox-content').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+
+                // Close when clicking outside
+                document.addEventListener('click', () => {
+                    wrapper.classList.remove('open');
+                });
+
+                // Update label on change
+                inputs.forEach(input => {
+                    input.addEventListener('change', () => {
+                        const checked = Array.from(inputs).filter(i => i.checked).map(i => i.value);
+                        if (checked.length === 0) {
+                            label.textContent = 'Select items...';
+                        } else if (checked.length === 1) {
+                            label.textContent = checked[0];
+                        } else {
+                            label.textContent = checked.length + ' items selected';
+                        }
+                    });
+                });
+            });
+
+            // Floating label for custom group: add 'filled' class if checked
+            document.querySelectorAll('.form-floating.input-group-float').forEach(function (group) {
+                function updateFilled() {
+                    const inputs = group.querySelectorAll('input[type="radio"],input[type="checkbox"]');
+                    let filled = false;
+                    inputs.forEach(function (input) {
+                        if (input.checked) filled = true;
+                    });
+                    if (filled) group.classList.add('filled');
+                    else group.classList.remove('filled');
+                }
+                group.addEventListener('change', updateFilled);
+                updateFilled();
+            });
+        };
+
+        function validateForm() {
+            let isValid = true;
+            const fields = ['fname', 'lname'];
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                const errorEl = document.getElementById(id + '-error');
+                if (!el.value || el.value.trim() === "") {
+                    el.classList.add('is-invalid');
+                    errorEl.style.display = 'block';
+                    isValid = false;
+                } else {
+                    el.classList.remove('is-invalid');
+                    errorEl.style.display = 'none';
+                }
+            });
+            if (isValid) alert('Form saved successfully!');
+        }
+
+        function clearError(el) {
+            el.classList.remove('is-invalid');
+            document.getElementById(el.id + '-error').style.display = 'none';
+        }
+
+        // Helper to highlight all fields and set error message
+        function highlightAllFields(errorMsg) {
+            // Highlight all normal fields
+            document.querySelectorAll('input, select, textarea').forEach(function(el) {
+                // Remove .is-invalid from special types (handled by fieldset or dropdown)
+                if (
+                    el.type === 'file' ||
+                    el.type === 'color' ||
+                    el.type === 'range'
+                ) {
+                    el.classList.remove('is-invalid');
+                    const fieldset = el.closest('fieldset.input-fieldset');
+                    if (fieldset) fieldset.classList.add('is-invalid');
+                } else if (el.type === 'radio' || el.type === 'checkbox') {
+                    el.classList.remove('is-invalid');
+                    const fieldset = el.closest('fieldset.input-fieldset');
+                    if (fieldset) fieldset.classList.add('is-invalid');
+                } else {
+                    el.classList.add('is-invalid');
+                }
+            });
+
+            // Highlight dropdown-checkbox-btn for dropdown-checkbox-wrapper
+            document.querySelectorAll('.dropdown-checkbox-btn').forEach(function(btn) {
+                btn.classList.add('is-invalid');
+            });
+
+            // Show all error messages if present and set text if errorMsg provided
+            document.querySelectorAll('.error-text').forEach(function(err) {
+                err.style.display = 'block';
+                if (errorMsg !== undefined) err.textContent = errorMsg;
+            });
+        }
+
+        // Highlight all fields with "Required" message
+        function requiredAllFields() {
+            highlightAllFields('Required');
+        }
+
+        // Highlight all fields with "Invalid" message
+        function invalidAllFields() {
+            highlightAllFields('Invalid');
+        }
+
+        // Highlight all fields with custom error message from const variable
+        function customErrorAllFields() {
+            const customErrorMsg = 'Custom error: Please check this field!';
+            highlightAllFields(customErrorMsg);
+        }
+
+        // Close the parent popup iframe if possible
+        function closeParentPopup() {
+            if (window.parent && typeof window.parent.document !== "undefined") {
+                var overlay = window.parent.document.getElementById('popup-overlay');
+                if (overlay) {
+                    overlay.style.display = 'none';
+                }
+            }
+        }
+
+        // Set all fields as readonly/disabled and apply readonly style
+        function setAllReadOnly() {
+            // Set all input and textarea as readonly, except buttons
+            document.querySelectorAll('input, textarea').forEach(function(el) {
+                if (el.type !== 'button' && el.type !== 'submit' && el.type !== 'reset') {
+                    // For special types inside fieldset, apply readonly-style to fieldset and disable input
+                    if (
+                        el.type === 'file' ||
+                        el.type === 'color' ||
+                        el.type === 'range' ||
+                        el.type === 'radio' ||
+                        el.type === 'checkbox'
+                    ) {
+                        el.classList.remove('readonly-style');
+                        el.setAttribute('disabled', 'disabled'); // Disable input so user cannot change value
+                        const fieldset = el.closest('fieldset.input-fieldset');
+                        if (fieldset) fieldset.classList.add('readonly-style');
+                    } else {
+                        el.setAttribute('readonly', 'readonly');
+                        el.classList.add('readonly-style');
+                    }
+                }
+            });
+            // Set all select as disabled and apply style
+            document.querySelectorAll('select').forEach(function(el) {
+                el.setAttribute('disabled', 'disabled');
+                el.classList.add('readonly-style');
+            });
+            // Visually disable dropdown-checkbox-btn, but allow dropdown to open for viewing
+            document.querySelectorAll('.dropdown-checkbox-wrapper').forEach(function(wrapper) {
+                const btn = wrapper.querySelector('.dropdown-checkbox-btn');
+                btn.classList.add('readonly-style');
+                btn.setAttribute('tabindex', '0');
+                btn.style.pointerEvents = 'auto';
+                wrapper.classList.add('open');
+                // Prevent toggling/closing in readonly mode
+                btn.onclick = function(e) {
+                    e.stopPropagation();
+                    // Always keep open in readonly
+                    wrapper.classList.add('open');
+                };
+            });
+            // Prevent closing dropdown in readonly mode
+            document.addEventListener('click', function keepDropdownOpenReadonly(e) {
+                document.querySelectorAll('.dropdown-checkbox-wrapper').forEach(function(wrapper) {
+                    const btn = wrapper.querySelector('.dropdown-checkbox-btn');
+                    if (btn.classList.contains('readonly-style')) {
+                        wrapper.classList.add('open');
+                    }
+                });
+            }, { capture: true });
+        }
+    </script>
 </body>
+
 </html>

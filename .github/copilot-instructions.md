@@ -11,3 +11,6 @@
 
 ## Workflow Preferences
 - When writing CSS, use modern Flexbox or Grid layout.
+
+## Copilot Features
+- Enable GPT-5 mini for all clients

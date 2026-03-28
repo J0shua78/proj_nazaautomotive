@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phoenix CRM - Create New Lead</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap"
         rel="stylesheet">
 
@@ -26,10 +27,10 @@
             --input-height: 2.7rem;
             --input-padding-x: 0.75rem;
             --grid-gap: 0.8rem;
-            --base-font: 0.82rem;
+            --base-font: 0.85rem;
         }
 
-        body {
+        body { 
             font-family: 'Nunito Sans', sans-serif;
             background-color: var(--px-bg);
             color: var(--px-text-main);
@@ -203,6 +204,113 @@
             border-color: var(--px-primary);
             outline: 0;
             box-shadow: 0 0 0 0.18rem var(--px-primary-focus);
+        }
+
+        .tooltip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.25rem;
+            font-size: var(--base-font);
+            color: var(--px-text-static);
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            cursor: default;
+            line-height: 1;
+            pointer-events: auto;
+            vertical-align: middle;
+        }
+
+        .form-floating label .tooltip-icon,
+        .form-floating input:focus~label .tooltip-icon,
+        .form-floating select:focus~label .tooltip-icon,
+        .form-floating input:not(:placeholder-shown)~label .tooltip-icon,
+        .form-floating select:not([value=""])~label .tooltip-icon {
+            color: var(--px-text-label);
+        }
+
+        .tooltip-icon i {
+            font-size: inherit;
+            line-height: inherit;
+            color: inherit;
+            display: block;
+        }
+
+        .tooltip-icon:hover {
+            opacity: 1;
+        }
+
+        /* 1. The Tooltip Box */
+.tooltip-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 80%;             /* Start exactly at the top of the icon */
+    right: 0;               /* Position to the right of the icon */
+    left: 160%;                /* Center horizontally */
+    transform: translate(-50%, 10px) scale(1); /* Start slightly lower/smaller */
+    background: rgba(34, 46, 66, 0.95);
+    color: #fff;
+    padding: 0.45rem 0.65rem;
+    border-radius: 0.38rem;
+    white-space: normal;
+    font-size: 0.85rem;
+    line-height: 1.25;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 20;
+    min-width: 180px;
+    max-width: 260px;
+    text-align: left;
+    margin-bottom: 8px;       /* THIS CONTROLS THE GAP - Adjust as needed */
+}
+
+        .tooltip-icon:hover::after,
+        .tooltip-icon:focus::after {
+            opacity: 1;
+            transform: translateX(-50%);
+        }
+
+        .tooltip-icon:hover::after,
+        .tooltip-icon:focus::after {
+            opacity: 1;
+            transform: translateX(-50%);
+        }
+
+        .tooltip-icon::before {
+            display: none;
+        }
+
+/* 3. The Hover State (Combined) */
+.tooltip-icon:hover::after,
+.tooltip-icon:hover::before {
+    opacity: 1;
+    /* translate -50% centers it, 0px keeps it at the margin-bottom distance */
+    transform: translate(-50%, 0) scale(1); 
+}
+
+/* 2. The Tooltip Arrow (Triangle) */
+.tooltip-icon::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;             /* Align with the bottom of the tooltip box */
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(34, 46, 66, 0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 21;
+    margin-bottom: -2px;      /* Pulls the arrow slightly into the box */
+    /* display: block !important; Ensure it's not hidden */
+    display: none !important; /* This completely removes the triangle */
+}
+
+        .tooltip-icon:hover::before,
+        .tooltip-icon:focus::before {
+            opacity: 1;
         }
 
         .btn {
@@ -760,7 +868,10 @@
                         <option value="CON">Contacted</option>
                         <option value="QUAL">Qualified</option>
                         <option value="LOST">Lost</option>
-                    </select><label>Status</label>
+                    </select>
+                    <label>Status
+                        <span class="tooltip-icon" data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)." aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                    </label>
                     <div id="status-error" class="error-text"></div>
                 </div>
                 <div class="form-floating col-32">
@@ -820,7 +931,8 @@
 
                 <div class="form-floating col-32">
                     <input type="text" id="fname" placeholder=" " oninput="checkValue(this); clearError(this)">
-                    <label>First Name*</label>
+                    <label>First Name*<span class="tooltip-icon" data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)." aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                    </label>
                     <div id="fname-error" class="error-text"></div>
                 </div>
                 <div class="form-floating col-32">
@@ -976,7 +1088,7 @@
                 <!-- Checkbox Example with fieldset -->
                 <div class="col-32" style="padding:0;">
                     <fieldset class="input-fieldset">
-                        <legend>Agreement</legend>
+                        <legend>Agreement <span class="tooltip-icon" data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)." aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span></legend>
                         <div class="input-group-checkbox">
                             <label for="agreeTerms">
                                 <input type="checkbox" id="agreeTerms" value="yes"> I agree to the terms, I agree to the terms, I agree to the terms, I agree to the terms,
@@ -990,7 +1102,7 @@
                 <div class="col-32" style="display: flex; flex-direction: column;">
                     <div class="dropdown-checkbox-wrapper" id="sampleDropdownCheckbox">
                         <div class="dropdown-checkbox-btn" tabindex="0">
-                            <span class="dropdown-checkbox-label">Select items...</span>
+                            <span class="dropdown-checkbox-label">Select items... </span>
                         </div>
                         <div class="dropdown-checkbox-content">
                             <label class="dropdown-checkbox-item">
@@ -1016,7 +1128,7 @@
                 <!-- File Input Example -->
                 <div class="col-32" style="padding:0;">
                     <fieldset class="input-fieldset">
-                        <legend>Upload Attachment</legend>
+                        <legend>Upload Attachment <span class="tooltip-icon" data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)." aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span></legend>
                         <div class="input-group-row" style="padding:0; margin:0;">
                             <input type="file" id="attachment" name="attachment"
                                 style="width:100%; font-family:inherit; font-size:var(--base-font); color:var(--px-text-main); outline:none; border:none; background:transparent;">
@@ -1038,7 +1150,7 @@
                 <!-- Color Picker Example -->
                 <div class="col-32" style="padding:0;">
                     <fieldset class="input-fieldset">
-                        <legend>Favorite Color</legend>
+                        <legend>Favorite Color <span class="tooltip-icon" data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)." aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span></legend>
                         <div class="input-group-row" style="padding:0; margin:0;">
                             <input type="color" id="favcolor" name="favcolor" value="#3874ff"
                                 style="width:100%; height:1.5rem; border:none; padding:0; background:transparent; cursor:pointer;">

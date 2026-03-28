@@ -604,28 +604,150 @@
             cursor: not-allowed !important;
             opacity: 1 !important;
             border-style: dashed !important;        }
+
+        .header-message {
+            padding: 0.5rem 1rem;
+            border-radius: 0.3rem;
+            font-weight: 700;
+            font-size: 1.0rem;
+            grid-column: span 12;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .header-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .header-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .header-message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .delete-confirmation-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .delete-confirmation-overlay.show {
+            display: flex;
+        }
+
+        .delete-confirmation-dialog {
+            background: #fff;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .delete-confirmation-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #f33923;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .delete-confirmation-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #232e3e;
+            margin-bottom: 0.5rem;
+        }
+
+        .delete-confirmation-message {
+            font-size: 0.82rem;
+            color: #5e6e82;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .delete-confirmation-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .delete-btn-cancel {
+            background: #fff;
+            border: 1px solid #d8e2ef;
+            color: #5e6e82;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.78rem;
+            transition: all 0.2s;
+        }
+
+        .delete-btn-cancel:hover {
+            background: #f9fafd;
+        }
+
+        .delete-btn-confirm {
+            background: #f33923;
+            border: 1px solid #f33923;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.78rem;
+            transition: all 0.2s;
+        }
+
+        .delete-btn-confirm:hover {
+            background: #d42c1a;
+            border-color: #d42c1a;
+        }
     </style>
 </head>
 
 <body>
-
+    <div id="headerMessage" class="header-message" style="display: none;"></div>
     <div class="container">
         <div class="header-flex">
             <div class="header-left">
                 <h2>LEAD - ADD</h2>
             </div>
             <div>
-                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="requiredAllFields()">REQUIRED</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="enableEdit()">EDIT</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="confirmDelete()">DELETE</button>
                 <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="requiredAllFields()">REQUIRED</button>
                 <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="invalidAllFields()">INVALID</button>
-                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="customErrorAllFields()">CUSTOM</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="customErrorAllFields()">CUSTOM ERROR</button>
                 <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="setAllReadOnly()">READ ONLY</button>
                 <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="closeParentPopup()">CANCEL</button>
-                <button class="btn btn-primary" onclick="validateForm()">SAVE</button>
+                <button class="btn btn-primary" onclick="handleSave()">SAVE</button>
             </div>
         </div>
 
         <div class="card">
+            <div class="row">
+                <div id="headerMessage" class="header-message" style="display: none;"></div>
+            </div>
             <div class="section-divider">LEAD INFO</div>
             <div class="row">
                 <div class="form-floating col-32">
@@ -941,6 +1063,20 @@
         </div>
     </div>
 
+    <div id="deleteConfirmationOverlay" class="delete-confirmation-overlay">
+        <div class="delete-confirmation-dialog">
+            <div class="delete-confirmation-icon">⚠️</div>
+            <div class="delete-confirmation-title">Delete Record?</div>
+            <div class="delete-confirmation-message">
+                This action cannot be undone. Are you sure you want to permanently delete this record?
+            </div>
+            <div class="delete-confirmation-buttons">
+                <button class="delete-btn-cancel" onclick="cancelDelete()">CANCEL</button>
+                <button class="delete-btn-confirm" onclick="confirmDeleteAction()">DELETE</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function checkValue(el) {
             if (el.value !== "") { el.setAttribute('value', el.value); }
@@ -1006,9 +1142,91 @@
             });
         };
 
-        function validateForm() {
+        // Display header message with specified type
+        function showHeaderMessage(message, type = 'info') {
+            const headerMsg = document.getElementById('headerMessage');
+            headerMsg.textContent = message;
+            headerMsg.className = 'header-message ' + type;
+            headerMsg.style.display = 'block';
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                headerMsg.style.display = 'none';
+            }, 5000);
+        }
+
+        // Enable edit mode - remove readonly except Lead ID
+        function enableEdit() {
+            // Remove readonly from inputs
+            document.querySelectorAll('input[readonly]').forEach(function(el) {
+                // Keep Lead ID readonly
+                if (el.id !== 'leadId' && !el.classList.contains('readonly-field')) {
+                    el.removeAttribute('readonly');
+                    el.classList.remove('readonly-style');
+                }
+            });
+
+            // Enable selects
+            document.querySelectorAll('select[disabled]').forEach(function(el) {
+                el.removeAttribute('disabled');
+                el.classList.remove('readonly-style');
+            });
+
+            // Enable fieldset inputs
+            document.querySelectorAll('input[disabled]').forEach(function(el) {
+                if (el.type !== 'submit' && el.type !== 'reset' && el.type !== 'button') {
+                    el.removeAttribute('disabled');
+                    const fieldset = el.closest('fieldset.input-fieldset');
+                    if (fieldset) fieldset.classList.remove('readonly-style');
+                }
+            });
+
+            // Enable dropdown buttons
+            document.querySelectorAll('.dropdown-checkbox-btn.readonly-style').forEach(function(btn) {
+                btn.classList.remove('readonly-style');
+                btn.style.pointerEvents = 'auto';
+                btn.setAttribute('tabindex', '0');
+                btn.onclick = null; // Remove readonly click handler
+            });
+
+            // Remove error highlights and messages from all fields
+            document.querySelectorAll('.is-invalid').forEach(function(el) {
+                el.classList.remove('is-invalid');
+            });
+
+            document.querySelectorAll('.error-text').forEach(function(err) {
+                err.style.display = 'none';
+                err.textContent = '';
+            });
+
+            showHeaderMessage('Form is now in edit mode', 'info');
+        }
+
+        // Show custom delete confirmation dialog
+        function confirmDelete() {
+            const deleteOverlay = document.getElementById('deleteConfirmationOverlay');
+            deleteOverlay.classList.add('show');
+        }
+
+        // Cancel delete action
+        function cancelDelete() {
+            const deleteOverlay = document.getElementById('deleteConfirmationOverlay');
+            deleteOverlay.classList.remove('show');
+        }
+
+        // Confirm delete action
+        function confirmDeleteAction() {
+            const deleteOverlay = document.getElementById('deleteConfirmationOverlay');
+            deleteOverlay.classList.remove('show');
+            showHeaderMessage('Record has been deleted successfully', 'success');
+            // Add delete logic here
+        }
+
+        // Handle save with validation
+        function handleSave() {
             let isValid = true;
             const fields = ['fname', 'lname'];
+            
+            // Validate required fields
             fields.forEach(id => {
                 const el = document.getElementById(id);
                 const errorEl = document.getElementById(id + '-error');
@@ -1021,7 +1239,12 @@
                     errorEl.style.display = 'none';
                 }
             });
-            if (isValid) alert('Form saved successfully!');
+
+            if (isValid) {
+                showHeaderMessage('Form saved successfully', 'success');
+            } else {
+                showHeaderMessage('Please fix validation errors before saving', 'error');
+            }
         }
 
         function clearError(el) {

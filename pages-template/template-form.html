@@ -14,7 +14,7 @@
             --px-bg: #f9fafd;
             --px-card-bg: #ffffff;
             --px-border: #d8e2ef;
-            --px-primary: #3874ff;
+            --px-primary: #090c11;
             --px-primary-focus: rgba(56, 116, 255, 0.2);
             --px-text-main: #232e3e;
             --px-text-label: #8da1b9;
@@ -30,7 +30,7 @@
             --base-font: 0.85rem;
         }
 
-        body { 
+        body {
             font-family: 'Nunito Sans', sans-serif;
             background-color: var(--px-bg);
             color: var(--px-text-main);
@@ -94,28 +94,111 @@
             margin-bottom: 0.4rem;
         }
 
-        .col-3 { grid-column: span 3; }
-        .col-4 { grid-column: span 4; }
-        .col-6 { grid-column: span 6; }
-        .col-8 { grid-column: span 8; }
-        .col-9 { grid-column: span 9; }
-        .col-12 { grid-column: span 12; }.col-3 { grid-column: span 3; }
-        .col-4 { grid-column: span 4; }
-        .col-6 { grid-column: span 6; }
-        .col-8 { grid-column: span 8; }
-        .col-8-12 { grid-column: span 8; }
-        @media (max-width: 768px) { .col-8-12 { grid-column: span 12; } }
-        @media (max-width: 500px) { .col-8-12 { grid-column: span 12; } }
-        .col-9 { grid-column: span 9; }
-        .col-12 { grid-column: span 12; }
-        .col-32 { grid-column: span 4; }
-        @media (max-width: 768px) { .col-32 { grid-column: span 6; } }
-        .col-321 { grid-column: span 4; }
-        @media (max-width: 768px) { .col-321 { grid-column: span 6; } }
-        @media (max-width: 500px) { .col-321 { grid-column: span 12; } }
-        .col-432 { grid-column: span 3; }
-        @media (max-width: 768px) { .col-432 { grid-column: span 4; } }
-        @media (max-width: 500px) { .col-432 { grid-column: span 6; } }
+        .col-3 {
+            grid-column: span 3;
+        }
+
+        .col-4 {
+            grid-column: span 4;
+        }
+
+        .col-6 {
+            grid-column: span 6;
+        }
+
+        .col-8 {
+            grid-column: span 8;
+        }
+
+        .col-9 {
+            grid-column: span 9;
+        }
+
+        .col-12 {
+            grid-column: span 12;
+        }
+
+        .col-3 {
+            grid-column: span 3;
+        }
+
+        .col-4 {
+            grid-column: span 4;
+        }
+
+        .col-6 {
+            grid-column: span 6;
+        }
+
+        .col-8 {
+            grid-column: span 8;
+        }
+
+        .col-8-12 {
+            grid-column: span 8;
+        }
+
+        @media (max-width: 768px) {
+            .col-8-12 {
+                grid-column: span 12;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .col-8-12 {
+                grid-column: span 12;
+            }
+        }
+
+        .col-9 {
+            grid-column: span 9;
+        }
+
+        .col-12 {
+            grid-column: span 12;
+        }
+
+        .col-32 {
+            grid-column: span 4;
+        }
+
+        @media (max-width: 768px) {
+            .col-32 {
+                grid-column: span 6;
+            }
+        }
+
+        .col-321 {
+            grid-column: span 4;
+        }
+
+        @media (max-width: 768px) {
+            .col-321 {
+                grid-column: span 6;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .col-321 {
+                grid-column: span 12;
+            }
+        }
+
+        .col-432 {
+            grid-column: span 3;
+        }
+
+        @media (max-width: 768px) {
+            .col-432 {
+                grid-column: span 4;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .col-432 {
+                grid-column: span 6;
+            }
+        }
 
 
 
@@ -242,29 +325,34 @@
         }
 
         /* 1. The Tooltip Box */
-.tooltip-icon::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 80%;             /* Start exactly at the top of the icon */
-    right: 0;               /* Position to the right of the icon */
-    left: 160%;                /* Center horizontally */
-    transform: translate(-50%, 10px) scale(1); /* Start slightly lower/smaller */
-    background: rgba(34, 46, 66, 0.95);
-    color: #fff;
-    padding: 0.45rem 0.65rem;
-    border-radius: 0.38rem;
-    white-space: normal;
-    font-size: 0.85rem;
-    line-height: 1.25;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.2s ease;
-    z-index: 20;
-    min-width: 180px;
-    max-width: 260px;
-    text-align: left;
-    margin-bottom: 8px;       /* THIS CONTROLS THE GAP - Adjust as needed */
-}
+        .tooltip-icon::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 80%;
+            /* Start exactly at the top of the icon */
+            right: 0;
+            /* Position to the right of the icon */
+            left: 160%;
+            /* Center horizontally */
+            transform: translate(-50%, 10px) scale(1);
+            /* Start slightly lower/smaller */
+            background: rgba(34, 46, 66, 0.95);
+            color: #fff;
+            padding: 0.45rem 0.65rem;
+            border-radius: 0.38rem;
+            white-space: normal;
+            font-size: 0.85rem;
+            line-height: 1.25;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            z-index: 20;
+            min-width: 180px;
+            max-width: 260px;
+            text-align: left;
+            margin-bottom: 8px;
+            /* THIS CONTROLS THE GAP - Adjust as needed */
+        }
 
         .tooltip-icon:hover::after,
         .tooltip-icon:focus::after {
@@ -282,31 +370,34 @@
             display: none;
         }
 
-/* 3. The Hover State (Combined) */
-.tooltip-icon:hover::after,
-.tooltip-icon:hover::before {
-    opacity: 1;
-    /* translate -50% centers it, 0px keeps it at the margin-bottom distance */
-    transform: translate(-50%, 0) scale(1); 
-}
+        /* 3. The Hover State (Combined) */
+        .tooltip-icon:hover::after,
+        .tooltip-icon:hover::before {
+            opacity: 1;
+            /* translate -50% centers it, 0px keeps it at the margin-bottom distance */
+            transform: translate(-50%, 0) scale(1);
+        }
 
-/* 2. The Tooltip Arrow (Triangle) */
-.tooltip-icon::before {
-    content: "";
-    position: absolute;
-    bottom: 100%;             /* Align with the bottom of the tooltip box */
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: rgba(34, 46, 66, 0.95);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.2s ease;
-    z-index: 21;
-    margin-bottom: -2px;      /* Pulls the arrow slightly into the box */
-    /* display: block !important; Ensure it's not hidden */
-    display: none !important; /* This completely removes the triangle */
-}
+        /* 2. The Tooltip Arrow (Triangle) */
+        .tooltip-icon::before {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            /* Align with the bottom of the tooltip box */
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgba(34, 46, 66, 0.95);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            z-index: 21;
+            margin-bottom: -2px;
+            /* Pulls the arrow slightly into the box */
+            /* display: block !important; Ensure it's not hidden */
+            display: none !important;
+            /* This completely removes the triangle */
+        }
 
         .tooltip-icon:hover::before,
         .tooltip-icon:focus::before {
@@ -358,20 +449,21 @@
         select.is-invalid,
         textarea.is-invalid {
             border-color: var(--px-danger) !important;
-            box-shadow: 0 0 0 0.18rem rgba(243,57,35,0.12);
+            box-shadow: 0 0 0 0.18rem rgba(243, 57, 35, 0.12);
         }
 
         /* Highlight fieldset for file, color, range, radio, checkbox when invalid */
         fieldset.input-fieldset.is-invalid {
             border-color: var(--px-danger) !important;
-            box-shadow: 0 0 0 0.18rem rgba(243,57,35,0.12);
+            box-shadow: 0 0 0 0.18rem rgba(243, 57, 35, 0.12);
         }
 
         /* Highlight dropdown-checkbox-btn when invalid */
         .dropdown-checkbox-btn.is-invalid {
             border-color: var(--px-danger) !important;
-            box-shadow: 0 0 0 0.18rem rgba(243,57,35,0.12);
+            box-shadow: 0 0 0 0.18rem rgba(243, 57, 35, 0.12);
         }
+
         /* --- Consistent style for radio and checkbox --- */
         .input-group-row,
         .input-group-checkbox {
@@ -495,6 +587,7 @@
             box-sizing: border-box;
             resize: vertical;
         }
+
         /* Add row-2 style for textarea */
         .form-floating textarea.row-2 {
             height: calc(var(--input-height) * 2 + 0.5rem);
@@ -711,7 +804,8 @@
             color: #000000 !important;
             cursor: not-allowed !important;
             opacity: 1 !important;
-            border-style: dashed !important;        }
+            border-style: dashed !important;
+        }
 
         .header-message {
             padding: 0.5rem 1rem;
@@ -722,16 +816,19 @@
             margin-bottom: 1rem;
             text-align: center;
         }
+
         .header-message.success {
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
+
         .header-message.error {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+
         .header-message.info {
             background-color: #d1ecf1;
             color: #0c5460;
@@ -843,11 +940,16 @@
             <div>
                 <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="enableEdit()">EDIT</button>
                 <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="confirmDelete()">DELETE</button>
-                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="requiredAllFields()">REQUIRED</button>
-                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="invalidAllFields()">INVALID</button>
-                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="customErrorAllFields()">CUSTOM ERROR</button>
-                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="setAllReadOnly()">READ ONLY</button>
-                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="closeParentPopup()">CANCEL</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;"
+                    onclick="requiredAllFields()">REQUIRED</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;"
+                    onclick="invalidAllFields()">INVALID</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="customErrorAllFields()">CUSTOM
+                    ERROR</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;" onclick="setAllReadOnly()">READ
+                    ONLY</button>
+                <button class="btn btn-outline" style="margin-right: 0.4rem;"
+                    onclick="closeParentPopup()">CANCEL</button>
                 <button class="btn btn-primary" onclick="handleSave()">SAVE</button>
             </div>
         </div>
@@ -870,7 +972,9 @@
                         <option value="LOST">Lost</option>
                     </select>
                     <label>Status
-                        <span class="tooltip-icon" data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)." aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                        <span class="tooltip-icon"
+                            data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)."
+                            aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
                     </label>
                     <div id="status-error" class="error-text"></div>
                 </div>
@@ -931,7 +1035,9 @@
 
                 <div class="form-floating col-32">
                     <input type="text" id="fname" placeholder=" " oninput="checkValue(this); clearError(this)">
-                    <label>First Name*<span class="tooltip-icon" data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)." aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                    <label>First Name*<span class="tooltip-icon"
+                            data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)."
+                            aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
                     </label>
                     <div id="fname-error" class="error-text"></div>
                 </div>
@@ -1085,13 +1191,18 @@
                     <div id="contactMethod-error" class="error-text"></div>
                 </div>
 
+
                 <!-- Checkbox Example with fieldset -->
                 <div class="col-32" style="padding:0;">
                     <fieldset class="input-fieldset">
-                        <legend>Agreement <span class="tooltip-icon" data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)." aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span></legend>
+                        <legend>Agreement <span class="tooltip-icon"
+                                data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)."
+                                aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                        </legend>
                         <div class="input-group-checkbox">
                             <label for="agreeTerms">
-                                <input type="checkbox" id="agreeTerms" value="yes"> I agree to the terms, I agree to the terms, I agree to the terms, I agree to the terms,
+                                <input type="checkbox" id="agreeTerms" value="yes"> I agree to the terms, I agree to the
+                                terms, I agree to the terms, I agree to the terms,
                             </label>
                         </div>
                     </fieldset>
@@ -1128,7 +1239,10 @@
                 <!-- File Input Example -->
                 <div class="col-32" style="padding:0;">
                     <fieldset class="input-fieldset">
-                        <legend>Upload Attachment <span class="tooltip-icon" data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)." aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span></legend>
+                        <legend>Upload Attachment <span class="tooltip-icon"
+                                data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)."
+                                aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                        </legend>
                         <div class="input-group-row" style="padding:0; margin:0;">
                             <input type="file" id="attachment" name="attachment"
                                 style="width:100%; font-family:inherit; font-size:var(--base-font); color:var(--px-text-main); outline:none; border:none; background:transparent;">
@@ -1150,7 +1264,10 @@
                 <!-- Color Picker Example -->
                 <div class="col-32" style="padding:0;">
                     <fieldset class="input-fieldset">
-                        <legend>Favorite Color <span class="tooltip-icon" data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)." aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span></legend>
+                        <legend>Favorite Color <span class="tooltip-icon"
+                                data-tooltip="Select the current sales stage of the lead (New / Contacted / Qualified / Lost)."
+                                aria-label="Status info"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                        </legend>
                         <div class="input-group-row" style="padding:0; margin:0;">
                             <input type="color" id="favcolor" name="favcolor" value="#3874ff"
                                 style="width:100%; height:1.5rem; border:none; padding:0; background:transparent; cursor:pointer;">
@@ -1269,7 +1386,7 @@
         // Enable edit mode - remove readonly except Lead ID
         function enableEdit() {
             // Remove readonly from inputs
-            document.querySelectorAll('input[readonly]').forEach(function(el) {
+            document.querySelectorAll('input[readonly]').forEach(function (el) {
                 // Keep Lead ID readonly
                 if (el.id !== 'leadId' && !el.classList.contains('readonly-field')) {
                     el.removeAttribute('readonly');
@@ -1278,13 +1395,13 @@
             });
 
             // Enable selects
-            document.querySelectorAll('select[disabled]').forEach(function(el) {
+            document.querySelectorAll('select[disabled]').forEach(function (el) {
                 el.removeAttribute('disabled');
                 el.classList.remove('readonly-style');
             });
 
             // Enable fieldset inputs
-            document.querySelectorAll('input[disabled]').forEach(function(el) {
+            document.querySelectorAll('input[disabled]').forEach(function (el) {
                 if (el.type !== 'submit' && el.type !== 'reset' && el.type !== 'button') {
                     el.removeAttribute('disabled');
                     const fieldset = el.closest('fieldset.input-fieldset');
@@ -1293,7 +1410,7 @@
             });
 
             // Enable dropdown buttons
-            document.querySelectorAll('.dropdown-checkbox-btn.readonly-style').forEach(function(btn) {
+            document.querySelectorAll('.dropdown-checkbox-btn.readonly-style').forEach(function (btn) {
                 btn.classList.remove('readonly-style');
                 btn.style.pointerEvents = 'auto';
                 btn.setAttribute('tabindex', '0');
@@ -1301,11 +1418,11 @@
             });
 
             // Remove error highlights and messages from all fields
-            document.querySelectorAll('.is-invalid').forEach(function(el) {
+            document.querySelectorAll('.is-invalid').forEach(function (el) {
                 el.classList.remove('is-invalid');
             });
 
-            document.querySelectorAll('.error-text').forEach(function(err) {
+            document.querySelectorAll('.error-text').forEach(function (err) {
                 err.style.display = 'none';
                 err.textContent = '';
             });
@@ -1337,7 +1454,7 @@
         function handleSave() {
             let isValid = true;
             const fields = ['fname', 'lname'];
-            
+
             // Validate required fields
             fields.forEach(id => {
                 const el = document.getElementById(id);
@@ -1367,7 +1484,7 @@
         // Helper to highlight all fields and set error message
         function highlightAllFields(errorMsg) {
             // Highlight all normal fields
-            document.querySelectorAll('input, select, textarea').forEach(function(el) {
+            document.querySelectorAll('input, select, textarea').forEach(function (el) {
                 // Remove .is-invalid from special types (handled by fieldset or dropdown)
                 if (
                     el.type === 'file' ||
@@ -1387,12 +1504,12 @@
             });
 
             // Highlight dropdown-checkbox-btn for dropdown-checkbox-wrapper
-            document.querySelectorAll('.dropdown-checkbox-btn').forEach(function(btn) {
+            document.querySelectorAll('.dropdown-checkbox-btn').forEach(function (btn) {
                 btn.classList.add('is-invalid');
             });
 
             // Show all error messages if present and set text if errorMsg provided
-            document.querySelectorAll('.error-text').forEach(function(err) {
+            document.querySelectorAll('.error-text').forEach(function (err) {
                 err.style.display = 'block';
                 if (errorMsg !== undefined) err.textContent = errorMsg;
             });
@@ -1427,7 +1544,7 @@
         // Set all fields as readonly/disabled and apply readonly style
         function setAllReadOnly() {
             // Set all input and textarea as readonly, except buttons
-            document.querySelectorAll('input, textarea').forEach(function(el) {
+            document.querySelectorAll('input, textarea').forEach(function (el) {
                 if (el.type !== 'button' && el.type !== 'submit' && el.type !== 'reset') {
                     // For special types inside fieldset, apply readonly-style to fieldset and disable input
                     if (
@@ -1448,19 +1565,19 @@
                 }
             });
             // Set all select as disabled and apply style
-            document.querySelectorAll('select').forEach(function(el) {
+            document.querySelectorAll('select').forEach(function (el) {
                 el.setAttribute('disabled', 'disabled');
                 el.classList.add('readonly-style');
             });
             // Visually disable dropdown-checkbox-btn, but allow dropdown to open for viewing
-            document.querySelectorAll('.dropdown-checkbox-wrapper').forEach(function(wrapper) {
+            document.querySelectorAll('.dropdown-checkbox-wrapper').forEach(function (wrapper) {
                 const btn = wrapper.querySelector('.dropdown-checkbox-btn');
                 btn.classList.add('readonly-style');
                 btn.setAttribute('tabindex', '0');
                 btn.style.pointerEvents = 'auto';
                 wrapper.classList.add('open');
                 // Prevent toggling/closing in readonly mode
-                btn.onclick = function(e) {
+                btn.onclick = function (e) {
                     e.stopPropagation();
                     // Always keep open in readonly
                     wrapper.classList.add('open');
@@ -1468,7 +1585,7 @@
             });
             // Prevent closing dropdown in readonly mode
             document.addEventListener('click', function keepDropdownOpenReadonly(e) {
-                document.querySelectorAll('.dropdown-checkbox-wrapper').forEach(function(wrapper) {
+                document.querySelectorAll('.dropdown-checkbox-wrapper').forEach(function (wrapper) {
                     const btn = wrapper.querySelector('.dropdown-checkbox-btn');
                     if (btn.classList.contains('readonly-style')) {
                         wrapper.classList.add('open');
